@@ -1,0 +1,288 @@
+:root {
+  font:
+    14px system-ui,
+    sans-serif;
+  color: #222;
+  background: white;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+button {
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 6px 10px;
+}
+button:hover {
+  background: #f5f5f5;
+}
+button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+input,
+select {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 7px 9px;
+  background: white;
+  min-width: 0;
+}
+:focus-visible {
+  outline: 2px solid #6086ba;
+  outline-offset: 2px;
+}
+.app {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+.searches {
+  display: flex;
+  gap: 16px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #ddd;
+}
+.search-control {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+.search-control form {
+  display: flex;
+  gap: 6px;
+}
+.search-control input {
+  width: 100%;
+}
+.search-results {
+  position: absolute;
+  z-index: 3;
+  top: calc(100% + 5px);
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 3px 8px #0001;
+  width: 100%;
+  max-height: 300px;
+  overflow: auto;
+}
+.results-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  font-size: 12px;
+  color: #666;
+}
+.results-heading button {
+  border: 0;
+}
+.search-result {
+  display: block;
+  text-align: left;
+  width: 100%;
+  border: 0;
+  border-top: 1px solid #eee;
+  border-radius: 0;
+  padding: 10px;
+}
+.search-result strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 12px;
+}
+.search-result span {
+  display: block;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.document-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  border-bottom: 1px solid #ddd;
+}
+.document-bar select {
+  max-width: 55%;
+  border-color: transparent;
+  padding-left: 0;
+}
+.revision,
+.connection {
+  font-size: 12px;
+  color: #777;
+}
+.submit {
+  margin-left: auto;
+  white-space: nowrap;
+}
+.reader-layout {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+.reader-scroll {
+  overflow: auto;
+  flex: 1;
+  padding: 24px 32px 60px;
+}
+.paper {
+  max-width: 960px;
+  margin: 0 auto;
+}
+.source {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font:
+    15px/1.75 system-ui,
+    sans-serif;
+  outline: none;
+}
+.source ::selection,
+.source::selection {
+  background: #ffecab;
+}
+.protected {
+  background: #fff0ad;
+}
+.protected.other {
+  background: #eee1fb;
+}
+.protected.insert,
+.insert {
+  background: #d7f0cf;
+}
+.protected.modify,
+.modify {
+  background: #d7e7fb;
+}
+.protected.delete,
+.delete {
+  background: #f8d3cd;
+}
+.protected.delete {
+  text-decoration: line-through;
+}
+.search-match {
+  background: #ffe6a2;
+  outline: 1px solid #ddbe6b;
+}
+.change-rail {
+  width: 16px;
+  padding: 8px 3px;
+  background: #fafafa;
+  border-left: 1px solid #eee;
+}
+.rail-track {
+  position: relative;
+  height: 100%;
+}
+.rail-mark {
+  position: absolute;
+  width: 9px;
+  height: 8px;
+  padding: 0;
+  border: 1px solid #0002;
+  border-radius: 1px;
+}
+.rail-mark:hover {
+  outline: 1px solid #999;
+}
+.alert {
+  padding: 8px 16px;
+  background: #fff8e3;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.alert button {
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+}
+.empty {
+  padding: 20px;
+  color: #777;
+}
+@media (max-width: 600px) {
+  .searches {
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+  }
+  .reader-scroll {
+    padding: 18px 14px 40px;
+  }
+  .document-bar {
+    padding: 8px 10px;
+  }
+  .document-bar select {
+    flex: 1;
+  }
+  .source {
+    font-size: 14px;
+  }
+}
+/* Suggestions stay in the text flow. No replacement form or layout jump. */
+.suggested-source {
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+.suggested-source.modify,
+.suggested-source.delete {
+  color: #9b3e38;
+  background: #fce7e3;
+}
+.suggestion {
+  display: inline;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  padding: 0;
+  border: 0;
+  outline: none;
+  font: inherit;
+  caret-color: #222;
+}
+.suggestion:focus-visible {
+  outline: none;
+}
+.suggestion.modify {
+  color: #245b98;
+  background: #e6f0fd;
+  text-decoration: underline;
+  text-decoration-color: #6d9acb;
+}
+.suggestion.insert {
+  color: #34652c;
+  background: #e6f4df;
+  text-decoration: underline;
+  text-decoration-color: #8abd79;
+}
+.suggestion.lease {
+  background: transparent;
+}
+.empty-suggestion {
+  display: inline-block;
+  min-width: 1px;
+  height: 1.2em;
+  vertical-align: text-bottom;
+}
+
+.suggested-source.pending {
+  color: inherit;
+  background: #fff0ad;
+}
