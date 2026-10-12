@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.egg-info/
+data/raw/
+data/contracts/
+data/stress/
+data/legal/*.txt
+data/*.sqlite3*
+
+frontend/node_modules/
+frontend/dist/
