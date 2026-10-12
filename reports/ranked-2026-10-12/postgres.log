@@ -1,0 +1,12 @@
+2026-10-12 16:58:41.730 EDT [33073] LOG:  starting PostgreSQL 16.9 (Homebrew) on aarch64-apple-darwin23.6.0, compiled by Apple clang version 16.0.0 (clang-1600.0.26.6), 64-bit
+2026-10-12 16:58:41.731 EDT [33073] LOG:  listening on IPv4 address "127.0.0.1", port 56007
+2026-10-12 16:58:41.731 EDT [33073] LOG:  listening on Unix socket "/var/folders/0q/ndf8plz52j319lr8j26bcpmh0000gn/T/sandstone-benchmark-kvvnf9hu/.s.PGSQL.56007"
+2026-10-12 16:58:41.733 EDT [33076] LOG:  database system was shut down at 2026-10-12 16:58:41 EDT
+2026-10-12 16:58:41.735 EDT [33073] LOG:  database system is ready to accept connections
+2026-10-12 17:00:20.242 EDT [33073] LOG:  received fast shutdown request
+2026-10-12 17:00:20.242 EDT [33073] LOG:  aborting any active transactions
+2026-10-12 17:00:20.248 EDT [33073] LOG:  background worker "logical replication launcher" (PID 33079) exited with exit code 1
+2026-10-12 17:00:20.249 EDT [33074] LOG:  shutting down
+2026-10-12 17:00:20.249 EDT [33074] LOG:  checkpoint starting: shutdown immediate
+2026-10-12 17:00:20.265 EDT [33074] LOG:  checkpoint complete: wrote 107 buffers (0.7%); 0 WAL file(s) added, 0 removed, 20 recycled; write=0.008 s, sync=0.004 s, total=0.016 s; sync files=134, longest=0.001 s, average=0.001 s; distance=338304 kB, estimate=338304 kB; lsn=0/15F79948, redo lsn=0/15F79948
+2026-10-12 17:00:20.276 EDT [33073] LOG:  database system is shut down

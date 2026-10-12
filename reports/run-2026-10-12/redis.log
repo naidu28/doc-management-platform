@@ -1,0 +1,16 @@
+26063:C 12 Oct 2026 16:44:59.540 * oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+26063:C 12 Oct 2026 16:44:59.540 * Redis version=7.2.6, bits=64, commit=00000000, modified=0, pid=26063, just started
+26063:C 12 Oct 2026 16:44:59.540 * Configuration loaded
+26063:M 12 Oct 2026 16:44:59.541 * monotonic clock: POSIX clock_gettime
+26063:M 12 Oct 2026 16:44:59.542 * Running mode=standalone, port=63734.
+26063:M 12 Oct 2026 16:44:59.542 # WARNING: The TCP backlog setting of 511 cannot be enforced because kern.ipc.somaxconn is set to the lower value of 128.
+26063:M 12 Oct 2026 16:44:59.542 * Server initialized
+26063:M 12 Oct 2026 16:44:59.542 * Creating AOF base file appendonly.aof.1.base.rdb on server start
+26063:M 12 Oct 2026 16:44:59.564 * Creating AOF incr file appendonly.aof.1.incr.aof on server start
+26063:M 12 Oct 2026 16:44:59.564 * Ready to accept connections tcp
+26063:signal-handler (1791837977) Received SIGTERM scheduling shutdown...
+26063:M 12 Oct 2026 16:46:17.407 * User requested shutdown...
+26063:M 12 Oct 2026 16:46:17.407 * Calling fsync() on the AOF file.
+26063:M 12 Oct 2026 16:46:17.416 * Saving the final RDB snapshot before exiting.
+26063:M 12 Oct 2026 16:46:17.420 * DB saved on disk
+26063:M 12 Oct 2026 16:46:17.420 # Redis is now ready to exit, bye bye...
