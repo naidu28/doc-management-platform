@@ -1,0 +1,4605 @@
+{
+  "source": "https://huggingface.co/datasets/theatticusproject/cuad/resolve/main/CUAD_v1/CUAD_v1.json",
+  "source_sha256": "ed0b77d85bdf4014d7495800e8e4a70565b48ee6f8a2e5dca9cf8655dbf10eae",
+  "license": "CC-BY-4.0",
+  "attribution": "The Atticus Project; Hendrycks, Burns, Chen, Ball (2021)",
+  "documents": [
+    {
+      "id": "cuad-0001",
+      "title": "LIMEENERGYCO_09_09_1999-EX-10-DISTRIBUTOR AGREEMENT",
+      "bytes": 54290,
+      "characters": 54290,
+      "sha256": "95ea6fae5227f2424896bb354e9de452c7f05a85dc0acb72fa6bd72ebe37a236",
+      "path": "contracts/cuad-0001.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0002",
+      "title": "WHITESMOKE,INC_11_08_2011-EX-10.26-PROMOTION AND DISTRIBUTION AGREEMENT",
+      "bytes": 70383,
+      "characters": 70383,
+      "sha256": "8b34af224646d2837b3552c7380dd430403d3665a6141ef0bf5b1088e42fbb9a",
+      "path": "contracts/cuad-0002.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0003",
+      "title": "LohaCompanyltd_20191209_F-1_EX-10.16_11917878_EX-10.16_Supply Agreement",
+      "bytes": 11475,
+      "characters": 11475,
+      "sha256": "f9cfca1abe0d53c639a5c9516a499ecd4493dd773dd0a4ddf7d7725e0da810d6",
+      "path": "contracts/cuad-0003.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0004",
+      "title": "CENTRACKINTERNATIONALINC_10_29_1999-EX-10.3-WEB SITE HOSTING AGREEMENT",
+      "bytes": 15176,
+      "characters": 15176,
+      "sha256": "8532356d811b76bd7ae536cf22910742ba61815dc39741fd9b295d7bc80c99f1",
+      "path": "contracts/cuad-0004.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0005",
+      "title": "NELNETINC_04_08_2020-EX-1-JOINT FILING AGREEMENT",
+      "bytes": 1081,
+      "characters": 1081,
+      "sha256": "c2026111e62647e4b40f3f946105ffbdffeb59a79a51f6515f4ff11fc6a0b481",
+      "path": "contracts/cuad-0005.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0006",
+      "title": "ADAMSGOLFINC_03_21_2005-EX-10.17-ENDORSEMENT AGREEMENT",
+      "bytes": 24632,
+      "characters": 24632,
+      "sha256": "ca9acda7d2710198107402f632ede2a69f365f8dd8417f13e9a2e463d3ecdad8",
+      "path": "contracts/cuad-0006.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0007",
+      "title": "KIROMICBIOPHARMA,INC_05_11_2020-EX-10.23-CONSULTING AGREEMENT",
+      "bytes": 18417,
+      "characters": 18403,
+      "sha256": "aacd48ab914fdede120150e2da4e222b342fa4f963a830384f8c848e9bf738a9",
+      "path": "contracts/cuad-0007.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0008",
+      "title": "VEONEER,INC_02_21_2020-EX-10.11-JOINT VENTURE AGREEMENT",
+      "bytes": 8259,
+      "characters": 8257,
+      "sha256": "c9ab266dd8eeb900805cae1c37539145898f8c58dc6ed13c4b76c438e1bac051",
+      "path": "contracts/cuad-0008.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0009",
+      "title": "DovaPharmaceuticalsInc_20181108_10-Q_EX-10.2_11414857_EX-10.2_Promotion Agreement",
+      "bytes": 175617,
+      "characters": 175580,
+      "sha256": "7bda458cd689faa8bcde9f8f3e625ecb93b04de3a772d95988aba4f803d04900",
+      "path": "contracts/cuad-0009.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0010",
+      "title": "PACIRA PHARMACEUTICALS, INC. - A_R STRATEGIC LICENSING, DISTRIBUTION AND MARKETING AGREEMENT ",
+      "bytes": 145181,
+      "characters": 145168,
+      "sha256": "0a0920ff8b1ac696c1c2747491a9cb00e9babe149ccf6a396a943acdc78f1b84",
+      "path": "contracts/cuad-0010.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0011",
+      "title": "MetLife, Inc. - Remarketing Agreement",
+      "bytes": 111249,
+      "characters": 111249,
+      "sha256": "b3c627873c35bf0ca94050cb1ac9f463c31193f81376ea4f3cb921e0bad3a37a",
+      "path": "contracts/cuad-0011.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0012",
+      "title": "FTENETWORKS,INC_02_18_2016-EX-99.4-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 37834,
+      "characters": 37829,
+      "sha256": "f9db7b25f0fd035c70cd0950fb2a2642875b7b5ab09a54e4d24dbfa7597d55e5",
+      "path": "contracts/cuad-0012.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0013",
+      "title": "DOMINIADVISORTRUST_02_18_2005-EX-99.(H)(2)-SPONSORSHIP AGREEMENT",
+      "bytes": 12555,
+      "characters": 12555,
+      "sha256": "d0a1da3829ff9e1cd503b5cdcde475c8b3287a3fb9e987337538fd46d6150b7e",
+      "path": "contracts/cuad-0013.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0014",
+      "title": "PfHospitalityGroupInc_20150923_10-12G_EX-10.1_9266710_EX-10.1_Franchise Agreement3",
+      "bytes": 6772,
+      "characters": 6772,
+      "sha256": "6a5932ec6cc584c1976b516aae469c6f8f2335db1c65d008e2ab596b35b7a2de",
+      "path": "contracts/cuad-0014.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0015",
+      "title": "CerenceInc_20191002_8-K_EX-10.4_11827494_EX-10.4_Intellectual Property Agreement",
+      "bytes": 62170,
+      "characters": 62170,
+      "sha256": "cae1021a576e7472db500d0d43f6a15a43625b0825bece22c1ed18e959dd578f",
+      "path": "contracts/cuad-0015.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0016",
+      "title": "ThriventVariableInsuranceAccountB_20190701_N-6_EX-99.D(IV)_11720968_EX-99.D(IV)_Endorsement Agreement",
+      "bytes": 4871,
+      "characters": 4871,
+      "sha256": "2a5599674f4e11b15ba23a0a967adf5a0e9a8209f0882d5c7cc01d27a9eb1212",
+      "path": "contracts/cuad-0016.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0017",
+      "title": "ReynoldsConsumerProductsInc_20191115_S-1_EX-10.18_11896469_EX-10.18_Supply Agreement",
+      "bytes": 61710,
+      "characters": 61710,
+      "sha256": "8c63d9a33c82bdae898b8511f7e476205323844dfee40ce52765fc08e2a5f200",
+      "path": "contracts/cuad-0017.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0018",
+      "title": "IntegrityFunds_20200121_485BPOS_EX-99.E UNDR CONTR_11948727_EX-99.E UNDR CONTR_Service Agreement",
+      "bytes": 23845,
+      "characters": 23845,
+      "sha256": "2135a565bb91e5f7a162f64ff162e18cb9e1235993c1874be87ccdf5060e0f04",
+      "path": "contracts/cuad-0018.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0019",
+      "title": "PREMIERBIOMEDICALINC_05_14_2020-EX-10.2-INTELLECTUAL PROPERTY AGREEMENT",
+      "bytes": 23282,
+      "characters": 23282,
+      "sha256": "e821a32fe4b1f36af17b4a8ad1079b3fe7a6ed1cc2f950bda202bdb5012db13b",
+      "path": "contracts/cuad-0019.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0020",
+      "title": "SIBANNAC,INC_12_04_2017-EX-2.1-Strategic Alliance Agreement",
+      "bytes": 8380,
+      "characters": 8380,
+      "sha256": "c0b6b7a59795c666d653f5bc73bddba2d852fc59c63b93b97d648a8c593c921f",
+      "path": "contracts/cuad-0020.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0021",
+      "title": "INTRICONCORP_03_10_2009-EX-10.22-Strategic Alliance Agreement",
+      "bytes": 52977,
+      "characters": 52967,
+      "sha256": "9ffe697eb66dc8b81ad3fc70e31d6d857c6d53eb2cafaa933acb78858ff46c5a",
+      "path": "contracts/cuad-0021.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0022",
+      "title": "BONTONSTORESINC_04_20_2018-EX-99.3-AGENCY AGREEMENT",
+      "bytes": 161630,
+      "characters": 161626,
+      "sha256": "ff5ba383789fab50f4a3675805093940457d856495dd6786d630e7018bb2c511",
+      "path": "contracts/cuad-0022.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0023",
+      "title": "ON2TECHNOLOGIES,INC_11_17_2006-EX-10.3-SUPPORT AND MAINTENANCE AGREEMENT",
+      "bytes": 61392,
+      "characters": 61392,
+      "sha256": "9cb2a35f78070d574ac202873457b91f572981c78916cc28df9377424083f6da",
+      "path": "contracts/cuad-0023.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0024",
+      "title": "Freecook_20180605_S-1_EX-10.3_11233807_EX-10.3_Hosting Agreement",
+      "bytes": 6341,
+      "characters": 6341,
+      "sha256": "2f6b37b85a74830fdfa7d9aaa4aee2b4806242404fbd8baa5730d15f20fd4933",
+      "path": "contracts/cuad-0024.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0025",
+      "title": "OPERALTD_04_30_2020-EX-4.14-SERVICE AGREEMENT",
+      "bytes": 20983,
+      "characters": 20983,
+      "sha256": "579818d20eb50a9cb9893ff4dea109b70d2e74094c06489a994506b2079414fa",
+      "path": "contracts/cuad-0025.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0026",
+      "title": "BORROWMONEYCOM,INC_06_11_2020-EX-10.1-JOINT VENTURE AGREEMENT",
+      "bytes": 21454,
+      "characters": 21450,
+      "sha256": "61a7d17bc4cba4531dc64d18cb48153499b3fa978f54b5c3583208146897703f",
+      "path": "contracts/cuad-0026.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0027",
+      "title": "ZEBRATECHNOLOGIESCORP_04_16_2014-EX-10.1-INTELLECTUAL PROPERTY AGREEMENT",
+      "bytes": 127208,
+      "characters": 127205,
+      "sha256": "7531749b5e46a8c1523b8469a1d1d629a2447c354f97bb9bf850fe683d530443",
+      "path": "contracts/cuad-0027.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0028",
+      "title": "ChinaRealEstateInformationCorp_20090929_F-1_EX-10.32_4771615_EX-10.32_Content License Agreement",
+      "bytes": 49191,
+      "characters": 49191,
+      "sha256": "8881b5815dde9e3f52c43311f80baaf25e10dd15ed5b52740e94ca4a0aba433a",
+      "path": "contracts/cuad-0028.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0029",
+      "title": "HERTZGLOBALHOLDINGS,INC_07_07_2016-EX-10.4-INTELLECTUAL PROPERTY AGREEMENT",
+      "bytes": 30968,
+      "characters": 30968,
+      "sha256": "83c50fb3de1a2db90dad8018834133ab2c934e4249245760754210902e88d506",
+      "path": "contracts/cuad-0029.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0030",
+      "title": "GLOBALTECHNOLOGIESLTD_06_08_2020-EX-10.16-CONSULTING AGREEMENT",
+      "bytes": 20805,
+      "characters": 20805,
+      "sha256": "5e1d16a85e1845db35b8b58dc713cbdba7a4cfd4b04d2391a2052e993edc035b",
+      "path": "contracts/cuad-0030.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0031",
+      "title": "PfHospitalityGroupInc_20150923_10-12G_EX-10.1_9266710_EX-10.1_Franchise Agreement1",
+      "bytes": 152654,
+      "characters": 152649,
+      "sha256": "3d9aa8e816a1271c5169e51a03dd88439b1278c21ce57cb28b786e22335108e4",
+      "path": "contracts/cuad-0031.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0032",
+      "title": "CORIOINC_07_20_2000-EX-10.5-LICENSE AND HOSTING AGREEMENT",
+      "bytes": 62324,
+      "characters": 62324,
+      "sha256": "01ce3afc80c5e4c08465c0f361e4c19bf2989d4e9657091af2cb32ecd9aea4c0",
+      "path": "contracts/cuad-0032.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0033",
+      "title": "TUNIUCORP_03_06_2014-EX-10-COOPERATION AGREEMENT",
+      "bytes": 17917,
+      "characters": 17917,
+      "sha256": "de64f561a87663b8a6fb9d4be477fd0c0eba01695499870e754f108474440e8d",
+      "path": "contracts/cuad-0033.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0034",
+      "title": "CYBERIANOUTPOSTINC_07_09_1998-EX-10.13-PROMOTION AGREEMENT",
+      "bytes": 25288,
+      "characters": 25288,
+      "sha256": "a3530d141fa1b32e5ea38c78611921eac7ed5af9051fad14ec87e630beb338d6",
+      "path": "contracts/cuad-0034.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0035",
+      "title": "SENMIAOTECHNOLOGYLTD_02_19_2019-EX-10.5-Collaboration Agreement",
+      "bytes": 73926,
+      "characters": 73890,
+      "sha256": "8da2c49973d8fb73e5107a17b76c10c7cbf38fdb97b6235e9ab77446c9c8de0a",
+      "path": "contracts/cuad-0035.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0036",
+      "title": "HealthcareIntegratedTechnologiesInc_20190812_8-K_EX-10.1_11776966_EX-10.1_Reseller Agreement",
+      "bytes": 22294,
+      "characters": 22288,
+      "sha256": "d172327b68fd725ed5c08ba20640023bb56b6e0904d75c65d53bb4acc97092d8",
+      "path": "contracts/cuad-0036.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0037",
+      "title": "LOYALTYPOINTINC_11_16_2004-EX-10.2-RESELLER AGREEMENT",
+      "bytes": 117478,
+      "characters": 117478,
+      "sha256": "290ce4508e7d680d1a8422c7149b8b928c6b5121a9b7e8df711ffc2c78804158",
+      "path": "contracts/cuad-0037.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0038",
+      "title": "BNCMORTGAGEINC_05_17_1999-EX-10.4-LICENSING AND WEB SITE HOSTING AGREEMENT",
+      "bytes": 32680,
+      "characters": 32680,
+      "sha256": "dd81dd4162ec1cdc868071ccd0ccf214d68e24d35a5ff5e3a703f324dd47f4b8",
+      "path": "contracts/cuad-0038.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0039",
+      "title": "ENERGOUSCORP_03_16_2017-EX-10.24-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 81927,
+      "characters": 81926,
+      "sha256": "d2dcc7fa33b3143ae561025ba2e907e4c3d36a7ee3782f8b3d35744c7642a0f9",
+      "path": "contracts/cuad-0039.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0040",
+      "title": "CytodynInc_20200109_10-Q_EX-10.5_11941634_EX-10.5_License Agreement",
+      "bytes": 159495,
+      "characters": 159488,
+      "sha256": "b0260f5f7048eabdee209987eb7a20c10aaf0a4b9503552e7c1bad2d7d784c3b",
+      "path": "contracts/cuad-0040.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0041",
+      "title": "MSCIINC_02_28_2008-EX-10.10-",
+      "bytes": 11770,
+      "characters": 11770,
+      "sha256": "f9315155cae492ba772b8a5f69d8fcefbe1f70d0358eb402fd67a7dff4b3022e",
+      "path": "contracts/cuad-0041.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0042",
+      "title": "NICELTD_06_26_2003-EX-4.5-OUTSOURCING AGREEMENT",
+      "bytes": 148163,
+      "characters": 148163,
+      "sha256": "4dd3c78211abb8cbe0200daddaca6a1cf86ae1227766d9bcbc3e8fd1fd642870",
+      "path": "contracts/cuad-0042.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0043",
+      "title": "ImpresseCorp_20000322_S-1A_EX-10.11_5199234_EX-10.11_Co-Branding Agreement",
+      "bytes": 47639,
+      "characters": 47639,
+      "sha256": "4186455103fb0bf05e3fcbaba1731444282aacc95f3fdde33544e613c0997b9b",
+      "path": "contracts/cuad-0043.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0044",
+      "title": "AlliedEsportsEntertainmentInc_20190815_8-K_EX-10.19_11788293_EX-10.19_Content License Agreement",
+      "bytes": 35525,
+      "characters": 35504,
+      "sha256": "82411b6956e9a2144f8a1440891954249156112d44057c01f778ae577ab864a9",
+      "path": "contracts/cuad-0044.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0045",
+      "title": "CHERRYHILLMORTGAGEINVESTMENTCORP_09_26_2013-EX-10.1-Strategic Alliance Agreement",
+      "bytes": 27744,
+      "characters": 27741,
+      "sha256": "2528d4f273fad72ea608329997b95e96626632b3936a93a32dd0bbad5db970cd",
+      "path": "contracts/cuad-0045.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0046",
+      "title": "CreditcardscomInc_20070810_S-1_EX-10.33_362297_EX-10.33_Affiliate Agreement",
+      "bytes": 28984,
+      "characters": 28804,
+      "sha256": "29b719c456250aea65501b771c0dc859094c9a5d5b074a6af4fe4254bd5c4384",
+      "path": "contracts/cuad-0046.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0047",
+      "title": "GALACTICOMMTECHNOLOGIESINC_11_07_1997-EX-10.46-WEB HOSTING AGREEMENT",
+      "bytes": 1660,
+      "characters": 1660,
+      "sha256": "c7e0ec3bad78c69311c6a44d7df972672bf2267fcb40e31a915b7dff639370db",
+      "path": "contracts/cuad-0047.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0048",
+      "title": "Zounds Hearing, Inc. - MANUFACTURING DESIGN MARKETING AGREEMENT",
+      "bytes": 47001,
+      "characters": 47001,
+      "sha256": "f937d9d8473ea43cf76f0826065fd6af38b08c2ccb46792bcf65de1652719485",
+      "path": "contracts/cuad-0048.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0049",
+      "title": "CUROGROUPHOLDINGSCORP_05_04_2020-EX-10.3-SERVICING AGREEMENT",
+      "bytes": 36602,
+      "characters": 36602,
+      "sha256": "d4471281379b6b7710b069e1a4d46a9978e9912bc1d216c34ab6f89c1f03894e",
+      "path": "contracts/cuad-0049.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0050",
+      "title": "SouthernStarEnergyInc_20051202_SB-2A_EX-9_801890_EX-9_Affiliate Agreement",
+      "bytes": 22744,
+      "characters": 22721,
+      "sha256": "bcfdbdeb43d354d56b4c401db1f80fdd5da4304ec1dc77c3de14fb9c841350fb",
+      "path": "contracts/cuad-0050.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0051",
+      "title": "ConformisInc_20191101_10-Q_EX-10.6_11861402_EX-10.6_Development Agreement",
+      "bytes": 63218,
+      "characters": 63217,
+      "sha256": "e5e4c32e2b01ec4d236572293a310d2cb96743d3e13f652cfe8c2d42df251844",
+      "path": "contracts/cuad-0051.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0052",
+      "title": "Principal Life Insurance Company - Broker Dealer Marketing and Servicing Agreement",
+      "bytes": 29599,
+      "characters": 29599,
+      "sha256": "0e45ae3d6208263ebad1e1369c9e214dbd76e2d662800b34a3c63efcc98ca4c6",
+      "path": "contracts/cuad-0052.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0053",
+      "title": "LegacyEducationAllianceInc_20200330_10-K_EX-10.18_12090678_EX-10.18_Development Agreement",
+      "bytes": 46358,
+      "characters": 46255,
+      "sha256": "b7a8cea1bb15131ce75906b63a977426b7aef9300215424caf5c25bb8c92d337",
+      "path": "contracts/cuad-0053.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0054",
+      "title": "VerizonAbsLlc_20200123_8-K_EX-10.4_11952335_EX-10.4_Service Agreement",
+      "bytes": 289660,
+      "characters": 289615,
+      "sha256": "6ed1f77b684b1c6ebbd6fd986c7717015b4ee44b302173ab69c329e272560c47",
+      "path": "contracts/cuad-0054.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0055",
+      "title": "VERICELCORP_08_06_2019-EX-10.10-SUPPLY AGREEMENT",
+      "bytes": 102024,
+      "characters": 102006,
+      "sha256": "3301e94eda679d32b0a586b4b8d4ab8fb4e26b83dbc102caeee0199da87da802",
+      "path": "contracts/cuad-0055.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0056",
+      "title": "WPPPLC_04_30_2020-EX-4.28-SERVICE AGREEMENT",
+      "bytes": 65555,
+      "characters": 65547,
+      "sha256": "7a5fbb1185c660bdcdcbdb340f92b50048a49f708ba3ab1051b40c700c0a00a6",
+      "path": "contracts/cuad-0056.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0057",
+      "title": "WASTE2ENERGYHOLDINGS,INC_06_03_2010-EX-10.2-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 40442,
+      "characters": 40442,
+      "sha256": "bb4490eb87a64beac2445b430f94a57ba78e6ab397dd7535ad29ba3b7c2f3303",
+      "path": "contracts/cuad-0057.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0058",
+      "title": "WORLDWIDESTRATEGIESINC_11_02_2005-EX-10-RESELLER AGREEMENT",
+      "bytes": 84618,
+      "characters": 84618,
+      "sha256": "70266f75d5c1e1e2d99f5d3c3035c68d20d81b320dca675616267a4ee793f8eb",
+      "path": "contracts/cuad-0058.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0059",
+      "title": "FEDERATEDGOVERNMENTINCOMESECURITIESINC_04_28_2020-EX-99.SERV AGREE-SERVICES AGREEMENT_SECONDAMENDMENT",
+      "bytes": 5466,
+      "characters": 5466,
+      "sha256": "6947af5e0cc6772b8299809ec4362369562c778568d2e79fce38dae5e398bfcb",
+      "path": "contracts/cuad-0059.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0060",
+      "title": "AzulSa_20170303_F-1A_EX-10.3_9943903_EX-10.3_Maintenance Agreement2",
+      "bytes": 16891,
+      "characters": 16870,
+      "sha256": "2d98d5344e92fe02c4726bc483ff9f00facbfa8161d3877cd522d8f6ac4ac2a1",
+      "path": "contracts/cuad-0060.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0061",
+      "title": "PelicanDeliversInc_20200211_S-1_EX-10.3_11975895_EX-10.3_Development Agreement1",
+      "bytes": 16693,
+      "characters": 16590,
+      "sha256": "21e9032b30a1e12d7f39af1f855c90633884e5d9026b1c2b3e84110fcc4bf017",
+      "path": "contracts/cuad-0061.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0062",
+      "title": "ORBSATCORP_08_17_2007-EX-7.3-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 18445,
+      "characters": 18445,
+      "sha256": "bd707d51c1651939248b235e4a8903ad603134d00ab10d4dd8caf5473c81c6f3",
+      "path": "contracts/cuad-0062.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0063",
+      "title": "DRAGONSYSTEMSINC_01_08_1999-EX-10.17-OUTSOURCING AGREEMENT",
+      "bytes": 8599,
+      "characters": 8599,
+      "sha256": "8d8020e5c0bcaafac609fe53a2e7edbe2ecbf15541dc846ed25ac63ec822b37e",
+      "path": "contracts/cuad-0063.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0064",
+      "title": "SEPARATEACCOUNTIIOFAGL_05_02_2011-EX-99.(J)(4)-UNCONDITIONAL CAPITAL MAINTENANCE AGREEMENT",
+      "bytes": 20121,
+      "characters": 20121,
+      "sha256": "c56352505b46b56b03def5a240fa4bd87d76565de9fee00b59136e6be991176b",
+      "path": "contracts/cuad-0064.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0065",
+      "title": "GridironBionutrientsInc_20171206_8-K_EX-10.2_10972556_EX-10.2_Endorsement Agreement",
+      "bytes": 3474,
+      "characters": 3456,
+      "sha256": "496339cad48b3918f42897cff2281cc85952d83f41eae5ca04e48ddf20768009",
+      "path": "contracts/cuad-0065.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0066",
+      "title": "ImperialGardenResortInc_20161028_DRS (on F-1)_EX-10.13_9963189_EX-10.13_Outsourcing Agreement",
+      "bytes": 12260,
+      "characters": 12260,
+      "sha256": "bfb7b9610645dde446570af3952ba1edc88638cf64ac8091acab8698dabc63e1",
+      "path": "contracts/cuad-0066.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0067",
+      "title": "VIRGINGALACTICHOLDINGS,INC_04_08_2020-EX-99.1-JOINT FILING STATEMENT",
+      "bytes": 1194,
+      "characters": 1194,
+      "sha256": "defdba221e3fc96502749d17e56febe501914a1e000154dbe11167f1c13d14e5",
+      "path": "contracts/cuad-0067.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0068",
+      "title": "FuseMedicalInc_20190321_10-K_EX-10.43_11575454_EX-10.43_Distributor Agreement",
+      "bytes": 32502,
+      "characters": 32502,
+      "sha256": "2e36520ee703d5a5479fb7ce186228db4b29b01e4cdce386830c7705ba412cc4",
+      "path": "contracts/cuad-0068.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0069",
+      "title": "ASPIRITYHOLDINGSLLC_05_07_2012-EX-10.6-OUTSOURCING AGREEMENT",
+      "bytes": 67122,
+      "characters": 67111,
+      "sha256": "4539ca9a496fc80305dc42d2f9ebcaa8a8e46a4fd406482846b69812c586b764",
+      "path": "contracts/cuad-0069.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0070",
+      "title": "OASYSMOBILE,INC_07_05_2001-EX-10.17-OUTSOURCING AGREEMENT",
+      "bytes": 58860,
+      "characters": 58860,
+      "sha256": "7c6e1cf6dd98979a0f32ffca628d15a3b51e560ed675bb7ae051a088c8a89fc7",
+      "path": "contracts/cuad-0070.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0071",
+      "title": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT",
+      "bytes": 49925,
+      "characters": 49915,
+      "sha256": "f4aa702f1099605458b396fcb0faf9a85924bb550e59de31b8b1341a255439f7",
+      "path": "contracts/cuad-0071.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0072",
+      "title": "UpjohnInc_20200121_10-12G_EX-2.6_11948692_EX-2.6_Manufacturing Agreement_ Supply Agreement",
+      "bytes": 225639,
+      "characters": 225094,
+      "sha256": "d89ff42b33c8d92c367ed43c67b9213fbc4ac2df1a489a76cc60992e6ee1b9b1",
+      "path": "contracts/cuad-0072.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0073",
+      "title": "Antares Pharma, Inc. - Manufacturing Agreement",
+      "bytes": 106794,
+      "characters": 106786,
+      "sha256": "28f64048e5b3ba33f6db9ec7c0423394ba14f001c43d4c5349a6505808452f75",
+      "path": "contracts/cuad-0073.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0074",
+      "title": "RareElementResourcesLtd_20171019_SC 13D_EX-99.4_10897534_EX-99.4_Intellectual Property Agreement",
+      "bytes": 34462,
+      "characters": 34461,
+      "sha256": "c8366d11f3a251c8b0341a4c703e8285cef642b2a11a443870ef3cf6d9fa947b",
+      "path": "contracts/cuad-0074.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0075",
+      "title": "VARIABLESEPARATEACCOUNT_04_30_2014-EX-13.C-UNCONDITIONAL CAPITAL MAINTENANCE AGREEMENT",
+      "bytes": 15202,
+      "characters": 15202,
+      "sha256": "4ec6ade43e623807e2d21951b938a1f46b975b881b4fdee404782d678d3ed5b2",
+      "path": "contracts/cuad-0075.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0076",
+      "title": "ABILITYINC_06_15_2020-EX-4.25-SERVICES AGREEMENT",
+      "bytes": 26346,
+      "characters": 26346,
+      "sha256": "e335c24cfd77dd661c0c18aa9277ea3f526ac9540b7d3af96ef0deaa0fd2938a",
+      "path": "contracts/cuad-0076.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0077",
+      "title": "ELECTRAMECCANICA VEHICLES CORP. - Manufacturing Agreement",
+      "bytes": 47935,
+      "characters": 47889,
+      "sha256": "edaae9dbe93477b73c5bf8edbe2fe2f7775af5198cad21d7c9ed5b971b561f4a",
+      "path": "contracts/cuad-0077.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0078",
+      "title": "GopageCorp_20140221_10-K_EX-10.1_8432966_EX-10.1_Content License Agreement",
+      "bytes": 39625,
+      "characters": 39622,
+      "sha256": "9915baf3632fcf879008f7240a9f8047f8da3a88d2fd9808a0f492004ac009fa",
+      "path": "contracts/cuad-0078.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0079",
+      "title": "BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT",
+      "bytes": 57041,
+      "characters": 57041,
+      "sha256": "f8438559b293e8223834f2d6d9d3fd9d7e74c2356132851878b970d840db8d29",
+      "path": "contracts/cuad-0079.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0080",
+      "title": "FreezeTagInc_20180411_8-K_EX-10.1_11139603_EX-10.1_Sponsorship Agreement",
+      "bytes": 26780,
+      "characters": 26753,
+      "sha256": "744a41987516df4d6cee1e635626da0a8306095b174a4f44eaf4519e89e8f6fb",
+      "path": "contracts/cuad-0080.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0081",
+      "title": "TELEGLOBEINTERNATIONALHOLDINGSLTD_03_29_2004-EX-10.10-CONSTRUCTION AND MAINTENANCE AGREEMENT",
+      "bytes": 94266,
+      "characters": 94266,
+      "sha256": "b86a8e64c553d03a982cc5f149435f29181e309db400ff250ed850599a01b225",
+      "path": "contracts/cuad-0081.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0082",
+      "title": "WEBHELPCOMINC_03_22_2000-EX-10.8-HOSTING AGREEMENT",
+      "bytes": 19257,
+      "characters": 19257,
+      "sha256": "2d4e106b0139dbc3fa27478071905b7edae86ff3d0277c29ebb770a904216e10",
+      "path": "contracts/cuad-0082.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0083",
+      "title": "INTERNATIONALFASTFOODCORP_04_04_1997-EX-99-FRANCHISE AGREEMENT",
+      "bytes": 116873,
+      "characters": 116873,
+      "sha256": "0ef1b1b1d8a08f46d1c053f1faa1daaf0a1cf5d7c259c344faa2d46a3c80982a",
+      "path": "contracts/cuad-0083.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0084",
+      "title": "BIOCEPTINC_08_19_2013-EX-10-COLLABORATION AGREEMENT",
+      "bytes": 79084,
+      "characters": 79052,
+      "sha256": "bb2ec4b603749b0897a4f22e273d94bdce7ba9b8bdcaf852a4ccb32b91d9f894",
+      "path": "contracts/cuad-0084.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0085",
+      "title": "PACIFICSYSTEMSCONTROLTECHNOLOGYINC_08_24_2000-EX-10.53-SPONSORSHIP AGREEMENT",
+      "bytes": 4066,
+      "characters": 4066,
+      "sha256": "5737af7072e7d2a4600667b0ba69e0068ec69632deaf849d7eece7bfb9fedb2c",
+      "path": "contracts/cuad-0085.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0086",
+      "title": "NANOPHASETECHNOLOGIESCORP_11_01_2005-EX-99.1-DISTRIBUTOR AGREEMENT",
+      "bytes": 48643,
+      "characters": 48612,
+      "sha256": "15693ac6308963aaf092e3eae9d260fa6be9e455443f20b72697e699354b670b",
+      "path": "contracts/cuad-0086.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0087",
+      "title": "AzulSa_20170303_F-1A_EX-10.3_9943903_EX-10.3_Maintenance Agreement1",
+      "bytes": 233309,
+      "characters": 233248,
+      "sha256": "ae387a12fe0b3198004076f49e1991600b5993c656a4de3866786d3f7ec2a1df",
+      "path": "contracts/cuad-0087.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0088",
+      "title": "PelicanDeliversInc_20200211_S-1_EX-10.3_11975895_EX-10.3_Development Agreement2",
+      "bytes": 32094,
+      "characters": 32093,
+      "sha256": "277cb9d06eed8f04cb35b2aed3b4eb280783165422d41cd083a27a884737630d",
+      "path": "contracts/cuad-0088.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0089",
+      "title": "NETGEAR,INC_04_21_2003-EX-10.16-AMENDMENT TO THE DISTRIBUTOR AGREEMENT BETWEEN INGRAM MICRO AND NETGEAR",
+      "bytes": 8113,
+      "characters": 8113,
+      "sha256": "a26d0a46ae672963f96e729745f458b9684cbee0ac2b723045a6fe227cbd1fd7",
+      "path": "contracts/cuad-0089.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0090",
+      "title": "NEONSYSTEMSINC_03_01_1999-EX-10.5-DISTRIBUTOR AGREEMENT_Amendment",
+      "bytes": 21994,
+      "characters": 21994,
+      "sha256": "9efa34e33b135d9bdc6e0fa949b22953b5a1675efa39c7222cf7d2ddc2251ebf",
+      "path": "contracts/cuad-0090.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0091",
+      "title": "Columbia Laboratories, (Bermuda) Ltd. - AMEND NO. 2 TO MANUFACTURING AND SUPPLY AGREEMENT",
+      "bytes": 45847,
+      "characters": 45846,
+      "sha256": "17bea1f531d30d456d2df5787dfdf6a44723e822e397b5ad841c4f39cdfca4ef",
+      "path": "contracts/cuad-0091.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0092",
+      "title": "SPARKLINGSPRINGWATERHOLDINGSLTD_07_03_2002-EX-10.13-SOFTWARE LICENSE AND MAINTENANCE AGREEMENT",
+      "bytes": 27714,
+      "characters": 27714,
+      "sha256": "0c1d630fd900445bbf248da583ad3dd0c5b051a7f96e574c13839efdd7383490",
+      "path": "contracts/cuad-0092.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0093",
+      "title": "N2KINC_10_16_1997-EX-10.16-SPONSORSHIP AGREEMENT",
+      "bytes": 49518,
+      "characters": 49518,
+      "sha256": "3d51fb71a4d06f8185ebfdb7c3feae4fa2935d9fc75951cdfc4aaff4b5733b07",
+      "path": "contracts/cuad-0093.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0094",
+      "title": "NUVEEN - REMARKETING AGREEMENT",
+      "bytes": 70827,
+      "characters": 70631,
+      "sha256": "2b041177437ff1bb2bf8d6dfe4fb4cdb65ad2315e2b86555e701515a67fc8b27",
+      "path": "contracts/cuad-0094.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0095",
+      "title": "ArconicRolledProductsCorp_20191217_10-12B_EX-2.7_11923804_EX-2.7_Trademark License Agreement",
+      "bytes": 18069,
+      "characters": 18069,
+      "sha256": "bc3db8c11b06d0847c57051aaf75c493dda351e87a98fd5fcfe3fca7c751a0fa",
+      "path": "contracts/cuad-0095.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0096",
+      "title": "SECURIANFUNDSTRUST_05_01_2012-EX-99.28.H.9-NET INVESTMENT INCOME MAINTENANCE AGREEMENT",
+      "bytes": 9700,
+      "characters": 9700,
+      "sha256": "13fb5e17815c0a1a770eade8af0f4395f095599366c3ee40319cca9e982d21ad",
+      "path": "contracts/cuad-0096.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0097",
+      "title": "WELLSFARGOMORTGAGEBACKEDSECURITIES2006-6TRUST_05_11_2006-EX-10.3-Yield Maintenance Agreement",
+      "bytes": 37683,
+      "characters": 37683,
+      "sha256": "1914db4c36292a45df26e406dce19767f783b0da0ab1de40d0bc1cb2ecad8bc7",
+      "path": "contracts/cuad-0097.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0098",
+      "title": "REWALKROBOTICSLTD_07_10_2014-EX-10.2-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 14979,
+      "characters": 14979,
+      "sha256": "ab268b758dc8d77ce5d9e6fa71a399b21bc8c32a4b37a8e60d804ea50f5a34c9",
+      "path": "contracts/cuad-0098.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0099",
+      "title": "PenntexMidstreamPartnersLp_20150416_S-1A_EX-10.4_9042833_EX-10.4_Transportation Agreement",
+      "bytes": 52022,
+      "characters": 52008,
+      "sha256": "d06674177f876cf4fc26cc68646a264f2462529ab949abdbe96372468fa7a6de",
+      "path": "contracts/cuad-0099.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0100",
+      "title": "FerroglobePlc_20150624_F-4A_EX-10.20_9154746_EX-10.20_Outsourcing Agreement",
+      "bytes": 30332,
+      "characters": 30309,
+      "sha256": "64d989b896faeaaf5faa295dff3acce9ce13bf3b8a223b39ec2da903240b25da",
+      "path": "contracts/cuad-0100.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0101",
+      "title": "TodosMedicalLtd_20190328_20-F_EX-4.10_11587157_EX-4.10_Marketing Agreement_ Reseller Agreement",
+      "bytes": 32321,
+      "characters": 32321,
+      "sha256": "3bcd68919d852aef771a652fb959f6774a84cef37a1438c685b8e3cd96b486b9",
+      "path": "contracts/cuad-0101.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0102",
+      "title": "PrecheckHealthServicesInc_20200320_8-K_EX-99.2_12070169_EX-99.2_Distributor Agreement",
+      "bytes": 6323,
+      "characters": 6320,
+      "sha256": "beee329d09f6bd58196158ac36e7a86ad2f6a85be51594d77cf766e979c214fc",
+      "path": "contracts/cuad-0102.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0103",
+      "title": "INKTOMICORP_06_08_1998-EX-10.14-SOFTWARE HOSTING AGREEMENT",
+      "bytes": 70664,
+      "characters": 70664,
+      "sha256": "820cfe8bb69728583765fbaeb586194a485ebebe5375d5a166812a6938e41d0f",
+      "path": "contracts/cuad-0103.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0104",
+      "title": "OAKTREECAPITALGROUP,LLC_03_02_2020-EX-10.8-Services Agreement",
+      "bytes": 20133,
+      "characters": 20133,
+      "sha256": "ea0ea979bf0f07976487d807d70d719c12c2054bd87e8ce6e3d3cade710e253c",
+      "path": "contracts/cuad-0104.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0105",
+      "title": "BANGIINC_05_25_2005-EX-10-Premium Managed Hosting Agreement",
+      "bytes": 2010,
+      "characters": 2010,
+      "sha256": "b4b49f7ad4add8c7688611909be42b428ebaa305d9bb5b3a425313a1d318fd10",
+      "path": "contracts/cuad-0105.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0106",
+      "title": "AMERICANPHYSICIANSCAPITALINC_03_31_2003-EX-10.26-AGENCY AGREEMENT",
+      "bytes": 23999,
+      "characters": 23999,
+      "sha256": "ed3202c56ebdb4ab0c8d408adcab35f678a063ca30b100329f47aacc2ba94020",
+      "path": "contracts/cuad-0106.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0107",
+      "title": "GULFSOUTHMEDICALSUPPLYINC_12_24_1997-EX-4-AFFILIATE AGREEMENT",
+      "bytes": 27015,
+      "characters": 27015,
+      "sha256": "215905af08888e2ce4148306ff8e829af51cd17a34c888cbe26037bb59e1580e",
+      "path": "contracts/cuad-0107.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0108",
+      "title": "BELLRINGBRANDS,INC_02_07_2020-EX-10.18-MASTER SUPPLY AGREEMENT",
+      "bytes": 37887,
+      "characters": 37876,
+      "sha256": "4db35cae428d32e800d78491fbda9306df3b93ae8bb5c4c48a899e4943eb21d8",
+      "path": "contracts/cuad-0108.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0109",
+      "title": "AimmuneTherapeuticsInc_20200205_8-K_EX-10.3_11967170_EX-10.3_Development Agreement",
+      "bytes": 168025,
+      "characters": 167973,
+      "sha256": "3060a01d1ea3766e43cfc623f3aa3d5563bccac7c2364fffb84cbd7d49dee1ad",
+      "path": "contracts/cuad-0109.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0110",
+      "title": "HEALTHGATEDATACORP_11_24_1999-EX-10.1-HOSTING AND MANAGEMENT AGREEMENT (1)",
+      "bytes": 148691,
+      "characters": 148691,
+      "sha256": "8180c54f224250c10362b5d159032157a5d30a1821b0897f392c971a8764925a",
+      "path": "contracts/cuad-0110.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0111",
+      "title": "INTELLIGENTHIGHWAYSOLUTIONS,INC_01_18_2018-EX-10.1-Strategic Alliance Agreement",
+      "bytes": 8288,
+      "characters": 8288,
+      "sha256": "b3a2f969a3debf4ba466a2cde59c0f21a744a41f95e4715cec354084dd43164b",
+      "path": "contracts/cuad-0111.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0112",
+      "title": "ATMOSENERGYCORP_11_22_2002-EX-10.17-TRANSPORTATION SERVICE AGREEMENT",
+      "bytes": 24151,
+      "characters": 24151,
+      "sha256": "f8634e3d4296d3254e8589ae7ae4b5fc2b887fb56ac1b288cc8125d855c02601",
+      "path": "contracts/cuad-0112.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0113",
+      "title": "PacificapEntertainmentHoldingsInc_20051115_8-KA_EX-1.01_4300894_EX-1.01_Content License Agreement",
+      "bytes": 18142,
+      "characters": 18138,
+      "sha256": "167674d1478745bdbd7be6c3195f3e0eb3e7d741dfa6ad27c56ab4152f2a9a62",
+      "path": "contracts/cuad-0113.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0114",
+      "title": "ReedsInc_20191113_10-Q_EX-10.4_11888303_EX-10.4_Development Agreement",
+      "bytes": 28343,
+      "characters": 28331,
+      "sha256": "85f5180bdbec81e0765720a6c2bd0b83587330775e11e65d625d548e51bcf6c2",
+      "path": "contracts/cuad-0114.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0115",
+      "title": "RgcResourcesInc_20151216_8-K_EX-10.3_9372751_EX-10.3_Franchise Agreement",
+      "bytes": 5171,
+      "characters": 5171,
+      "sha256": "aa88c412a408f6d57bfabda8476b1eb04f5fab66d0c38beea7d1aba0adb54e00",
+      "path": "contracts/cuad-0115.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0116",
+      "title": "BELLICUMPHARMACEUTICALS,INC_05_07_2019-EX-10.1-Supply Agreement",
+      "bytes": 188693,
+      "characters": 188674,
+      "sha256": "bc45f0f30bd60138b5bc89c935b96f23707000482795a0939524c54517daca38",
+      "path": "contracts/cuad-0116.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0117",
+      "title": "MARTINMIDSTREAMPARTNERSLP_01_23_2004-EX-10.3-TRANSPORTATION SERVICES AGREEMENT",
+      "bytes": 13995,
+      "characters": 13995,
+      "sha256": "db9503241d99bb769627041be15e098f5f21b7fc0a14140e015f3bd0ddd007f4",
+      "path": "contracts/cuad-0117.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0118",
+      "title": "RUBIOSRESTAURANTSINC_03_31_2008-EX-10.75-SPONSORSHIP AGREEMENT",
+      "bytes": 37103,
+      "characters": 37103,
+      "sha256": "4c1e19a2f5bf0491cfb0bd243d5a355827686935a049ba9cdf8e0d0ccbfb88b4",
+      "path": "contracts/cuad-0118.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0119",
+      "title": "CardlyticsInc_20180112_S-1_EX-10.16_11002987_EX-10.16_Maintenance Agreement2",
+      "bytes": 2819,
+      "characters": 2819,
+      "sha256": "e6b28bd103980fa0e8d72c358702ac528a94cdd404a6112c32a083b182d2863c",
+      "path": "contracts/cuad-0119.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0120",
+      "title": "XLITECHNOLOGIES,INC_12_11_2015-EX-10.1-Sponsorship Agreement",
+      "bytes": 18240,
+      "characters": 18240,
+      "sha256": "8bfbb8ed601688097ffffff9dc9c11bb709e677d2a9fd00ab6f5b5c5daf6f6f5",
+      "path": "contracts/cuad-0120.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0121",
+      "title": "ScansourceInc_20190822_10-K_EX-10.38_11793958_EX-10.38_Distributor Agreement2",
+      "bytes": 13332,
+      "characters": 13330,
+      "sha256": "c08a73bd964c8116ae2b4badae2fb1faa040b362f479830e2edd73294de50399",
+      "path": "contracts/cuad-0121.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0122",
+      "title": "VERTEXENERGYINC_08_14_2014-EX-10.24-OPERATION AND MAINTENANCE AGREEMENT",
+      "bytes": 57259,
+      "characters": 57254,
+      "sha256": "4b2cb71fad30b513054df0fcbe35d333dfb5b0b2267ff0733589427ad5e7327c",
+      "path": "contracts/cuad-0122.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0123",
+      "title": "NYLIACVARIABLEANNUITYSEPARATEACCOUNTIII_04_10_2020-EX-99.8.KK-SERVICE AGREEMENT",
+      "bytes": 6840,
+      "characters": 6840,
+      "sha256": "dc38b41d2f80af947fb0a6274f2ea46f05d1f8b5e36db81640b6d0a85d59d810",
+      "path": "contracts/cuad-0123.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0124",
+      "title": "STWRESOURCESHOLDINGCORP_08_06_2014-EX-10.1-COOPERATION AGREEMENT",
+      "bytes": 27725,
+      "characters": 27721,
+      "sha256": "58356a12396d1fac4b19989fe1b0a9f21f8d1a3243f406fe782d154599d63e64",
+      "path": "contracts/cuad-0124.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0125",
+      "title": "AlliedEsportsEntertainmentInc_20190815_8-K_EX-10.34_11788308_EX-10.34_Sponsorship Agreement",
+      "bytes": 37799,
+      "characters": 37796,
+      "sha256": "e9a7e542a3a9941c3879ac170c7ade20c2c3bf456c8b5c9a4554d622f199e271",
+      "path": "contracts/cuad-0125.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0126",
+      "title": "SLOVAKWIRELESSFINANCECOBV_03_28_2001-EX-4.(B)(II).3-Maintenance and support contract for SICAP(R) modules",
+      "bytes": 33577,
+      "characters": 33577,
+      "sha256": "a02a8b8ce5b8ecf0e5f8cdb5ed8cbdd475452c087348f1d34fa54f97eec54f5a",
+      "path": "contracts/cuad-0126.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0127",
+      "title": "ANIXABIOSCIENCESINC_06_09_2020-EX-10.1-COLLABORATION AGREEMENT",
+      "bytes": 40522,
+      "characters": 40519,
+      "sha256": "b700fd09580297d2160086acfea6d5dd834598018ab652f181d972be510b5549",
+      "path": "contracts/cuad-0127.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0128",
+      "title": "ELFBEAUTY,INC_07_02_2020-EX-10.1-COOPERATION AGREEMENT",
+      "bytes": 45484,
+      "characters": 45484,
+      "sha256": "6eaa995343a4b9d042f8036816f62eae22f7392d6843752f14052d8381cbb059",
+      "path": "contracts/cuad-0128.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0129",
+      "title": "HarpoonTherapeuticsInc_20200312_10-K_EX-10.18_12051356_EX-10.18_Development Agreement",
+      "bytes": 249562,
+      "characters": 249551,
+      "sha256": "bb355fb1c969bf79632147aa2235f3b539ed0854ed7dc63aebefc0465e633685",
+      "path": "contracts/cuad-0129.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0130",
+      "title": "DigitalCinemaDestinationsCorp_20111220_S-1_EX-10.10_7346719_EX-10.10_Affiliate Agreement",
+      "bytes": 109015,
+      "characters": 109014,
+      "sha256": "e7af6c31ad15625052cf5a166db30aa312faac61927e34cc9675adf418e61076",
+      "path": "contracts/cuad-0130.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0131",
+      "title": "VERTICALNETINC_04_01_2002-EX-10.19-MAINTENANCE AND SUPPORT AGREEMENT",
+      "bytes": 78033,
+      "characters": 78033,
+      "sha256": "07ea8cb475970f1bf20abd998524a9e0c4a5b808b7699fd71050287f4863e97f",
+      "path": "contracts/cuad-0131.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0132",
+      "title": "TcPipelinesLp_20160226_10-K_EX-99.12_9454048_EX-99.12_Transportation Agreement",
+      "bytes": 6088,
+      "characters": 6088,
+      "sha256": "39457f659c35d463dcf94e4be347bc6772ba5627ba3d48f2968d82e39393f865",
+      "path": "contracts/cuad-0132.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0133",
+      "title": "HUBEIMINKANGPHARMACEUTICALLTD_09_19_2006-EX-10.1-OUTSOURCING AGREEMENT",
+      "bytes": 11322,
+      "characters": 11322,
+      "sha256": "a2b8a190b52643fe2dbfa748acca9ef8d40b455779627306680bd657cb963a98",
+      "path": "contracts/cuad-0133.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0134",
+      "title": "CardlyticsInc_20180112_S-1_EX-10.16_11002987_EX-10.16_Maintenance Agreement3",
+      "bytes": 1707,
+      "characters": 1707,
+      "sha256": "9a5b359346f414dff69f8436603e30a6e9e3bb3671f8370dffaff3e6990b5256",
+      "path": "contracts/cuad-0134.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0135",
+      "title": "ACCURAYINC_09_01_2010-EX-10.31-DISTRIBUTOR AGREEMENT",
+      "bytes": 89564,
+      "characters": 89484,
+      "sha256": "14932c769a7ac61cb1a4d639aa2bdc3c85a88037f54b478d117d62cbc49e8321",
+      "path": "contracts/cuad-0135.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0136",
+      "title": "MIDDLEBROOKPHARMACEUTICALS,INC_03_18_2010-EX-10.1-PROMOTION AGREEMENT",
+      "bytes": 57747,
+      "characters": 57646,
+      "sha256": "de71e7a6b6c68d204ab3e14d07000b9ed07ab53117d4467baf9609f794afa1e0",
+      "path": "contracts/cuad-0136.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0137",
+      "title": "AIRSPANNETWORKSINC_04_11_2000-EX-10.5-Distributor Agreement",
+      "bytes": 70444,
+      "characters": 70444,
+      "sha256": "ef5d06f1cc291342f84bfff8a40d561cdd843a025475ec71d78ebbd5b687f0b8",
+      "path": "contracts/cuad-0137.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0138",
+      "title": "ArcGroupInc_20171211_8-K_EX-10.1_10976103_EX-10.1_Sponsorship Agreement",
+      "bytes": 16773,
+      "characters": 16773,
+      "sha256": "4f6122be05857c75d5ea3bd3be66bcceaab1a968e276330f8d7ee60e694d1fec",
+      "path": "contracts/cuad-0138.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0139",
+      "title": "AtnInternationalInc_20191108_10-Q_EX-10.1_11878541_EX-10.1_Maintenance Agreement",
+      "bytes": 228965,
+      "characters": 228943,
+      "sha256": "783d0e615db36afaba845e7b3a07b06aaf1638c3da041e10a75d6adc525f2c8e",
+      "path": "contracts/cuad-0139.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0140",
+      "title": "SightLife Surgical, Inc. - STRATEGIC SALES _ MARKETING AGREEMENT",
+      "bytes": 23896,
+      "characters": 23895,
+      "sha256": "6be62876ca079b06a38c527c35f76bc3b5a59b08bb414555433197d692bc9aa2",
+      "path": "contracts/cuad-0140.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0141",
+      "title": "InmodeLtd_20190729_F-1A_EX-10.9_11743243_EX-10.9_Manufacturing Agreement",
+      "bytes": 39592,
+      "characters": 39588,
+      "sha256": "93e278dfb01b1994b76f58b0c46d679979030e7ed3149e212ecc502b50ac7c10",
+      "path": "contracts/cuad-0141.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0142",
+      "title": "GRANTIERRAENERGYINC_05_07_2012-EX-10.6-TRANSPORTATION CONTRACT",
+      "bytes": 229725,
+      "characters": 229670,
+      "sha256": "4ec387ff502a51ad3a0768c4578497809805b32a8b23620e10c1b8347b9734ef",
+      "path": "contracts/cuad-0142.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0143",
+      "title": "VIVINT SOLAR, INC. - NON-COMPETITION AGREEMENT",
+      "bytes": 3493,
+      "characters": 3493,
+      "sha256": "fc312da6f40b38046396f30b7ed00ca644ed82d35b5dbe40bb48615e9e837270",
+      "path": "contracts/cuad-0143.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0144",
+      "title": "FUSIONPHARMACEUTICALSINC_06_05_2020-EX-10.17-Supply Agreement - FUSION",
+      "bytes": 40601,
+      "characters": 40597,
+      "sha256": "eb41a9d9a47158b95d1354454f8f7ef9405ca779e671e849d5a80f77e4f6ffcd",
+      "path": "contracts/cuad-0144.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0145",
+      "title": "CHIPMOSTECHNOLOGIESBERMUDALTD_04_18_2016-EX-4.72-Strategic Alliance Agreement",
+      "bytes": 13506,
+      "characters": 13506,
+      "sha256": "a3c62071e79c5a3c4756df742251665115f48c778c179f2628ee9f5a65a837d0",
+      "path": "contracts/cuad-0145.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0146",
+      "title": "URSCORPNEW_03_17_2014-EX-99-COOPERATION AGREEMENT",
+      "bytes": 37219,
+      "characters": 37211,
+      "sha256": "07848e3706709597a01cdad14d2ad9269a5840e7364fb8ff62dc03ba75d9203f",
+      "path": "contracts/cuad-0146.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0147",
+      "title": "GpaqAcquisitionHoldingsInc_20200123_S-4A_EX-10.6_11951677_EX-10.6_License Agreement",
+      "bytes": 45257,
+      "characters": 45234,
+      "sha256": "800df8b986eb8c9ed75feab8e09dec3371698bfc3ff9697748a9d19f8dcb1ed6",
+      "path": "contracts/cuad-0147.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0148",
+      "title": "SalesforcecomInc_20171122_10-Q_EX-10.1_10961535_EX-10.1_Reseller Agreement",
+      "bytes": 2935,
+      "characters": 2935,
+      "sha256": "8157870fe900e2e550ed1bfbdc9050a82727f3dccf5da57243a1b5149a25863d",
+      "path": "contracts/cuad-0148.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0149",
+      "title": "SLINGERBAGINC_05_27_2020-EX-10.7-CONSULTING AGREEMENT",
+      "bytes": 33439,
+      "characters": 33425,
+      "sha256": "2ab2f2c768a8cd5dab726a17b764a96b49d227350e3a534ae2a1adff914eb38a",
+      "path": "contracts/cuad-0149.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0150",
+      "title": "RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement",
+      "bytes": 122908,
+      "characters": 122688,
+      "sha256": "55591b926b7dd5047ba98179de7513692f1f57241b70e8bdcbd9fca01889b6fb",
+      "path": "contracts/cuad-0150.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0151",
+      "title": "IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT",
+      "bytes": 70625,
+      "characters": 70625,
+      "sha256": "3413f2b63169639f157ba60f663245197e24310c269c443267db6af0e4707708",
+      "path": "contracts/cuad-0151.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0152",
+      "title": "ENERGYXXILTD_05_08_2015-EX-10.13-Transportation AGREEMENT",
+      "bytes": 60983,
+      "characters": 60982,
+      "sha256": "5b46b0a384a0ae62c1e5d7ae2df35d23d8fdaed5bf34fd243e082948b680147d",
+      "path": "contracts/cuad-0152.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0153",
+      "title": "EtonPharmaceuticalsInc_20191114_10-Q_EX-10.1_11893941_EX-10.1_Development Agreement",
+      "bytes": 65652,
+      "characters": 65651,
+      "sha256": "b6332d4edff49352cf0187da49df2c5b680625b248423d4dae8c7bc603f7a358",
+      "path": "contracts/cuad-0153.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0154",
+      "title": "ScansourceInc_20190822_10-K_EX-10.38_11793958_EX-10.38_Distributor Agreement1",
+      "bytes": 84406,
+      "characters": 84384,
+      "sha256": "78d91abf7c1efc2a3a2458c5257d3c6e3fd1ec36154a3342bf253b04f5cababc",
+      "path": "contracts/cuad-0154.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0155",
+      "title": "CardlyticsInc_20180112_S-1_EX-10.16_11002987_EX-10.16_Maintenance Agreement1",
+      "bytes": 165343,
+      "characters": 165322,
+      "sha256": "34eb96a3a62e11def90f97b12aa6aedc31d5fbdc2532fdf25d8dfa009dcd0369",
+      "path": "contracts/cuad-0155.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0156",
+      "title": "NETGEAR,INC_04_21_2003-EX-10.16-DISTRIBUTOR AGREEMENT",
+      "bytes": 41501,
+      "characters": 41501,
+      "sha256": "1b4a0744754138176a7a3081a9c89a859248df2013a56f6ef13eeccbc264c9a1",
+      "path": "contracts/cuad-0156.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0157",
+      "title": "EcoScienceSolutionsInc_20171117_8-K_EX-10.1_10956472_EX-10.1_Endorsement Agreement",
+      "bytes": 18104,
+      "characters": 18104,
+      "sha256": "4294c59e488ca8db726621f1a024bfe8213ae06fa6c88226b6bcd20b23cb0ec8",
+      "path": "contracts/cuad-0157.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0158",
+      "title": "AMERICASSHOPPINGMALLINC_12_10_1999-EX-10.2-SITE DEVELOPMENT AND HOSTING AGREEMENT",
+      "bytes": 19351,
+      "characters": 19351,
+      "sha256": "800a8e3e69cecab83863c1f6ff97587419bd873245d7f98b59e460a747f03228",
+      "path": "contracts/cuad-0158.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0159",
+      "title": "DataCallTechnologies_20060918_SB-2A_EX-10.9_944510_EX-10.9_Content License Agreement",
+      "bytes": 14171,
+      "characters": 14171,
+      "sha256": "20f0f1630d8ae7ba221fbbf9d0449a593605989dfa3c779cafdb9c233bb6ebe7",
+      "path": "contracts/cuad-0159.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0160",
+      "title": "JINGWEIINTERNATIONALLTD_10_04_2007-EX-10.7-INTELLECTUAL PROPERTY AGREEMENT",
+      "bytes": 15590,
+      "characters": 15298,
+      "sha256": "b85b28791dd58214b6287d435f8af824f7fdbdb747e76476e10230e3207fc83f",
+      "path": "contracts/cuad-0160.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0161",
+      "title": "FEDERATEDGOVERNMENTINCOMESECURITIESINC_04_28_2020-EX-99.SERV AGREE-SERVICES AGREEMENT",
+      "bytes": 11047,
+      "characters": 11043,
+      "sha256": "2dfbd48812ceef61f37176296cc18ac26865a1fda32fd6f7dd42617d37a81b6d",
+      "path": "contracts/cuad-0161.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0162",
+      "title": "AMBASSADOREYEWEARGROUPINC_11_17_1997-EX-10.28-ENDORSEMENT AGREEMENT",
+      "bytes": 39727,
+      "characters": 39727,
+      "sha256": "8793df7d80cd6d2525fcacea4f92da688eae393a1e2a0ce42d72df552b608b6b",
+      "path": "contracts/cuad-0162.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0163",
+      "title": "MRSFIELDSORIGINALCOOKIESINC_01_29_1998-EX-10-FRANCHISE AGREEMENT",
+      "bytes": 249359,
+      "characters": 249359,
+      "sha256": "8e2adddb58dd5ac9a6ee447d09375f65b6121162f13a8e1fcd3339044aab2868",
+      "path": "contracts/cuad-0163.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0164",
+      "title": "PalmerSquareCapitalBdcInc_20200116_10-12GA_EX-10.6_11949289_EX-10.6_Trademark License Agreement",
+      "bytes": 14764,
+      "characters": 14764,
+      "sha256": "354fd2490b9e3243303d90268452953aa2cf4a0145327cba2969c1d11913c9f4",
+      "path": "contracts/cuad-0164.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0165",
+      "title": "LUCIDINC_04_15_2011-EX-10.9-DISTRIBUTOR AGREEMENT",
+      "bytes": 15540,
+      "characters": 15540,
+      "sha256": "85676ae23975c26b41b9bc868f278c17addb353cf956628ad3c6c6d6108ce716",
+      "path": "contracts/cuad-0165.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0166",
+      "title": "UsioInc_20040428_SB-2_EX-10.11_1723988_EX-10.11_Affiliate Agreement 2",
+      "bytes": 26115,
+      "characters": 26115,
+      "sha256": "42ae613e5bb22f1c5684f8215983db7ce2a1ae603db45a4b0d849f8942f9dc91",
+      "path": "contracts/cuad-0166.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0167",
+      "title": "EmmisCommunicationsCorp_20191125_8-K_EX-10.6_11906433_EX-10.6_Marketing Agreement",
+      "bytes": 17300,
+      "characters": 17300,
+      "sha256": "d83398bc5b3ef6d63a65d50e62cea845861e8aa5c8fac8b1e8b969f9f6699e7b",
+      "path": "contracts/cuad-0167.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0168",
+      "title": "ENTERTAINMENTGAMINGASIAINC_02_15_2005-EX-10.5-DISTRIBUTOR AGREEMENT",
+      "bytes": 44722,
+      "characters": 44702,
+      "sha256": "5bb5aef1c2e4a4448b2869eee03527c163d6ff432fe3634fcb7b3b5d2b133fd5",
+      "path": "contracts/cuad-0168.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0169",
+      "title": "Magenta Therapeutics, Inc. - Master Development and Manufacturing Agreement",
+      "bytes": 73599,
+      "characters": 73598,
+      "sha256": "eec65fcd95132c215de5d757ae80e7e6e048af2e33343f6e15a9eadbc75627f5",
+      "path": "contracts/cuad-0169.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0170",
+      "title": "GRIDIRONBIONUTRIENTS,INC_02_05_2020-EX-10.3-SUPPLY AGREEMENT",
+      "bytes": 5713,
+      "characters": 5713,
+      "sha256": "afc2435e7661797197d3fbc891439f9d04dd58801e6203c0f43ac83fbdd8ebad",
+      "path": "contracts/cuad-0170.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0171",
+      "title": "PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement",
+      "bytes": 68204,
+      "characters": 68204,
+      "sha256": "2fac2af5a9219ca22702929af105a9cb5fbfb2982f3d2a1a73800591a21c72cc",
+      "path": "contracts/cuad-0171.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0172",
+      "title": "SUMMAFOURINC_06_19_1998-EX-10.3-SOFTWARE LICENSE AND MAINTENANCE AGREEMENT",
+      "bytes": 117803,
+      "characters": 117803,
+      "sha256": "3281881ac4a95c90e9359a9b9533640c0e9bb0e4b0b699021d42ac85fa8c7db7",
+      "path": "contracts/cuad-0172.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0173",
+      "title": "MACROGENICSINC_08_02_2013-EX-10-COLLABORATION AGREEMENT",
+      "bytes": 163232,
+      "characters": 163199,
+      "sha256": "d13b7e693935407b2be0db9bea61d5aae5779fbc505abef757c27f07fa1bae7e",
+      "path": "contracts/cuad-0173.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0174",
+      "title": "GSVINC_05_15_1998-EX-10-SPONSORSHIP AGREEMENT",
+      "bytes": 50835,
+      "characters": 50835,
+      "sha256": "cceff2701a7aa0637a74b359d4b1fca764a3e562f37fda200817e3ff6b9199af",
+      "path": "contracts/cuad-0174.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0175",
+      "title": "MorganStanleyDirectLendingFund_20191119_10-12GA_EX-10.5_11898508_EX-10.5_Trademark License Agreement",
+      "bytes": 16162,
+      "characters": 16153,
+      "sha256": "2968497b74ed1946495a91d7baa6d62f400ff981f462d6d945f601d8806694ca",
+      "path": "contracts/cuad-0175.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0176",
+      "title": "ELANDIAINTERNATIONALINC_04_25_2007-EX-10.21-Outsourcing Agreement",
+      "bytes": 82964,
+      "characters": 82889,
+      "sha256": "075b9d019d07ddbbfd78217079091a821af5277697cc22e7c797948ecf9c99c1",
+      "path": "contracts/cuad-0176.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0177",
+      "title": "PareteumCorp_20081001_8-K_EX-99.1_2654808_EX-99.1_Hosting Agreement",
+      "bytes": 66261,
+      "characters": 66253,
+      "sha256": "9c66eef9725257be89d3735e03bde9a00c307f60d1668d177cc88b42c35d4edc",
+      "path": "contracts/cuad-0177.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0178",
+      "title": "PhasebioPharmaceuticalsInc_20200330_10-K_EX-10.21_12086810_EX-10.21_Development Agreement",
+      "bytes": 291903,
+      "characters": 291873,
+      "sha256": "d21fe55a3227fc7092016602c707544b6d66bbd5686d19402204d1cd92945517",
+      "path": "contracts/cuad-0178.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0179",
+      "title": "USASYNTHETICFUELCORP_10_21_2010-EX-10.10-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 52272,
+      "characters": 52252,
+      "sha256": "0fb8cd828f5c763b777f5eb8d80e5f92c46dbcd65a1cc5b3b911aae1c4ab9974",
+      "path": "contracts/cuad-0179.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0180",
+      "title": "KUBIENT,INC_07_02_2020-EX-10.14-MASTER SERVICES AGREEMENT_Part2",
+      "bytes": 7600,
+      "characters": 7600,
+      "sha256": "1145d34d95146782b28cc3959f1cf8a5b57d4745b59589c0ca95afaae636cd42",
+      "path": "contracts/cuad-0180.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0181",
+      "title": "EdietsComInc_20001030_10QSB_EX-10.4_2606646_EX-10.4_Co-Branding Agreement",
+      "bytes": 64192,
+      "characters": 64192,
+      "sha256": "0b2accd5e0a571f03e5a5e8f5760a03372f83f84e97daca4a63686adefed2020",
+      "path": "contracts/cuad-0181.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0182",
+      "title": "WESTERN COPPER - NON-COMPETITION AGREEMENT",
+      "bytes": 16406,
+      "characters": 16402,
+      "sha256": "d148e0be306beafca1731bbda95efdd7d3fa21be087c5b1a56bdd51b3433f9aa",
+      "path": "contracts/cuad-0182.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0183",
+      "title": "LECLANCHÉ S.A. - JOINT DEVELOPMENT AND MARKETING AGREEMENT",
+      "bytes": 20411,
+      "characters": 20380,
+      "sha256": "d284a337922c82e654949305ddcf3bb76bcfa1759a562a36930724cb02671035",
+      "path": "contracts/cuad-0183.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0184",
+      "title": "HEMISPHERX - Sales, Marketing, Distribution, and Supply Agreement",
+      "bytes": 73708,
+      "characters": 73685,
+      "sha256": "871238d0e146f01c49d2cccba73c8b8cbaee1d6e5181cdae8d241d0c897200d2",
+      "path": "contracts/cuad-0184.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0185",
+      "title": "CardlyticsInc_20180112_S-1_EX-10.16_11002987_EX-10.16_Maintenance Agreement4",
+      "bytes": 5337,
+      "characters": 5327,
+      "sha256": "dee1e23d3a909f6f4148d566f7a4ab45b876957083ed1d68004b1991c5d3a58b",
+      "path": "contracts/cuad-0185.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0186",
+      "title": "TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement",
+      "bytes": 112387,
+      "characters": 112361,
+      "sha256": "1c475f59db3b10b7165246b64eec22328ace5caec1960723e24d94aeaaf7471e",
+      "path": "contracts/cuad-0186.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0187",
+      "title": "MphaseTechnologiesInc_20030911_10-K_EX-10.15_1560667_EX-10.15_Co-Branding Agreement",
+      "bytes": 8321,
+      "characters": 8321,
+      "sha256": "c00e73fa23804a8ea70f011dfaca0debf75bccdeb375ca864cbf2a36a0ff4ce8",
+      "path": "contracts/cuad-0187.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0188",
+      "title": "CERES,INC_01_25_2012-EX-10.20-Collaboration Agreement",
+      "bytes": 335519,
+      "characters": 335282,
+      "sha256": "83b3bd9444f56aeb9d1d4e5191c6f717356bca0b5d8c8da05e910aa49ec0af7b",
+      "path": "contracts/cuad-0188.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0189",
+      "title": "INTERSECTENT,INC_05_11_2020-EX-10.1-SUPPLY AGREEMENT",
+      "bytes": 37970,
+      "characters": 37970,
+      "sha256": "88b810fa9527044401daf4620d710ab0077db4a2e866e55a2d9a45d217521ddf",
+      "path": "contracts/cuad-0189.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0190",
+      "title": "BABCOCK_WILCOXENTERPRISES,INC_08_04_2015-EX-10.17-INTELLECTUAL PROPERTY AGREEMENT between THE BABCOCK _ WILCOX COMPANY and BABCOCK _ WILCOX ENTERPRISES, INC.",
+      "bytes": 112449,
+      "characters": 112447,
+      "sha256": "670816cb31e329a198638a46a32531b4db03129fd8471203a3772e8d33cdcf1f",
+      "path": "contracts/cuad-0190.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0191",
+      "title": "TRANSPHORM,INC_02_14_2020-EX-10.12(1)-JOINT VENTURE AGREEMENT",
+      "bytes": 95198,
+      "characters": 95181,
+      "sha256": "c24b749849b2bd9c4f668df4f855f715f0e1fd00137ec07ea7cc283f14d58025",
+      "path": "contracts/cuad-0191.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0192",
+      "title": "EuromediaHoldingsCorp_20070215_10SB12G_EX-10.B(01)_525118_EX-10.B(01)_Content License Agreement",
+      "bytes": 30050,
+      "characters": 30050,
+      "sha256": "410d3d3ff1c928befd4d2c5f405cc1215f4687db744c5abf1e98adefd97d7478",
+      "path": "contracts/cuad-0192.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0193",
+      "title": "Sonos, Inc. - Manufacturing Agreement ",
+      "bytes": 109227,
+      "characters": 109219,
+      "sha256": "3d9aff615a747ad43e65e81bd0786d96efcff7bcfde886f5e1363c068bf899c5",
+      "path": "contracts/cuad-0193.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0194",
+      "title": "ASHWORTHINC_01_29_1999-EX-10.(D)-PROMOTION AGREEMENT AND NANTZ COMMUNICATIONS, INC.",
+      "bytes": 24999,
+      "characters": 24999,
+      "sha256": "977154e5d3a369d6eba47a390737030f8a6482bdf1a28dff81ca0427baac2ad3",
+      "path": "contracts/cuad-0194.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0195",
+      "title": "VAPOTHERM, INC. - Manufacturing and Supply Agreement",
+      "bytes": 75632,
+      "characters": 75632,
+      "sha256": "e584820f6e143596f07de393907f376ef06e23b5d5d1a7a5048e45bd839d5431",
+      "path": "contracts/cuad-0195.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0196",
+      "title": "PLAYAHOTELS_RESORTSNV_03_14_2017-EX-10.22-STRATEGIC ALLIANCE AGREEMENT (Hyatt Ziva Cancun)",
+      "bytes": 22281,
+      "characters": 22259,
+      "sha256": "8621625f68b9dd6dfad65f47fbc13779a8b65995dcd6eac85927d2cfcbc2b3f3",
+      "path": "contracts/cuad-0196.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0197",
+      "title": "LIGHTBRIDGECORP_11_23_2015-EX-10.26-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 19386,
+      "characters": 19386,
+      "sha256": "66048676c514d1e73a6b892b6a586971c8f54d5c8041b9fff2e98df3a443bffb",
+      "path": "contracts/cuad-0197.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0198",
+      "title": "XLITECHNOLOGIES,INC_12_02_2015-EX-10.02-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 5712,
+      "characters": 5712,
+      "sha256": "f472689ea796c2becb882fee8be93608f3c2191bae6efb59e164044ec55dc1ee",
+      "path": "contracts/cuad-0198.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0199",
+      "title": "HYPERIONSOFTWARECORP_09_28_1994-EX-10.47-EXCLUSIVE DISTRIBUTOR AGREEMENT",
+      "bytes": 37682,
+      "characters": 37682,
+      "sha256": "c834764d9aec864afac1c8794a3afdb47fed6d81256548544c47ac63c8ec2cd3",
+      "path": "contracts/cuad-0199.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0200",
+      "title": "BUFFALOWILDWINGSINC_06_05_1998-EX-10.3-FRANCHISE AGREEMENT",
+      "bytes": 154495,
+      "characters": 154495,
+      "sha256": "b036cf3e6c48510f9123562b2826c82a205db9077d7837d31710265ef20635ea",
+      "path": "contracts/cuad-0200.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0201",
+      "title": "ReynoldsConsumerProductsInc_20200121_S-1A_EX-10.22_11948918_EX-10.22_Service Agreement",
+      "bytes": 113984,
+      "characters": 112910,
+      "sha256": "0ddc8b40e5ad7b4f6b1a9d2a921cc7ab2e5d4076a4dcd2575b10b59fc2e6f6d2",
+      "path": "contracts/cuad-0201.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0202",
+      "title": "GWG HOLDINGS, INC. - ORDERLY MARKETING AGREEMENT",
+      "bytes": 25450,
+      "characters": 25450,
+      "sha256": "7a27e4d9ed75a7ae7d504a8974fb11bd67b3101a029548deae094cffeb7940a9",
+      "path": "contracts/cuad-0202.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0203",
+      "title": "BLACKROCKMUNIHOLDINGSINVESTMENTQUALITYFUND_04_07_2020-EX-99.01-JOINT FILING AGREEMENT",
+      "bytes": 1283,
+      "characters": 1283,
+      "sha256": "2246c43edda9bf243aae814c4a25deefae590f6be13e49ca66cd0586af35fb61",
+      "path": "contracts/cuad-0203.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0204",
+      "title": "ALLISONTRANSMISSIONHOLDINGSINC_12_15_2014-EX-99.1-COOPERATION AGREEMENT",
+      "bytes": 32826,
+      "characters": 32826,
+      "sha256": "cf7ccac86b58129ea6ba73b08f2482e87c61e9c228dd64b05291e3ee3601c104",
+      "path": "contracts/cuad-0204.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0205",
+      "title": "SPOKHOLDINGS,INC_06_19_2020-EX-10.1-COOPERATION AGREEMENT",
+      "bytes": 17713,
+      "characters": 17710,
+      "sha256": "a89d914772be939230b36e8203170c5cff90b598ce640e6b11d5d49b191c7c1f",
+      "path": "contracts/cuad-0205.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0206",
+      "title": "WARNINGMANAGEMENTSERVICESINC_12_10_1999-EX-10-ENDORSEMENT AGREEMENT",
+      "bytes": 29724,
+      "characters": 29724,
+      "sha256": "2e450b492547179d245558bc0209d8490ad9f4f152778271f80809784f79995e",
+      "path": "contracts/cuad-0206.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0207",
+      "title": "LinkPlusCorp_20050802_8-K_EX-10_3240252_EX-10_Affiliate Agreement",
+      "bytes": 25619,
+      "characters": 25619,
+      "sha256": "da75700725405f8d45f3ab218cbbc4127d026cc99099735d24db4f9f8b30a239",
+      "path": "contracts/cuad-0207.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0208",
+      "title": "RMRGROUPINC_01_22_2020-EX-99.1-JOINT FILING AGREEMENT",
+      "bytes": 645,
+      "characters": 645,
+      "sha256": "970873275c228d4c10c4944fcec4dcb4c9cbd52fb5f01f667e74bcfc43a69868",
+      "path": "contracts/cuad-0208.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0209",
+      "title": "SMITHELECTRICVEHICLESCORP_04_04_2012-EX-10.26-FLEET MAINTENANCE AGREEMENT",
+      "bytes": 85969,
+      "characters": 85963,
+      "sha256": "292f4fdd8046cbbc420982a39675973dd70c9859ee56e68dbd95eb74c53e0da5",
+      "path": "contracts/cuad-0209.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0210",
+      "title": "CHINARECYCLINGENERGYCORP_11_14_2013-EX-10.6-Cooperation Agreement",
+      "bytes": 16509,
+      "characters": 16509,
+      "sha256": "8c0683c882687f9e6ba6241a62fd38f0327ba044d97f6020812b41662255b5ce",
+      "path": "contracts/cuad-0210.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0211",
+      "title": "KUBIENT,INC_07_02_2020-EX-10.14-MASTER SERVICES AGREEMENT_Part1",
+      "bytes": 26130,
+      "characters": 26108,
+      "sha256": "6fedeb5bf615d4fb66911bb8e92299535ee320b2f913aa3acd8dabf6c90df986",
+      "path": "contracts/cuad-0211.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0212",
+      "title": "NeoformaInc_19991202_S-1A_EX-10.26_5224521_EX-10.26_Co-Branding Agreement",
+      "bytes": 98907,
+      "characters": 98907,
+      "sha256": "8a156f69e9ca6966c0f1d48c9a972d711b6cb7583b6c9c26c3fc7fe1e27bcf0a",
+      "path": "contracts/cuad-0212.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0213",
+      "title": "AULAMERICANUNITTRUST_04_24_2020-EX-99.8.77-SERVICING AGREEMENT",
+      "bytes": 36019,
+      "characters": 36019,
+      "sha256": "ae207bb16f35b516ee3de6523291a3b5b62cc5733a048839cd8d909278aae022",
+      "path": "contracts/cuad-0213.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0214",
+      "title": "VIOLINMEMORYINC_12_12_2012-EX-10.14-SPONSORSHIP AGREEMENT",
+      "bytes": 53775,
+      "characters": 53764,
+      "sha256": "58b3868a7d14cb5c3eac5ae11359c4781204a5cdef9d293db096d3776de60b33",
+      "path": "contracts/cuad-0214.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0215",
+      "title": "RaeSystemsInc_20001114_10-Q_EX-10.57_2631790_EX-10.57_Co-Branding Agreement",
+      "bytes": 43179,
+      "characters": 43179,
+      "sha256": "a98e1239e03d1dfb34c31eb10d553e43c43b85a8f17434561de1b05a73654cde",
+      "path": "contracts/cuad-0215.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0216",
+      "title": "QBIOMEDINC_04_08_2020-EX-99.1-JOINT FILING AGREEMENT",
+      "bytes": 2732,
+      "characters": 2732,
+      "sha256": "dd57e29b914eaf534f0f05b48b98394d61cd8925cde25a5cf9b72f43e2c40e95",
+      "path": "contracts/cuad-0216.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0217",
+      "title": "ZogenixInc_20190509_10-Q_EX-10.2_11663313_EX-10.2_Distributor Agreement",
+      "bytes": 175779,
+      "characters": 175770,
+      "sha256": "441ffefff8b1ea9ae55dd3e3898c0c2983589431f693fcbbbeebbffa1d90df18",
+      "path": "contracts/cuad-0217.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0218",
+      "title": "LeadersonlineInc_20000427_S-1A_EX-10.8_4991089_EX-10.8_Co-Branding Agreement",
+      "bytes": 55296,
+      "characters": 55296,
+      "sha256": "50c60164bc1c459c80937614afbcd908538a7e304a283a0da553e4b5c5dfd57c",
+      "path": "contracts/cuad-0218.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0219",
+      "title": "PRIMEENERGYRESOURCESCORP_04_02_2007-EX-10.28-COMPLETION AND LIQUIDITY MAINTENANCE AGREEMENT",
+      "bytes": 5030,
+      "characters": 5030,
+      "sha256": "050ebe65b872b964ccbcf71874e1514c34651c3dce14040ea9debb5539201bdd",
+      "path": "contracts/cuad-0219.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0220",
+      "title": "AgapeAtpCorp_20191202_10-KA_EX-10.1_11911128_EX-10.1_Supply Agreement",
+      "bytes": 20693,
+      "characters": 20693,
+      "sha256": "6d43065ff242642866da6be6b83f9849ad898e6eea9c1e71b0c2853dd3822c5a",
+      "path": "contracts/cuad-0220.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0221",
+      "title": "ArcaUsTreasuryFund_20200207_N-2_EX-99.K5_11971930_EX-99.K5_Development Agreement",
+      "bytes": 15318,
+      "characters": 15318,
+      "sha256": "0e421b7daa96857cf42de41b7671949d8c99a5eb90f9fc5b79a9d0a16a8cd2bd",
+      "path": "contracts/cuad-0221.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0222",
+      "title": "BIOAMBERINC_04_10_2013-EX-10.34-DEVELOPMENT AGREEMENT - First Amendment",
+      "bytes": 6392,
+      "characters": 6390,
+      "sha256": "59549da8c312d822619526f527abcd108a142d5270a28b0223d69491bbde125e",
+      "path": "contracts/cuad-0222.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0223",
+      "title": "XACCT Technologies, Inc.SUPPORT AND MAINTENANCE AGREEMENT",
+      "bytes": 14193,
+      "characters": 14193,
+      "sha256": "caf3ed803f22678ad41977cc950225b240d52506d14ad45a3e619f50a4f3fb5b",
+      "path": "contracts/cuad-0223.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0224",
+      "title": "CHANGEPOINTCORP_03_08_2000-EX-10.6-LICENSE AND HOSTING AGREEMENT",
+      "bytes": 161066,
+      "characters": 161066,
+      "sha256": "4362013dcc33e52ba5180650d945aa4e69b4ec9ca1e2ce39447a34a15889db7d",
+      "path": "contracts/cuad-0224.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0225",
+      "title": "Apollo Endosurgery - Manufacturing and Supply Agreement",
+      "bytes": 48434,
+      "characters": 48253,
+      "sha256": "f408b4d3754ed2f99c86c5092900df88286666c044bf66430c073c9c10a9d734",
+      "path": "contracts/cuad-0225.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0226",
+      "title": "MJBIOTECH,INC_12_06_2018-EX-99.01-JOINT VENTURE AGREEMENT",
+      "bytes": 23582,
+      "characters": 23582,
+      "sha256": "23564e9f05b57203116fee3307e1c2f8c167b1ea4275d3f68668dffe7c19c89e",
+      "path": "contracts/cuad-0226.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0227",
+      "title": "IDREAMSKYTECHNOLOGYLTD_07_03_2014-EX-10.39-Cooperation Agreement on Mobile Game Business",
+      "bytes": 76425,
+      "characters": 76425,
+      "sha256": "53a7275c87ec37beef87fc5843892940fd6feaad0c8ee79773ce8530328019ba",
+      "path": "contracts/cuad-0227.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0228",
+      "title": "CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement",
+      "bytes": 8853,
+      "characters": 8852,
+      "sha256": "60239701cac9b0eae2de8ba7bded280c3ebb716d853d28f6a96c8d26a0d9c100",
+      "path": "contracts/cuad-0228.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0229",
+      "title": "PhoenixNewMediaLtd_20110421_F-1_EX-10.17_6958322_EX-10.17_Content License Agreement",
+      "bytes": 25060,
+      "characters": 25060,
+      "sha256": "db39d6c284788dfdaa94423b779f5a3f188093bf5398790407de2db4a98d618e",
+      "path": "contracts/cuad-0229.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0230",
+      "title": "HOSPITALITYINVESTORSTRUST,INC_04_07_2014-EX-10.26-FRANCHISE AGREEMENT",
+      "bytes": 147057,
+      "characters": 146992,
+      "sha256": "f5694a4ed68e476c2e15b37054373b6a5098bd8309df1aa780a486868342c4e1",
+      "path": "contracts/cuad-0230.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0231",
+      "title": "FulucaiProductionsLtd_20131223_10-Q_EX-10.9_8368347_EX-10.9_Content License Agreement",
+      "bytes": 18565,
+      "characters": 18562,
+      "sha256": "2783deeed0800c842204f1ee17c7728f71e4518df0ae0f4e52043a1598a82548",
+      "path": "contracts/cuad-0231.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0232",
+      "title": "ONEMAINHOLDINGS,INC_02_20_2020-EX-99.D-JOINT FILING AGREEMENT",
+      "bytes": 5954,
+      "characters": 5879,
+      "sha256": "b37b30e0152b384f720b3d29291a815a414fd51f8b541a7b5f16a48b10de8c42",
+      "path": "contracts/cuad-0232.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0233",
+      "title": "MPLXLP_06_17_2015-EX-10.1-TRANSPORTATION SERVICES AGREEMENT",
+      "bytes": 57631,
+      "characters": 57631,
+      "sha256": "32b7190fa5a4ac20ef10f18328b16f85d8df5bcc88384ce6fabec16cf6071b8f",
+      "path": "contracts/cuad-0233.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0234",
+      "title": "LOGANSROADHOUSEINC_03_27_1998-EX-10.17-SPONSORSHIP AGREEMENT",
+      "bytes": 19171,
+      "characters": 19171,
+      "sha256": "d9ace291105b69d4d5a1bceef8e461e48b261cb61483547d827ee3eda5857b9c",
+      "path": "contracts/cuad-0234.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0235",
+      "title": "FuelcellEnergyInc_20191106_8-K_EX-10.1_11868007_EX-10.1_Development Agreement",
+      "bytes": 105676,
+      "characters": 105662,
+      "sha256": "c809f579e6b5b0da201af7300efc64f0afd7b0757e060bab1b625f80a8e29ee5",
+      "path": "contracts/cuad-0235.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0236",
+      "title": "THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT",
+      "bytes": 32862,
+      "characters": 32861,
+      "sha256": "7c2390dde1298f7b6d6640069fd955d5dc762d409802e66e88bee173d8fc6843",
+      "path": "contracts/cuad-0236.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0237",
+      "title": "BerkshireHillsBancorpInc_20120809_10-Q_EX-10.16_7708169_EX-10.16_Endorsement Agreement",
+      "bytes": 29633,
+      "characters": 29629,
+      "sha256": "a64e7166503fb0add16eb2f7a4466a9d6bb859868e427a59276160342da13867",
+      "path": "contracts/cuad-0237.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0238",
+      "title": "DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT",
+      "bytes": 49218,
+      "characters": 49218,
+      "sha256": "b78b65221c6ae786e6c1274ca932d7a5ffef078da4d94d0b6617db6028764e96",
+      "path": "contracts/cuad-0238.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0239",
+      "title": "VALENCETECHNOLOGYINC_02_14_2003-EX-10-JOINT VENTURE CONTRACT",
+      "bytes": 73698,
+      "characters": 73698,
+      "sha256": "c1c3c5d87acdce496832abeb85ed860e5379861b9f29744f88c55da16f5c91ac",
+      "path": "contracts/cuad-0239.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0240",
+      "title": "ULTRAGENYXPHARMACEUTICALINC_12_23_2013-EX-10.9-SUPPLY AGREEMENT",
+      "bytes": 14609,
+      "characters": 14592,
+      "sha256": "17ac5985ac36701f55353d870e6c8ad5686b6e105a82c5b49a033adc70b2d541",
+      "path": "contracts/cuad-0240.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0241",
+      "title": "NETGEAR,INC_04_21_2003-EX-10.16- AMENDMENT #2 TO THE DISTRIBUTION AGREEMENT",
+      "bytes": 4567,
+      "characters": 4567,
+      "sha256": "40b9a08eaf9a9a4cb8062d44af4289e0cb7732b2fe464b083505594978f1b776",
+      "path": "contracts/cuad-0241.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0242",
+      "title": "SFGFINANCIALCORP_05_12_2009-EX-10.1-SOFTWARE LICENSE AND MAINTENANCE AGREEMENT",
+      "bytes": 51043,
+      "characters": 51043,
+      "sha256": "cf4e22020c47726a3aeb241d838ae0bc8bc171283f1f881357fd5c5b5767e411",
+      "path": "contracts/cuad-0242.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0243",
+      "title": "VAXCYTE,INC_05_22_2020-EX-10.19-SUPPLY AGREEMENT",
+      "bytes": 99700,
+      "characters": 99696,
+      "sha256": "5aa9d49ff424aa455a94f3d3c9503bc79a3f8bbbbc088cc82a39f76a3ff557b9",
+      "path": "contracts/cuad-0243.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0244",
+      "title": "OTISWORLDWIDECORP_04_03_2020-EX-10.4-INTELLECTUAL PROPERTY AGREEMENT by and among UNITED TECHNOLOGIES CORPORATION, OTIS WORLDWIDE CORPORATION and CARRIER ~1",
+      "bytes": 62196,
+      "characters": 62196,
+      "sha256": "a41c3ff9264b236412e2b9b5cdd0a4d74bfb8b81d4f123b32b6bf391c4b1c325",
+      "path": "contracts/cuad-0244.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0245",
+      "title": "GIGGLESN_HUGS,INC_06_23_2016-EX-10.2-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 22411,
+      "characters": 22359,
+      "sha256": "94cea0982fce32c52953f4497ffb252d9882ba336aa490e765d91d9b9a66f795",
+      "path": "contracts/cuad-0245.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0246",
+      "title": "ExactSciencesCorp_20180822_8-K_EX-10.1_11331629_EX-10.1_Promotion Agreement",
+      "bytes": 159195,
+      "characters": 159187,
+      "sha256": "72864ef530e0840221bd4c81efbaba15b8fbab46f3cea437f1c9f679517fcb88",
+      "path": "contracts/cuad-0246.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0247",
+      "title": "Quaker Chemical Corporation - NON COMPETITION AND NON SOLICITATION AGREEMENT",
+      "bytes": 22700,
+      "characters": 22700,
+      "sha256": "c1c3668fe4a3a44599de2e66dc724a948163944c2cd92b73e810e9cfd6ede6ed",
+      "path": "contracts/cuad-0247.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0248",
+      "title": "GlobalTechnologiesGroupInc_20050928_10KSB_EX-10.9_4148808_EX-10.9_Content License Agreement",
+      "bytes": 39596,
+      "characters": 39596,
+      "sha256": "9209a2b3aa2863eeb83f5547c29cccf763970a3d33598a722b9e16549b4a26c9",
+      "path": "contracts/cuad-0248.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0249",
+      "title": "GpaqAcquisitionHoldingsInc_20200123_S-4A_EX-10.8_11951679_EX-10.8_Service Agreement",
+      "bytes": 55075,
+      "characters": 55075,
+      "sha256": "9d8942925e1900a35876bf5398d788b28095ea16e207899b0e7d60afb9e44857",
+      "path": "contracts/cuad-0249.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0250",
+      "title": "HertzGroupRealtyTrustInc_20190920_S-11A_EX-10.8_11816941_EX-10.8_Trademark License Agreement",
+      "bytes": 14313,
+      "characters": 14313,
+      "sha256": "b1ebe053b8526d6eabc3fadfe15c05e9d427757d1ef56a0ace915ba07513f4fe",
+      "path": "contracts/cuad-0250.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0251",
+      "title": "QuantumGroupIncFl_20090120_8-K_EX-99.2_3672910_EX-99.2_Hosting Agreement",
+      "bytes": 116315,
+      "characters": 116298,
+      "sha256": "6154f6312169e0a13c48463a0b15c9e407ceb4f15bd18de38ebf1ac2f3fcddf8",
+      "path": "contracts/cuad-0251.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0252",
+      "title": "SUCAMPOPHARMACEUTICALS,INC_11_04_2015-EX-10.2-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 62585,
+      "characters": 62272,
+      "sha256": "83c8a5b6a0ee219c184a90eaffec0cf930e7ed80e4f12ce342714bc745115934",
+      "path": "contracts/cuad-0252.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0253",
+      "title": "KENTUCKYUTILITIESCO_03_25_2003-EX-10.65-TRANSPORTATION AGREEMENT",
+      "bytes": 16901,
+      "characters": 16901,
+      "sha256": "7e80b5dd1216b8655da4c3fd44a2adae9ea0bcc7d3046e12b4c578f46b864f8a",
+      "path": "contracts/cuad-0253.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0254",
+      "title": "PHREESIA,INC_05_28_2019-EX-10.18-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 120178,
+      "characters": 120178,
+      "sha256": "cdfb3869104f6d5ef5250203a5e085f58446e73916ed2aad9a504ac253e8c888",
+      "path": "contracts/cuad-0254.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0255",
+      "title": "Array BioPharma Inc. - LICENSE, DEVELOPMENT AND COMMERCIALIZATION AGREEMENT",
+      "bytes": 272046,
+      "characters": 272018,
+      "sha256": "94706869d0da15fd791d8c9104959513c48271a91977b4701291184d1606c969",
+      "path": "contracts/cuad-0255.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0256",
+      "title": "MERCATAINC_03_09_2000-EX-10.21-SPONSORSHIP AGREEMENT",
+      "bytes": 23672,
+      "characters": 23672,
+      "sha256": "4ae1ba0a1c389730203ca5e003e6d86b5b163f6465be4c01adcd6a3ab654652c",
+      "path": "contracts/cuad-0256.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0257",
+      "title": "MEDALISTDIVERSIFIEDREIT,INC_05_18_2020-EX-10.1-CONSULTING AGREEMENT",
+      "bytes": 24315,
+      "characters": 24315,
+      "sha256": "00d4100595b6258d4a0639b9640eb7054b500d84c0485dea9024a9bc76a8bdff",
+      "path": "contracts/cuad-0257.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0258",
+      "title": "FOUNDATIONMEDICINE,INC_02_02_2015-EX-10.2-Collaboration Agreement",
+      "bytes": 172884,
+      "characters": 172142,
+      "sha256": "75ee54e34508350f537d8c765a2567c3ab99bbd7533fac6880739d5b850f53ce",
+      "path": "contracts/cuad-0258.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0259",
+      "title": "RevolutionMedicinesInc_20200117_S-1_EX-10.1_11948417_EX-10.1_Development Agreement",
+      "bytes": 266226,
+      "characters": 266213,
+      "sha256": "614d80aa5d416949088c7dcad51aab867ed0af1e3ac906ac0060ef7256bcb37a",
+      "path": "contracts/cuad-0259.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0260",
+      "title": "AFSALABANCORPINC_08_01_1996-EX-1.1-AGENCY AGREEMENT",
+      "bytes": 121559,
+      "characters": 121559,
+      "sha256": "ba14c927c1ceb18f63958108bc80a98fb5de63a2071808f5873dfa9940109da9",
+      "path": "contracts/cuad-0260.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0261",
+      "title": "ETELOS,INC_03_09_2004-EX-10.8-DISTRIBUTOR AGREEMENT",
+      "bytes": 25649,
+      "characters": 25647,
+      "sha256": "13bd978df9eb39e44ef2588ef84ad2f27b4199fba0d946c69bc6295822cf0090",
+      "path": "contracts/cuad-0261.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0262",
+      "title": "LifewayFoodsInc_20160316_10-K_EX-10.24_9489766_EX-10.24_Endorsement Agreement",
+      "bytes": 10996,
+      "characters": 10996,
+      "sha256": "7e7661f3d61df42a24e9ebd55ee2e95a11a084fa5dee11e00153a297e710f4ed",
+      "path": "contracts/cuad-0262.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0263",
+      "title": "LEGACYTECHNOLOGYHOLDINGS,INC_12_09_2005-EX-10.2-DISTRIBUTOR AGREEMENT",
+      "bytes": 15113,
+      "characters": 15113,
+      "sha256": "b4322d0d017a7c697dee87ca9b3d5aa963c4b5ca6f8b136c583fcc87e5f0e5c4",
+      "path": "contracts/cuad-0263.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0264",
+      "title": "DeltathreeInc_19991102_S-1A_EX-10.19_6227850_EX-10.19_Co-Branding Agreement_ Service Agreement",
+      "bytes": 28825,
+      "characters": 28825,
+      "sha256": "97fe5dcb9450133b80e5c0409a35449a6fe2a3273dab27e53c4684fb9e219547",
+      "path": "contracts/cuad-0264.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0265",
+      "title": "SPRINGBANKPHARMACEUTICALS,INC_04_08_2020-EX-99.A-JOINT FILING AGREEMENT",
+      "bytes": 1556,
+      "characters": 1556,
+      "sha256": "99da18c33f9b73b3b30407a08d66a98898eb5d969cc865cbbbd6b1786753d66d",
+      "path": "contracts/cuad-0265.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0266",
+      "title": "ImineCorp_20180725_S-1_EX-10.5_11275970_EX-10.5_Distributor Agreement",
+      "bytes": 34461,
+      "characters": 34461,
+      "sha256": "defee8695f6aab9389fab7e5787a43b583db560688d8dcc698859c12903c4c6c",
+      "path": "contracts/cuad-0266.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0267",
+      "title": "CCAINDUSTRIESINC_04_14_2014-EX-10.1-OUTSOURCING AGREEMENT",
+      "bytes": 31928,
+      "characters": 31914,
+      "sha256": "9620281e798e7635c9b6a3397ca210d00c9f57ca344ae62dc9af356163cddef4",
+      "path": "contracts/cuad-0267.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0268",
+      "title": "Microgenics Corporation - Collaborative Development and Commercialization Agreement",
+      "bytes": 190270,
+      "characters": 190261,
+      "sha256": "75afb072cf4dbafd060c40ac37f1e6acaeaeeb606469bc4e5268c6096d16dd6c",
+      "path": "contracts/cuad-0268.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0269",
+      "title": "SigaTechnologiesInc_20190603_8-K_EX-10.1_11695818_EX-10.1_Promotion Agreement",
+      "bytes": 144491,
+      "characters": 144443,
+      "sha256": "810f6fdd8c93332806735652e91637e49aeaf529c71e50ec111977d08129224f",
+      "path": "contracts/cuad-0269.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0270",
+      "title": "VgrabCommunicationsInc_20200129_10-K_EX-10.33_11958828_EX-10.33_Development Agreement",
+      "bytes": 14848,
+      "characters": 14822,
+      "sha256": "7dce71c812ecc7cf1d1b1f366eae70cbd1bebf1c3b3ce3023541cd50577325b2",
+      "path": "contracts/cuad-0270.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0271",
+      "title": "AIRTECHINTERNATIONALGROUPINC_05_08_2000-EX-10.4-FRANCHISE AGREEMENT",
+      "bytes": 73869,
+      "characters": 73869,
+      "sha256": "c9a4d1006bce3890bb04151d0bf1f791b43012e7322ac550813e855461ba3da8",
+      "path": "contracts/cuad-0271.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0272",
+      "title": "IMMUNOMEDICSINC_08_07_2019-EX-10.1-PROMOTION AGREEMENT",
+      "bytes": 154846,
+      "characters": 154812,
+      "sha256": "30103a32a0d66dc0d5d908fd2b2fefdc8216f037c2298a87a4e9cddc69372aa6",
+      "path": "contracts/cuad-0272.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0273",
+      "title": "HPILHOLDING_01_07_2015-EX-99.1-COOPERATION AGREEMENT",
+      "bytes": 20016,
+      "characters": 20008,
+      "sha256": "98ba454bb3ccef1b7300bb7af2c43a7719eda9cb4e83f7c5d14578d32f8c5695",
+      "path": "contracts/cuad-0273.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0274",
+      "title": "BravatekSolutionsInc_20170418_8-K_EX-10.1_10205739_EX-10.1_Reseller Agreement",
+      "bytes": 15877,
+      "characters": 15871,
+      "sha256": "53c391863c306a2343f40af3d387d0e1559bf5bf534a0bab4401cc8608c65815",
+      "path": "contracts/cuad-0274.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0275",
+      "title": "SPORTHALEYINC_09_29_1997-EX-10.2-10-ENDORSEMENT AGREEMENT",
+      "bytes": 11930,
+      "characters": 11930,
+      "sha256": "27265699e9aba675462068dbd984315b19d01aa113780fe27aee1c27912da4e0",
+      "path": "contracts/cuad-0275.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0276",
+      "title": "XENCORINC_10_25_2013-EX-10.24-COLLABORATION AGREEMENT (3)",
+      "bytes": 144489,
+      "characters": 140106,
+      "sha256": "afa8a94a1c6252861882320a9d28516ea5b4b8a4e0215e9b2213f442a2528540",
+      "path": "contracts/cuad-0276.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0277",
+      "title": "NETGROCERINC_07_31_1998-EX-10.15-SPONSORSHIP AGREEMENT",
+      "bytes": 45040,
+      "characters": 45040,
+      "sha256": "170cad070a0fd13cd135d041f84c6846ec15134808d380f6a65f2a54d4d6e668",
+      "path": "contracts/cuad-0277.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0278",
+      "title": "CoherusBiosciencesInc_20200227_10-K_EX-10.29_12021376_EX-10.29_Development Agreement",
+      "bytes": 146109,
+      "characters": 146058,
+      "sha256": "e6370745e927c1182c7c7425a6a984ad0d0ebc3439bc33d99cfc91c30bd381db",
+      "path": "contracts/cuad-0278.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0279",
+      "title": "FEDERATEDGOVERNMENTINCOMESECURITIESINC_04_28_2020-EX-99.SERV AGREE-SERVICES AGREEMENT_POWEROF",
+      "bytes": 14384,
+      "characters": 14384,
+      "sha256": "df60e354f88a3b0120135e0886e3c6ff141309d8a0c253c0ac4c5a5b9ed50ce6",
+      "path": "contracts/cuad-0279.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0280",
+      "title": "DIVERSINETCORP_03_01_2012-EX-4-RESELLER AGREEMENT",
+      "bytes": 75432,
+      "characters": 75389,
+      "sha256": "9c9e0d0d527428ea1b596e604397e2ad78a3e2cab07bb32e3015600c594b4163",
+      "path": "contracts/cuad-0280.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0281",
+      "title": "NmfSlfIInc_20200115_10-12GA_EX-10.5_11946987_EX-10.5_Trademark License Agreement",
+      "bytes": 17065,
+      "characters": 17064,
+      "sha256": "4faa34333f1d42ec92b45de88a07eedba7e345d62bb1a2abe0a374662256b27f",
+      "path": "contracts/cuad-0281.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0282",
+      "title": "CURAEGISTECHNOLOGIES,INC_05_26_2010-EX-1-CORPORATE SPONSORSHIP AGREEMENT",
+      "bytes": 12629,
+      "characters": 12624,
+      "sha256": "01a6a01aef555c3b1cf58d562a6a6970c91beb1cca066424ef8c1a962a047735",
+      "path": "contracts/cuad-0282.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0283",
+      "title": "KALLOINC_11_03_2011-EX-10.1-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 75618,
+      "characters": 75458,
+      "sha256": "549487e11028ab2c2786ebb8cc812a775d01448dc316616c78344dd0b624042a",
+      "path": "contracts/cuad-0283.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0284",
+      "title": "GridironBionutrientsInc_20171206_8-K_EX-10.1_10972555_EX-10.1_Endorsement Agreement",
+      "bytes": 29224,
+      "characters": 29208,
+      "sha256": "9bd93106c7da5a5256d055fa02684886b2e86c21f993f5461274e2b65d46b38b",
+      "path": "contracts/cuad-0284.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0285",
+      "title": "MOSSIMOINC_04_14_2000-EX-10.14-ENDORSEMENT AGREEMENT",
+      "bytes": 24307,
+      "characters": 24307,
+      "sha256": "6f93ddd1129f5199aa0e9218293090178ab7d061fbf69dbac36855291ee479f9",
+      "path": "contracts/cuad-0285.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0286",
+      "title": "FEDERATEDGOVERNMENTINCOMESECURITIESINC_04_28_2020-EX-99.SERV AGREE-SERVICES AGREEMENT_AMENDMENT",
+      "bytes": 3860,
+      "characters": 3860,
+      "sha256": "87cd114c450d1ae9b93fe66dc277a9d5bdc04b6885e5e90b86de20193a1cbd3f",
+      "path": "contracts/cuad-0286.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0287",
+      "title": "RandWorldwideInc_20010402_8-KA_EX-10.2_2102464_EX-10.2_Co-Branding Agreement",
+      "bytes": 48159,
+      "characters": 48159,
+      "sha256": "d74ebaf7b1969b0cf8eb44f7a0384e3083e9d99b08f38c593fc6fe626c1cc7c4",
+      "path": "contracts/cuad-0287.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0288",
+      "title": "GOLDRESOURCECORP_12_11_2008-EX-10.1-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 55434,
+      "characters": 55434,
+      "sha256": "ffb9302f4c40faf86181d040267edb30c7266aa0f381f3efa6a4c95d9e351a9f",
+      "path": "contracts/cuad-0288.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0289",
+      "title": "Loop Industries, Inc. - Marketing Agreement",
+      "bytes": 34742,
+      "characters": 34740,
+      "sha256": "7552830f738a0edf4b66c8720df08084aaaa4e8cdf54afd27c7d8009cf0a5b5d",
+      "path": "contracts/cuad-0289.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0290",
+      "title": "BloomEnergyCorp_20180321_DRSA (on S-1)_EX-10_11240356_EX-10_Maintenance Agreement",
+      "bytes": 104738,
+      "characters": 104732,
+      "sha256": "6ad983e154cb3198bb27429e51143944450401a50360c43a9ba381701c129664",
+      "path": "contracts/cuad-0290.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0291",
+      "title": "AudibleInc_20001113_10-Q_EX-10.32_2599586_EX-10.32_Co-Branding Agreement_ Marketing Agreement_ Investment Distribution Agreement",
+      "bytes": 77102,
+      "characters": 77102,
+      "sha256": "5cb5b5a5e08db4d12897c2277e8ea9986c3eb83a789b02511339950772905d2a",
+      "path": "contracts/cuad-0291.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0292",
+      "title": "HOLIDAYRVSUPERSTORESINC_04_15_2002-EX-10.13-ENDORSEMENT AGREEMENT",
+      "bytes": 14157,
+      "characters": 14157,
+      "sha256": "b70b1cfadd3e44ef43c5e6c08f908430c18e88b720f9967acde3299f7e71ea42",
+      "path": "contracts/cuad-0292.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0293",
+      "title": "WOMENSGOLFUNLIMITEDINC_03_29_2000-EX-10.13-ENDORSEMENT AGREEMENT",
+      "bytes": 32371,
+      "characters": 32371,
+      "sha256": "4409b6e45aec52486aef45e86a94f12aaa5c36246a131e1d7311585a9d37ad39",
+      "path": "contracts/cuad-0293.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0294",
+      "title": "NeuroboPharmaceuticalsInc_20190903_S-4_EX-10.36_11802165_EX-10.36_Manufacturing Agreement_ Supply Agreement",
+      "bytes": 20000,
+      "characters": 20000,
+      "sha256": "986a8d1167d9d73ce482eea02fbdb0527857d100a74da4ad627d860c723dfd38",
+      "path": "contracts/cuad-0294.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0295",
+      "title": "SONUSCORP_03_12_1997-EX-10.11-SPONSORSHIP AGREEMENT",
+      "bytes": 34903,
+      "characters": 34903,
+      "sha256": "faa9e354038e87c4e00f17d587da7c2c7d915e7fd6911e9506c6620686ff8221",
+      "path": "contracts/cuad-0295.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0296",
+      "title": "RangeResourcesLouisianaInc_20150417_8-K_EX-10.5_9045501_EX-10.5_Transportation Agreement",
+      "bytes": 100309,
+      "characters": 100284,
+      "sha256": "7fc48e1f66eb87cca6ac67e84e7286fd95f39b7b9f3d70169fa527291595eb1d",
+      "path": "contracts/cuad-0296.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0297",
+      "title": "CHAPARRALRESOURCESINC_03_30_2000-EX-10.66-TRANSPORTATION CONTRACT",
+      "bytes": 26830,
+      "characters": 26830,
+      "sha256": "0e03737ee6eafee156bb168e59f3134ba959e8e5f38ef4b5548a62798caf3174",
+      "path": "contracts/cuad-0297.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0298",
+      "title": "ScansourceInc_20190509_10-Q_EX-10.2_11661422_EX-10.2_Distributor Agreement",
+      "bytes": 14164,
+      "characters": 14149,
+      "sha256": "4996dfa734c77a1825fb95e4916c09bd264181e35d455e10717433d1709b2aee",
+      "path": "contracts/cuad-0298.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0299",
+      "title": "AURASYSTEMSINC_06_16_2010-EX-10.25-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 45033,
+      "characters": 45033,
+      "sha256": "cd9c428d08826e612d978e6bdad41df2463e5d84f45edb1bfc012e2580be0118",
+      "path": "contracts/cuad-0299.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0300",
+      "title": "IpassInc_20181203_8-K_EX-99.1_11445874_EX-99.1_Reseller Agreement",
+      "bytes": 73882,
+      "characters": 73860,
+      "sha256": "2489555c05b1ec60186a8e703b4c92f243afc1ee2d093328d3f3f60b6a741052",
+      "path": "contracts/cuad-0300.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0301",
+      "title": "VERSOTECHNOLOGIESINC_12_28_2007-EX-99.3-INTELLECTUAL PROPERTY AGREEMENT",
+      "bytes": 5046,
+      "characters": 5046,
+      "sha256": "6e8bb4c94c61b71c7b1583aabc6bfce2214f398a43577e48bac526a46a9b5f1f",
+      "path": "contracts/cuad-0301.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0302",
+      "title": "SoupmanInc_20150814_8-K_EX-10.1_9230148_EX-10.1_Franchise Agreement4",
+      "bytes": 3314,
+      "characters": 3314,
+      "sha256": "d3b48e403dce07c50842f80ffc6d9b03d5e22597822766851478b17923442743",
+      "path": "contracts/cuad-0302.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0303",
+      "title": "EhaveInc_20190515_20-F_EX-4.44_11678816_EX-4.44_License Agreement_ Reseller Agreement",
+      "bytes": 87073,
+      "characters": 87070,
+      "sha256": "b7cbb5434c960e8501eee365924168a233ee7775b86fa34b5ecf6a826b196bb7",
+      "path": "contracts/cuad-0303.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0304",
+      "title": "BOLIVARMININGCORP_05_23_2003-EX-2.1-VISP WEB SITE BUILDING AND HOSTING AGREEMENT",
+      "bytes": 11539,
+      "characters": 11539,
+      "sha256": "a84da786674a383f93aaa0fc640c47de727042091dc7f3e2df647a2162676e93",
+      "path": "contracts/cuad-0304.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0305",
+      "title": "UNITEDNATIONALBANCORP_03_03_1999-EX-99-Outsourcing Agreement with the BISYS Group, Inc.",
+      "bytes": 1952,
+      "characters": 1952,
+      "sha256": "0305b596ec2a00ae0d327bb977c0cdfee663f215dc5d7975997c8bd2e8c76923",
+      "path": "contracts/cuad-0305.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0306",
+      "title": "GALERATHERAPEUTICS,INC_02_14_2020-EX-99.A-JOINT FILING AGREEMENT",
+      "bytes": 3892,
+      "characters": 3892,
+      "sha256": "c9e975471fb0998b7562262d83518f81b8de936e091c26ecb7dc3c4ebb40eb69",
+      "path": "contracts/cuad-0306.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0307",
+      "title": "VirtuosoSurgicalInc_20191227_1-A_EX1A-6 MAT CTRCT_11933379_EX1A-6 MAT CTRCT_License Agreement",
+      "bytes": 35902,
+      "characters": 35902,
+      "sha256": "f430f627738934e99e4ef645a86b95ed73b39f8c586b3c754a56400783256792",
+      "path": "contracts/cuad-0307.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0308",
+      "title": "ROCKYMOUNTAINCHOCOLATEFACTORY,INC_12_23_2019-EX-10.2-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 121115,
+      "characters": 121115,
+      "sha256": "0cf2b9b2c6137425894a54226b39ce8f050eaebde0f9b95bbe1e25af0b119a75",
+      "path": "contracts/cuad-0308.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0309",
+      "title": "VITAMINSHOPPECOMINC_09_13_1999-EX-10.26-SPONSORSHIP AGREEMENT",
+      "bytes": 88105,
+      "characters": 88105,
+      "sha256": "0df2116cdf74ca2842b3ae8fe77864e2bb350d05d9dc1d967485a95833402ad5",
+      "path": "contracts/cuad-0309.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0310",
+      "title": "SOLUTIONSVENDINGINTERNATIONAL,INC_03_31_2020-EX1A-1 UNDR AGMT-SERVICES AGREEMENT",
+      "bytes": 7124,
+      "characters": 7124,
+      "sha256": "1b7b190b8b9a85de761a9034df7d07a3157afec851b2550c7c176040f958ec57",
+      "path": "contracts/cuad-0310.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0311",
+      "title": "InnerscopeHearingTechnologiesInc_20181109_8-K_EX-10.6_11419704_EX-10.6_Distributor Agreement",
+      "bytes": 22396,
+      "characters": 22396,
+      "sha256": "8107dbee4c50a6f200875fac0c8870cf33afbc7dbf018ebcda2167a43288db07",
+      "path": "contracts/cuad-0311.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0312",
+      "title": "SmartRxSystemsInc_20180914_1-A_EX1A-6 MAT CTRCT_11351705_EX1A-6 MAT CTRCT_Distributor Agreement",
+      "bytes": 40002,
+      "characters": 39984,
+      "sha256": "fc07e63599e78e19f7a225bc4ef1b3e7dc5fd0cf05c7892210b24596b0f2360d",
+      "path": "contracts/cuad-0312.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0313",
+      "title": "Reinsurance Group of America, Incorporated - A_R REMARKETING  AGREEMENT",
+      "bytes": 102074,
+      "characters": 102071,
+      "sha256": "8f6a2e31fee0446436358f96171610f79afd208a9bd839de19548fa37ec054fd",
+      "path": "contracts/cuad-0313.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0314",
+      "title": "BIOFRONTERAAG_04_29_2019-EX-4.17-SUPPLY AGREEMENT",
+      "bytes": 63723,
+      "characters": 63723,
+      "sha256": "28136e794bf344a5eedc4259213930d0c08b528d6ae8252addcac168d3f2e859",
+      "path": "contracts/cuad-0314.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0315",
+      "title": "CORALGOLDRESOURCES,LTD_05_28_2020-EX-4.1-CONSULTING AGREEMENT",
+      "bytes": 29756,
+      "characters": 29749,
+      "sha256": "909f4a9d8ca8ef197dcf0c99f79cc682ea5b3df022f07c1b295da82deb4cd8b8",
+      "path": "contracts/cuad-0315.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0316",
+      "title": "Cerus Corporation - FIRST AMEND TO SUPPLY AND MANUFACTURING AGREEMENT",
+      "bytes": 11420,
+      "characters": 11420,
+      "sha256": "43adbd649147ab9c56ac019476f00d76a3c5719a4fbfe29451959cb875babea1",
+      "path": "contracts/cuad-0316.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0317",
+      "title": "OLDAPIWIND-DOWNLTD_01_08_2016-EX-1.3-AGENCY AGREEMENT2",
+      "bytes": 3886,
+      "characters": 3886,
+      "sha256": "67c067411b536fb05eb5e9c3cc55f7dca50cc24c49fd0ec11f93b11cc7d7de01",
+      "path": "contracts/cuad-0317.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0318",
+      "title": "ATENTOSA_07_06_2020-EX-99.1-JOINT FILING AGREEMENT",
+      "bytes": 2302,
+      "characters": 2298,
+      "sha256": "8e75f2b5477d1d5bb1da6da2c58289e0d3b2934bdf39277463995eab57c9e838",
+      "path": "contracts/cuad-0318.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0319",
+      "title": "HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement",
+      "bytes": 45042,
+      "characters": 45042,
+      "sha256": "d4402382bb26ede59c4ba8f382d8fa23b6f815bc9fcd914181368d1e1e5aee73",
+      "path": "contracts/cuad-0319.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0320",
+      "title": "GAINSCOINC_01_21_2010-EX-10.41-SPONSORSHIP AGREEMENT",
+      "bytes": 15706,
+      "characters": 15696,
+      "sha256": "c9c939c124076c8aeec0cbdf6f0cd6f3328a1c3ce5f1afe90d11449172122a4c",
+      "path": "contracts/cuad-0320.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0321",
+      "title": "TURNKEYCAPITAL,INC_07_20_2017-EX-1.1-Strategic Alliance Agreement",
+      "bytes": 12648,
+      "characters": 12648,
+      "sha256": "c6d3bd7a840671da319819fad0b8c1cc1545ab83ddcf9016c7ce3aaf2b52c4de",
+      "path": "contracts/cuad-0321.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0322",
+      "title": "IVILLAGEINC_03_17_1999-EX-10.16-SPONSORSHIP AGREEMENT",
+      "bytes": 23723,
+      "characters": 23723,
+      "sha256": "632d1ad2a7e8c1f63d6be2ea1988527bf71bf8d1122105f3c2e0c1c6d40aab18",
+      "path": "contracts/cuad-0322.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0323",
+      "title": "PaperexchangeComInc_20000322_S-1A_EX-10.4_5202103_EX-10.4_Co-Branding Agreement",
+      "bytes": 92875,
+      "characters": 92875,
+      "sha256": "46183b3468a04e9c11f082a2e51359a1403bb373cc5d0f61e6eaa4306f65a9d5",
+      "path": "contracts/cuad-0323.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0324",
+      "title": "IPAYMENT,INC_05_14_2007-EX-10.1-SPONSORSHIP AGREEMENT",
+      "bytes": 96806,
+      "characters": 96662,
+      "sha256": "d5c79b7b079e516fade39ac224ac04ad983fcdf711ee0bc411ac221ae1fd78f6",
+      "path": "contracts/cuad-0324.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0325",
+      "title": "BIOPURECORP_06_30_1999-EX-10.13-AGENCY AGREEMENT",
+      "bytes": 40590,
+      "characters": 40590,
+      "sha256": "46efce0876517845139456fb334958c9d530b7ebdea2a955c1f693d432e591f0",
+      "path": "contracts/cuad-0325.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0326",
+      "title": "RISEEDUCATIONCAYMANLTD_04_17_2020-EX-4.23-SERVICE AGREEMENT",
+      "bytes": 16402,
+      "characters": 16372,
+      "sha256": "4d9af82e13bc95c4459e66c7d19439753237bc89e6e4bf10819aedcc4018534f",
+      "path": "contracts/cuad-0326.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0327",
+      "title": "STARTECGLOBALCOMMUNICATIONSCORP_11_16_1998-EX-10.30-CONSTRUCTION AND MAINTENANCE AGREEMENT",
+      "bytes": 116260,
+      "characters": 116260,
+      "sha256": "cf04de080570e4ba426c11eaba774f54552c9f8f3dfba54f655473b80cbac9da",
+      "path": "contracts/cuad-0327.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0328",
+      "title": "LejuHoldingsLtd_20140121_DRS (on F-1)_EX-10.26_8473102_EX-10.26_Content License Agreement2",
+      "bytes": 2180,
+      "characters": 2180,
+      "sha256": "01ebcd4dc1fdc164d0f68fd217be2b99ba76c39f5d842288808a1dca8c8d839c",
+      "path": "contracts/cuad-0328.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0329",
+      "title": "TRIZETTOGROUPINC_08_18_1999-EX-10.17-TECHNICAL INFRASTRUCTURE MAINTENANCE AGREEMENT",
+      "bytes": 17786,
+      "characters": 17786,
+      "sha256": "36724bd21fa87d101e0450b60f9265c5510d285cfb893f6a72fbe06ed765764b",
+      "path": "contracts/cuad-0329.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0330",
+      "title": "FIBROGENINC_10_01_2014-EX-10.11-COLLABORATION AGREEMENT",
+      "bytes": 155664,
+      "characters": 155655,
+      "sha256": "b91c8e29f3002e983cfeb01ad86739f785fec1b6f7a5d934b61136725bf4d67a",
+      "path": "contracts/cuad-0330.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0331",
+      "title": "KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+      "bytes": 14792,
+      "characters": 14792,
+      "sha256": "70d818aaac809a4ea97f778473b7235a9601f93c191c8a110595fc360aacb5f9",
+      "path": "contracts/cuad-0331.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0332",
+      "title": "UAGHINC_04_14_2004-EX-10.18-MAINTENANCE AGREEMENT",
+      "bytes": 16823,
+      "characters": 16823,
+      "sha256": "357149c870e8edc3d56935a44a10fe0ecdd4db2381e3cd1fd72c0eadbe200bde",
+      "path": "contracts/cuad-0332.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0333",
+      "title": "ARMSTRONGFLOORING,INC_01_07_2019-EX-10.2-INTELLECTUAL PROPERTY AGREEMENT",
+      "bytes": 69769,
+      "characters": 69759,
+      "sha256": "8ff1a7503594d70ad15a6cdad9242ff5d5d8ca9db2e75074d02834d9b1b47b3d",
+      "path": "contracts/cuad-0333.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0334",
+      "title": "SPIENERGYCO,LTD_07_10_2014-EX-10-Cooperation Agreement of 50MWp Photovoltaic Grid-connected Power Generation Project in Yangqiao of~1",
+      "bytes": 2811,
+      "characters": 2811,
+      "sha256": "33df36be3890377b0d92b21ad5eab450d4df8d5890341c1efd208a7bb270c034",
+      "path": "contracts/cuad-0334.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0335",
+      "title": "VitalibisInc_20180316_8-K_EX-10.2_11100168_EX-10.2_Hosting Agreement",
+      "bytes": 46221,
+      "characters": 46187,
+      "sha256": "7863e8bf7aaff7ae207d0864a7a7066e1b7ad6a309117538ee2db1d9b4137bbb",
+      "path": "contracts/cuad-0335.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0336",
+      "title": "SoupmanInc_20150814_8-K_EX-10.1_9230148_EX-10.1_Franchise Agreement1",
+      "bytes": 144235,
+      "characters": 144235,
+      "sha256": "9009d53b3f1c416872fa6d70cdc98940f7c62f25523b76b3fe231f0e11b3d0dc",
+      "path": "contracts/cuad-0336.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0337",
+      "title": "HEALTHGATEDATACORP_11_24_1999-EX-10.1-HOSTING AND MANAGEMENT AGREEMENT - Escrow Agreement",
+      "bytes": 35612,
+      "characters": 35612,
+      "sha256": "a882b126b747c9f0fbdd79a2d197e132d6b06ca49335e3f02291557d324c10fd",
+      "path": "contracts/cuad-0337.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0338",
+      "title": "BNLFINANCIALCORP_03_30_2007-EX-10.8-OUTSOURCING AGREEMENT",
+      "bytes": 39863,
+      "characters": 39863,
+      "sha256": "8eb79bb4ec5ab5dd06fd2c7633dc91a84cf816736c1ece4d90ec0b8d71f83ab2",
+      "path": "contracts/cuad-0338.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0339",
+      "title": "IntegrityMediaInc_20010329_10-K405_EX-10.17_2373875_EX-10.17_Co-Branding Agreement",
+      "bytes": 29253,
+      "characters": 29253,
+      "sha256": "d5d4fab462ce863768a531c28f9e7b08c68884b9b3709e7884ecb3b41663fee0",
+      "path": "contracts/cuad-0339.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0340",
+      "title": "IOVANCEBIOTHERAPEUTICS,INC_08_03_2017-EX-10.1-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 69152,
+      "characters": 69147,
+      "sha256": "1aa2574ca312a72c3a0676e00964653fde3a64edb566f544cac881b6674f4c16",
+      "path": "contracts/cuad-0340.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0341",
+      "title": "NEONSYSTEMSINC_03_01_1999-EX-10.5-DISTRIBUTOR AGREEMENT_New",
+      "bytes": 61463,
+      "characters": 61463,
+      "sha256": "acf1fbe6de84c75f0410f1f51cb94315d533cc5c97ffeb364aa99e00fc8b3958",
+      "path": "contracts/cuad-0341.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0342",
+      "title": "TELKOMSALTD_01_30_2003-EX-10-LICENCE AND MAINTENANCE AGREEMENT",
+      "bytes": 105748,
+      "characters": 105748,
+      "sha256": "b06cfa7dd295bc09dd7e7ed8142e79e9a853009d2550c4780a5cc9a514ad6ed9",
+      "path": "contracts/cuad-0342.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0343",
+      "title": "FIDELITYNATIONALINFORMATIONSERVICES,INC_08_05_2009-EX-10.3-INTELLECTUAL PROPERTY AGREEMENT",
+      "bytes": 155463,
+      "characters": 155463,
+      "sha256": "1548a698bd96e53c7bf7a60f7dd065cf340bf1a2282cb748d6c01addc800a26d",
+      "path": "contracts/cuad-0343.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0344",
+      "title": "WatchitMediaInc_20061201_8-K_EX-10.1_4148672_EX-10.1_Content License Agreement",
+      "bytes": 2106,
+      "characters": 2106,
+      "sha256": "953a9b9f91d2ad75c73ba38ab811823b7707bc60c6600e4ed8b2aa8b27949a36",
+      "path": "contracts/cuad-0344.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0345",
+      "title": "TRUENORTHENERGYCORP_02_08_2007-EX-10.1-DEVELOPMENT AGREEMENT",
+      "bytes": 43809,
+      "characters": 43803,
+      "sha256": "37104b954c35b7e787eebe9da39567d4025449a11167072c06e81ab4286eb0c3",
+      "path": "contracts/cuad-0345.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0346",
+      "title": "GentechHoldingsInc_20190808_1-A_EX1A-6 MAT CTRCT_11776814_EX1A-6 MAT CTRCT_Distributor Agreement",
+      "bytes": 26753,
+      "characters": 26733,
+      "sha256": "d227de8dd0e5e03ed4b7dee2b451f01aa6ea195295539ab6453cb220acb6a930",
+      "path": "contracts/cuad-0346.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0347",
+      "title": "TICKETSCOMINC_06_22_1999-EX-10.22-SPONSORSHIP AGREEMENT",
+      "bytes": 8080,
+      "characters": 8080,
+      "sha256": "4928e56782c0c6c8d589f9ceb019dc418e38b7b324be28f49a20a81b03d1eaa7",
+      "path": "contracts/cuad-0347.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0348",
+      "title": "ADMA BioManufacturing, LLC -  Amendment #3 to Manufacturing Agreement ",
+      "bytes": 15312,
+      "characters": 15312,
+      "sha256": "bce002bc4b17df3b0ccdeb12ce4e75d4005815a430ea0adab7845489a366c0a9",
+      "path": "contracts/cuad-0348.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0349",
+      "title": "OFGBANCORP_03_28_2007-EX-10.23-OUTSOURCING AGREEMENT",
+      "bytes": 159705,
+      "characters": 159336,
+      "sha256": "2c0cbfce0cdc073b09800802a58fd0f025e9d1f7014713ecc5dd47f7c62f2c52",
+      "path": "contracts/cuad-0349.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0350",
+      "title": "OMINTO,INC_03_29_2004-EX-10-RESELLER AGREEMENT",
+      "bytes": 28463,
+      "characters": 28463,
+      "sha256": "63c4ce209111a2920d803f15cb0f1ca5c1919368cad08862fea3ce0923870e55",
+      "path": "contracts/cuad-0350.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0351",
+      "title": "DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 46301,
+      "characters": 46298,
+      "sha256": "17f0b67c57a587044cc00aa7b9dfc258cd199f809b8fa5c19acddceb873b8517",
+      "path": "contracts/cuad-0351.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0352",
+      "title": "OLDAPIWIND-DOWNLTD_01_08_2016-EX-1.3-AGENCY AGREEMENT1",
+      "bytes": 98009,
+      "characters": 98009,
+      "sha256": "96f162f2cb658cc49c87f9f1209c5bea1a72fe97d4d60d35c0d06012f2342a66",
+      "path": "contracts/cuad-0352.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0353",
+      "title": "ADIANUTRITION,INC_04_01_2005-EX-10.D2-RESELLER AGREEMENT",
+      "bytes": 26347,
+      "characters": 26347,
+      "sha256": "c757bb1d6007551134d3831a8e3ee3ef1491c59513844f80a61989cac2b0897c",
+      "path": "contracts/cuad-0353.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0354",
+      "title": "ATHENSBANCSHARESCORP_11_02_2009-EX-1.2-AGENCY AGREEMENT , 2009",
+      "bytes": 145322,
+      "characters": 145307,
+      "sha256": "5698a2da99dd5ca090571f4c9a7ac437d868443121ddc9288aa5a9bcfb3e118e",
+      "path": "contracts/cuad-0354.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0355",
+      "title": "GSITECHNOLOGYINC_11_16_2009-EX-10.2-INTELLECTUAL PROPERTY AGREEMENT between SONY ELECTRONICS INC. and GSI TECHNOLOGY, INC.",
+      "bytes": 37337,
+      "characters": 37337,
+      "sha256": "e40e805afe1baf5218409bb2c0fa1bfb0b04a422757a5d6d312ebed0beed515a",
+      "path": "contracts/cuad-0355.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0356",
+      "title": "MusclepharmCorp_20170208_10-KA_EX-10.38_9893581_EX-10.38_Co-Branding Agreement",
+      "bytes": 87805,
+      "characters": 87795,
+      "sha256": "0545fc6a00b64d9bb75c36ab9ebc738d4c726f11fd000b2eed284fcaed0f55e5",
+      "path": "contracts/cuad-0356.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0357",
+      "title": "PAXMEDICA,INC_07_02_2020-EX-10.12-Master Service Agreement",
+      "bytes": 16792,
+      "characters": 16792,
+      "sha256": "874eb07ae3632c67eb5eacb3f51e5927d112f8d6e7e0ba3c1a39d9614fb14f45",
+      "path": "contracts/cuad-0357.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0358",
+      "title": "SoupmanInc_20150814_8-K_EX-10.1_9230148_EX-10.1_Franchise Agreement3",
+      "bytes": 2974,
+      "characters": 2974,
+      "sha256": "d1c74726a00a6c1eb413437fbe539764f8d45d86b077b93b5b48a4b71b2aa048",
+      "path": "contracts/cuad-0358.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0359",
+      "title": "MOVADOGROUPINC_04_30_2003-EX-10.28-ENDORSEMENT AGREEMENT",
+      "bytes": 17627,
+      "characters": 17627,
+      "sha256": "ba1c107875c61d0b4913f6aaaaf00d5ca64d75d9a594447d02c40880d8f44fea",
+      "path": "contracts/cuad-0359.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0360",
+      "title": "StaarSurgicalCompany_20180801_10-Q_EX-10.37_11289449_EX-10.37_Distributor Agreement",
+      "bytes": 49760,
+      "characters": 49760,
+      "sha256": "59c04dd39af6531fd9ac9629ac6ca5172e541a1cd453014c01af4bc459ccfc58",
+      "path": "contracts/cuad-0360.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0361",
+      "title": "EmeraldHealthBioceuticalsInc_20200218_1-A_EX1A-6 MAT CTRCT_11987205_EX1A-6 MAT CTRCT_Development Agreement",
+      "bytes": 16459,
+      "characters": 16459,
+      "sha256": "bf50af4e34a26a48208d580e6398c2ec1b5eae043e6d024563f5b1efb681ca11",
+      "path": "contracts/cuad-0361.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0362",
+      "title": "DRIVENDELIVERIES,INC_05_22_2020-EX-10.4-CONSULTING AGREEMENT",
+      "bytes": 27907,
+      "characters": 27899,
+      "sha256": "bae9c2a33cdb12e3ceed1036720847072bae4b80203c841a688b1ec5044a9ea9",
+      "path": "contracts/cuad-0362.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0363",
+      "title": "STAMPSCOMINC_06_24_1999-EX-10.18-SPONSORSHIP AGREEMENT",
+      "bytes": 40856,
+      "characters": 40856,
+      "sha256": "9f065ac5ffd4d1c95be4c7e8f97967f77bc5689952f589429095e6a59003416f",
+      "path": "contracts/cuad-0363.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0364",
+      "title": "BEYONDCOMCORP_08_03_2000-EX-10.2-CO-HOSTING AGREEMENT",
+      "bytes": 58300,
+      "characters": 58300,
+      "sha256": "366791ae1ac1b2c163c069d3afed275ba3129a65574609fba9e94e56e66de9e4",
+      "path": "contracts/cuad-0364.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0365",
+      "title": "CHEETAHMOBILEINC_04_22_2014-EX-10.43-Cooperation Agreement",
+      "bytes": 39177,
+      "characters": 39177,
+      "sha256": "7ad4aef216d809694d967cf966fc42f9018f8d7c9667c59fa44c946c7bf0e08e",
+      "path": "contracts/cuad-0365.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0366",
+      "title": "ClickstreamCorp_20200330_1-A_EX1A-6 MAT CTRCT_12089935_EX1A-6 MAT CTRCT_Development Agreement",
+      "bytes": 34345,
+      "characters": 34191,
+      "sha256": "60e84c78b61cf379963d4ae8b7749ebd9c33dd7833b961fdd2c6cb9b2d0a07ed",
+      "path": "contracts/cuad-0366.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0367",
+      "title": "NEOMEDIATECHNOLOGIESINC_12_15_2005-EX-16.1-DISTRIBUTOR AGREEMENT",
+      "bytes": 36275,
+      "characters": 36275,
+      "sha256": "b3db6d72f9b7e01afbc4f535c2c4475bdbe758225567ea89ac2b3105276d6993",
+      "path": "contracts/cuad-0367.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0368",
+      "title": "ADUROBIOTECH,INC_06_02_2020-EX-10.7-CONSULTING AGREEMENT(1)",
+      "bytes": 12027,
+      "characters": 12020,
+      "sha256": "23255988c8f39e0b67d7ff8a2b316a17c3bf4cc0557141d6a7e6e9cc7d770ad3",
+      "path": "contracts/cuad-0368.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0369",
+      "title": "LejuHoldingsLtd_20140121_DRS (on F-1)_EX-10.26_8473102_EX-10.26_Content License Agreement1",
+      "bytes": 46724,
+      "characters": 46696,
+      "sha256": "edb50810e93b97e83365e7e66f2bf583cfee3981ea1ffdbbcb9f0783d9050e2e",
+      "path": "contracts/cuad-0369.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0370",
+      "title": "VISIUMTECHNOLOGIES,INC_10_20_2004-EX-10.20-DISTRIBUTOR AGREEMENT",
+      "bytes": 49784,
+      "characters": 49784,
+      "sha256": "cec5f04420ae88b3e5efd45a814f83d161cae9765f95a3b06404a81266f85caa",
+      "path": "contracts/cuad-0370.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0371",
+      "title": "HALITRON,INC_03_01_2005-EX-10.15-SPONSORSHIP AND DEVELOPMENT AGREEMENT",
+      "bytes": 30102,
+      "characters": 30102,
+      "sha256": "ff6e2ef47b5248b8a14d7b01351e75be685a37e387293c0893668943eecfd4db",
+      "path": "contracts/cuad-0371.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0372",
+      "title": "INNOVIVA,INC_08_07_2014-EX-10.1-COLLABORATION AGREEMENT",
+      "bytes": 191804,
+      "characters": 191775,
+      "sha256": "6885da43f470be15f67ecf5be03d1006d27cf88e11aeef8bf478d81f71e0c7e2",
+      "path": "contracts/cuad-0372.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0373",
+      "title": "SoupmanInc_20150814_8-K_EX-10.1_9230148_EX-10.1_Franchise Agreement2",
+      "bytes": 5504,
+      "characters": 5504,
+      "sha256": "c7753fb51c35e8316aac93bf5821f4d7d6c78323972196fc8e6c679b954d5e6c",
+      "path": "contracts/cuad-0373.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0374",
+      "title": "ADUROBIOTECH,INC_06_02_2020-EX-10.7-CONSULTING AGREEMENT",
+      "bytes": 12027,
+      "characters": 12020,
+      "sha256": "23255988c8f39e0b67d7ff8a2b316a17c3bf4cc0557141d6a7e6e9cc7d770ad3",
+      "path": "contracts/cuad-0374.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0375",
+      "title": "CybergyHoldingsInc_20140520_10-Q_EX-10.27_8605784_EX-10.27_Affiliate Agreement",
+      "bytes": 33829,
+      "characters": 33825,
+      "sha256": "1b75149a48763374ea9c10fe351848153b469499c9b3171565b41bdbd45a0f8d",
+      "path": "contracts/cuad-0375.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0376",
+      "title": "MANAKOASERVICESCORP_11_21_2007-EX-7.5-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 14879,
+      "characters": 14879,
+      "sha256": "bc94244e30306b2bb8347a007bdb4da71cb0528a56049c86d918dd8883345fb3",
+      "path": "contracts/cuad-0376.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0377",
+      "title": "WestPharmaceuticalServicesInc_20200116_8-K_EX-10.1_11947529_EX-10.1_Supply Agreement",
+      "bytes": 82902,
+      "characters": 82898,
+      "sha256": "7c991c9f55f81fd83a885f40cf89eb81f276897ee3ff068f0b7d689b6f88d495",
+      "path": "contracts/cuad-0377.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0378",
+      "title": "PANDIONTHERAPEUTICSHOLDCOLLC_05_22_2020-EX-10.17-CONSULTING AGREEMENT",
+      "bytes": 22730,
+      "characters": 22730,
+      "sha256": "5369ed2fb8fc914be45608b48bc734c4c5607ac6eb6c3cc9e76c4ad3f41c892f",
+      "path": "contracts/cuad-0378.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0379",
+      "title": "FLOTEKINDUSTRIESINCCN_05_09_2019-EX-10.1-SUPPLY AGREEMENT",
+      "bytes": 19355,
+      "characters": 19355,
+      "sha256": "815163168842823c359e4f2147ff20e0c11ba52e92fc3b61a7bb6335f1409be6",
+      "path": "contracts/cuad-0379.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0380",
+      "title": "EUROPEANMICROHOLDINGSINC_03_06_1998-EX-10.6-DISTRIBUTOR AGREEMENT",
+      "bytes": 56952,
+      "characters": 56952,
+      "sha256": "d806943ae391f6f5a4d5ee897e2b40107cc948056d0faff9d2e81d231fb059d8",
+      "path": "contracts/cuad-0380.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0381",
+      "title": "BizzingoInc_20120322_8-K_EX-10.17_7504499_EX-10.17_Endorsement Agreement",
+      "bytes": 24223,
+      "characters": 24223,
+      "sha256": "3047c857b6497a9ce5f15a8f94881e0345a2c5225e642b79d607421b9d365d33",
+      "path": "contracts/cuad-0381.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0382",
+      "title": "KitovPharmaLtd_20190326_20-F_EX-4.15_11584449_EX-4.15_Manufacturing Agreement",
+      "bytes": 57482,
+      "characters": 57436,
+      "sha256": "7c3032699fe54a5e2c82716545279f4b173b548b79f659841c5689b18f64a058",
+      "path": "contracts/cuad-0382.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0383",
+      "title": "BellringBrandsInc_20190920_S-1_EX-10.12_11817081_EX-10.12_Manufacturing Agreement3",
+      "bytes": 8024,
+      "characters": 8024,
+      "sha256": "063435deaed983bff69035a1db93843b925146affc740e05cc2e99778995e589",
+      "path": "contracts/cuad-0383.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0384",
+      "title": "GOCALLINC_03_30_2000-EX-10.7-Promotion Agreement",
+      "bytes": 22348,
+      "characters": 22348,
+      "sha256": "451e4a9bf61e5bac71c66b8286b58894f0c7eca10291959a0c79ede533c4ef14",
+      "path": "contracts/cuad-0384.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0385",
+      "title": "LEJUHOLDINGSLTD_03_12_2014-EX-10.34-INTERNET CHANNEL COOPERATION AGREEMENT",
+      "bytes": 37031,
+      "characters": 37031,
+      "sha256": "3b8e37d6654f64e03346182fcd4f0b40066df4fec0de37b9220345cf8d37ffbc",
+      "path": "contracts/cuad-0385.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0386",
+      "title": "BLACKSTONEGSOLONG-SHORTCREDITINCOMEFUND_05_11_2020-EX-99.(K)(1)-SERVICE AGREEMENT",
+      "bytes": 52552,
+      "characters": 52334,
+      "sha256": "575fe627cb99c7dc665bdfcf67380c0503ca2b7af71fba6e974872404a14f4ef",
+      "path": "contracts/cuad-0386.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0387",
+      "title": "PHLVARIABLEINSURANCECOCT_08_17_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 100747,
+      "characters": 100746,
+      "sha256": "d5dd12e27ecccb37f9bd2b6198912ccc7c8954ce8073c8cfaf7259354623ec1f",
+      "path": "contracts/cuad-0387.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0388",
+      "title": "MEETGROUP,INC_06_29_2017-EX-10.1-COOPERATION AGREEMENT",
+      "bytes": 59536,
+      "characters": 59532,
+      "sha256": "7aa6582007f2f953ed7f0fdc4418025054183c37386162db7ae073249cbadaec",
+      "path": "contracts/cuad-0388.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0389",
+      "title": "GluMobileInc_20070319_S-1A_EX-10.09_436630_EX-10.09_Content License Agreement3",
+      "bytes": 3422,
+      "characters": 3422,
+      "sha256": "94668aaf575826c5eaf742f573598bef6e34719f96d475c69c157a47d300f990",
+      "path": "contracts/cuad-0389.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0390",
+      "title": "ADAPTIMMUNETHERAPEUTICSPLC_04_06_2017-EX-10.11-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 101190,
+      "characters": 101167,
+      "sha256": "f20f55c32b8c30c720f2aabb614592e0cf8beb74e9e6fa25ad78a3295bb0db56",
+      "path": "contracts/cuad-0390.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0391",
+      "title": "ENTRUSTINC_07_24_1998-EX-10.5-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 45879,
+      "characters": 45879,
+      "sha256": "22947ccbf3dec3c83ec7567de73288f3e3e74681aa89dd59f0da5a5252168b7a",
+      "path": "contracts/cuad-0391.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0392",
+      "title": "SYKESHEALTHPLANSERVICESINC_04_24_1998-EX-10.14-OUTSOURCING AGREEMENT",
+      "bytes": 12852,
+      "characters": 12852,
+      "sha256": "0188ca707e39631156e62f71ee99a8a49a2183ca562eb0e35a2945167ecb1750",
+      "path": "contracts/cuad-0392.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0393",
+      "title": "NATIONALPROCESSINGINC_07_18_1996-EX-10.4-SPONSORSHIP AGREEMENT",
+      "bytes": 32860,
+      "characters": 32860,
+      "sha256": "6d561fa608a258250be52237d1b7789542041506614a4867c9e0a3da1cff4ea0",
+      "path": "contracts/cuad-0393.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0394",
+      "title": "MFAFINANCIAL,INC_07_06_2020-EX-99.D-JOINT FILING AGREEMENT",
+      "bytes": 3595,
+      "characters": 3595,
+      "sha256": "83a4cf11e75a1e08d9186ef454cdc7037a8fe41e466d6231dfed0f39f433afa1",
+      "path": "contracts/cuad-0394.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0395",
+      "title": "SimplicityEsportsGamingCompany_20181130_8-K_EX-10.1_11444071_EX-10.1_Franchise Agreement",
+      "bytes": 28531,
+      "characters": 28529,
+      "sha256": "4e5ebafdd3f0f5b43a304ea01666db6ee39355ddb58155c1c8a8fec3cf37824a",
+      "path": "contracts/cuad-0395.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0396",
+      "title": "QIWI_06_16_2017-EX-99.(D)(2)-COOPERATION AGREEMENT",
+      "bytes": 26192,
+      "characters": 26192,
+      "sha256": "7948992d36fcf6b2d27ebd55dbdaeee258e1c035b3825ff954b6e2c55f900848",
+      "path": "contracts/cuad-0396.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0397",
+      "title": "RemarkHoldingsInc_20081114_10-Q_EX-10.24_2895649_EX-10.24_Content License Agreement",
+      "bytes": 59109,
+      "characters": 59089,
+      "sha256": "633730271ed5a6b43ae1f54c01d6760b01d3442f4802679c8dcfa08078e7d937",
+      "path": "contracts/cuad-0397.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0398",
+      "title": "CnsPharmaceuticalsInc_20200326_8-K_EX-10.1_12079626_EX-10.1_Development Agreement",
+      "bytes": 20793,
+      "characters": 20791,
+      "sha256": "fcf374a48a92fa8c689861905d2d8cc89cbbbd613ae3ae32dc7e61b71bda1fe7",
+      "path": "contracts/cuad-0398.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0399",
+      "title": "GluMobileInc_20070319_S-1A_EX-10.09_436630_EX-10.09_Content License Agreement2",
+      "bytes": 11954,
+      "characters": 11954,
+      "sha256": "ab313de5385c0998e3242d39c567f21c4297e4f1c9eafbda33998f330deda36c",
+      "path": "contracts/cuad-0399.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0400",
+      "title": "PROFOUNDMEDICALCORP_08_29_2019-EX-4.5-SUPPLY AGREEMENT",
+      "bytes": 66443,
+      "characters": 66442,
+      "sha256": "68f39c0d1757881605a0c52e260b86aa0d23de970694a6397cf6654e0881405e",
+      "path": "contracts/cuad-0400.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0401",
+      "title": "TRICITYBANKSHARESCORP_05_15_1998-EX-10-OUTSOURCING AGREEMENT",
+      "bytes": 101639,
+      "characters": 101639,
+      "sha256": "5ace7a03650252f3f2a08d44b3bf4c689d6b9e1bc62a90a455a23bcb4e484b02",
+      "path": "contracts/cuad-0401.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0402",
+      "title": "BLUEHILLSBANCORP,INC_05_20_2014-EX-1.1-AGENCY AGREEMENT",
+      "bytes": 130770,
+      "characters": 130742,
+      "sha256": "a2b6fb3f49c52a03d2b958c00a02f115c282f0d4a53c530d62ba895b9c4300e9",
+      "path": "contracts/cuad-0402.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0403",
+      "title": "GarrettMotionInc_20181001_8-K_EX-2.4_11364532_EX-2.4_Intellectual Property Agreement",
+      "bytes": 56509,
+      "characters": 56509,
+      "sha256": "fa8bdf71adf2495c4248b0bf66536947b3d11df34261c30193c751d8f4d05543",
+      "path": "contracts/cuad-0403.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0404",
+      "title": "TheglobeComInc_19990503_S-1A_EX-10.20_5416126_EX-10.20_Co-Branding Agreement",
+      "bytes": 48004,
+      "characters": 48004,
+      "sha256": "51b71ecc7fb7756524eec4e5bc2130ef0cbf99352537669e0887836391695392",
+      "path": "contracts/cuad-0404.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0405",
+      "title": "EmbarkComInc_19991008_S-1A_EX-10.10_6487661_EX-10.10_Co-Branding Agreement",
+      "bytes": 35136,
+      "characters": 35136,
+      "sha256": "dcf8bd0c57eedb12d08927bf9c7cb66fbf30310394e4fbf01fea27b414e85a8f",
+      "path": "contracts/cuad-0405.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0406",
+      "title": "HC2HOLDINGS,INC_05_14_2020-EX-10.1-COOPERATION AGREEMENT",
+      "bytes": 54868,
+      "characters": 54866,
+      "sha256": "47ee42edcfd94c66c62f1b971f785d7027d0facea23309670d8c6921d3ff703c",
+      "path": "contracts/cuad-0406.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0407",
+      "title": "TRANSMONTAIGNEPARTNERSLLC_03_13_2020-EX-10.9-SERVICES AGREEMENT",
+      "bytes": 5886,
+      "characters": 5886,
+      "sha256": "0351a656e287a75d220da655a5ffff90f9cafdf47292478177e2ea7c1662d4fb",
+      "path": "contracts/cuad-0407.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0408",
+      "title": "COOLTECHNOLOGIES,INC_10_25_2017-EX-10.71-Strategic Alliance Agreement",
+      "bytes": 13548,
+      "characters": 13548,
+      "sha256": "8ce577d01af57dfe32146885a2f834334726b627dc451095d10edf92f040dd12",
+      "path": "contracts/cuad-0408.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0409",
+      "title": "Monsanto Company - SECOND A_R EXCLUSIVE AGENCY AND MARKETING AGREEMENT ",
+      "bytes": 221402,
+      "characters": 221382,
+      "sha256": "23efebbaa834db98f870bf4659ac32f37fe481ddddd32dee560f343aefc8c270",
+      "path": "contracts/cuad-0409.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0410",
+      "title": "ALLIANCEBANCORPINCOFPENNSYLVANIA_10_18_2006-EX-1.2-AGENCY AGREEMENT",
+      "bytes": 130258,
+      "characters": 130256,
+      "sha256": "d22c5d084ff7502d7c26a83a243846a710547c26b117ec82d3a0ec60f2f896c7",
+      "path": "contracts/cuad-0410.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0411",
+      "title": "XpresspaGroupInc_20190401_10-K_EX-10.28_11599457_EX-10.28_Marketing Agreement",
+      "bytes": 52165,
+      "characters": 52106,
+      "sha256": "92fd854aaedfc9d3cd2b414eedeb115e929352e7f04b12c96066a26043466ddf",
+      "path": "contracts/cuad-0411.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0412",
+      "title": "ElPolloLocoHoldingsInc_20200306_10-K_EX-10.16_12041700_EX-10.16_Development Agreement",
+      "bytes": 60688,
+      "characters": 60618,
+      "sha256": "bc76571a2b5ae91953575dd7deaee58a11d55ce9a891fa9335e7c2aff05cb9c4",
+      "path": "contracts/cuad-0412.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0413",
+      "title": "BellringBrandsInc_20190920_S-1_EX-10.12_11817081_EX-10.12_Manufacturing Agreement2",
+      "bytes": 2274,
+      "characters": 2274,
+      "sha256": "f7c0f6916366509e9e27a7e89ff4658bf08533469d01b633a9ecb903eb856e0b",
+      "path": "contracts/cuad-0413.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0414",
+      "title": "IdeanomicsInc_20160330_10-K_EX-10.26_9512211_EX-10.26_Content License Agreement",
+      "bytes": 41030,
+      "characters": 40866,
+      "sha256": "709a7a9cfe66a11f2b9ef2e18ea813e3fba4bd9a8ceb3816f0fbaf9664066e97",
+      "path": "contracts/cuad-0414.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0415",
+      "title": "BIOAMBERINC_04_10_2013-EX-10.34-DEVELOPMENT AGREEMENT (1)",
+      "bytes": 38769,
+      "characters": 38733,
+      "sha256": "65b642a2a325f2b974d30da010140e775df5226de003f971dfc32ac30b522915",
+      "path": "contracts/cuad-0415.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0416",
+      "title": "ACCELERATEDTECHNOLOGIESHOLDINGCORP_04_24_2003-EX-10.13-JOINT VENTURE AGREEMENT",
+      "bytes": 13038,
+      "characters": 13038,
+      "sha256": "85182a8d5506adf149a0c8ea479167d6c11b979a821fa33a5da2ce1cdcd13c31",
+      "path": "contracts/cuad-0416.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0417",
+      "title": "PrudentialBancorpInc_20170606_8-K_EX-10.4_10474434_EX-10.4_Endorsement Agreement",
+      "bytes": 14155,
+      "characters": 14155,
+      "sha256": "fbd91f8673f9f240dbc62ccfe0665bec3490abb191df5cff64061b4c00ac71f3",
+      "path": "contracts/cuad-0417.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0418",
+      "title": "SEASPINEHOLDINGSCORP_10_10_2018-EX-10.1-SUPPLY AGREEMENT",
+      "bytes": 70898,
+      "characters": 70898,
+      "sha256": "5657b1ef6001f6f5bee46cfc0165399d42466af1265048c3f816bba1edb624bc",
+      "path": "contracts/cuad-0418.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0419",
+      "title": "BERKELEYLIGHTS,INC_06_26_2020-EX-10.12-COLLABORATION AGREEMENT",
+      "bytes": 209072,
+      "characters": 209067,
+      "sha256": "cdd87a59c56a0bdbef6d4fa88a739471be81d90fec6a92327698a7f359a8302d",
+      "path": "contracts/cuad-0419.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0420",
+      "title": "UnionDentalHoldingsInc_20050204_8-KA_EX-10_3345577_EX-10_Affiliate Agreement",
+      "bytes": 14083,
+      "characters": 14083,
+      "sha256": "552913b336a816ccd16a4acfdef63791d383dc26b7483b856cc717bf6e7d9cd1",
+      "path": "contracts/cuad-0420.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0421",
+      "title": "WOMENSGOLFUNLIMITEDINC_03_29_2000-EX-10.13-ENDORSEMENT AGREEMENT - Intellectual Property Rights                 Confidentiality and Non-Use Obligations Agreement",
+      "bytes": 7042,
+      "characters": 7042,
+      "sha256": "326b491f5f1079ba35a2f03ae6a9dd9c009668e7e2a8156dedf3bbaf553b1d34",
+      "path": "contracts/cuad-0421.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0422",
+      "title": "SPHERE3DCORP_06_24_2020-EX-10.12-CONSULTING AGREEMENT",
+      "bytes": 12394,
+      "characters": 12394,
+      "sha256": "4fcfd8db0d74abd10832ecbc5658a6a3b30e5a16a1220a462394ac9eb43b3268",
+      "path": "contracts/cuad-0422.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0423",
+      "title": "ENTERPRISEPRODUCTSPARTNERSLP_07_08_1998-EX-10.3-TRANSPORTATION CONTRACT",
+      "bytes": 74915,
+      "characters": 74915,
+      "sha256": "f977f905f4d6e967aba6af3d7f2f1cb52f8e8d0ff505560962f90a6a1b8587dc",
+      "path": "contracts/cuad-0423.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0424",
+      "title": "HerImports_20161018_8-KA_EX-10.14_9765707_EX-10.14_Maintenance Agreement",
+      "bytes": 10229,
+      "characters": 10217,
+      "sha256": "58a3602dd88ac590b470ca3fa7942fd838e1445c9d1e71a86a9ea3e00a33b83e",
+      "path": "contracts/cuad-0424.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0425",
+      "title": "PROLONGINTERNATIONALCORP_03_23_1998-EX-10.16-SPONSORSHIP AGREEMENT",
+      "bytes": 14969,
+      "characters": 14969,
+      "sha256": "915146be0c3ac1490c0b7ab4a1505301666596e627da0799887a9cfe35a024e3",
+      "path": "contracts/cuad-0425.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0426",
+      "title": "DYNTEKINC_07_30_1999-EX-10-ONLINE HOSTING AGREEMENT",
+      "bytes": 25214,
+      "characters": 25214,
+      "sha256": "75cb8dce69c94723ec13f9414fc50d7712a20574ea077674d359447edb709a14",
+      "path": "contracts/cuad-0426.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0427",
+      "title": "ALAMOGORDOFINANCIALCORP_12_16_1999-EX-1-AGENCY AGREEMENT",
+      "bytes": 143307,
+      "characters": 143307,
+      "sha256": "3c70a981a2107097efddcf6fdba26d5d4b3d7eb458d826a10002d5dcc767fad7",
+      "path": "contracts/cuad-0427.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0428",
+      "title": "StampscomInc_20001114_10-Q_EX-10.47_2631630_EX-10.47_Co-Branding Agreement",
+      "bytes": 87014,
+      "characters": 87014,
+      "sha256": "0fec47f78bf4f1f6a230d495bbb23c91106f96cbb2d53f556c0d7ada09c850fc",
+      "path": "contracts/cuad-0428.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0429",
+      "title": "InvendaCorp_20000828_S-1A_EX-10.2_2588206_EX-10.2_Co-Branding Agreement",
+      "bytes": 114759,
+      "characters": 114759,
+      "sha256": "4db68fb78e12cf32dc661bfdbd17b177783b3af2570f0341efaae1bff0122e3e",
+      "path": "contracts/cuad-0429.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0430",
+      "title": "WebmdHealthCorp_20050908_S-1A_EX-10.7_1027007_EX-10.7_Content License Agreement",
+      "bytes": 14993,
+      "characters": 14993,
+      "sha256": "88644a8e3238de6ed500bae045cdbd4ffc204ee2fa827d3859f56610d2031822",
+      "path": "contracts/cuad-0430.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0431",
+      "title": "SANDRIDGEENERGYINC_08_06_2009-EX-10.6-OPERATIONS AND MAINTENANCE AGREEMENT",
+      "bytes": 73134,
+      "characters": 73119,
+      "sha256": "264aba6daf987e09c103aef01f08d38a75cac25738a949a26a6d3fad1ed148c7",
+      "path": "contracts/cuad-0431.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0432",
+      "title": "ON4COMMUNICATIONSINC_07_02_2009-EX-10.1-PROMOTION AGREEMENT",
+      "bytes": 15103,
+      "characters": 15103,
+      "sha256": "50407bd2ecffca3bec8f81d066233d44f93eae4054b371ccdadae6a7cc8d2cd0",
+      "path": "contracts/cuad-0432.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0433",
+      "title": "GluMobileInc_20070319_S-1A_EX-10.09_436630_EX-10.09_Content License Agreement1",
+      "bytes": 112801,
+      "characters": 112794,
+      "sha256": "ed6d0e01ab253bf488839d449bc4a98ad1c1d99b0f098c7d09e86b040b24a2ab",
+      "path": "contracts/cuad-0433.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0434",
+      "title": "HfEnterprisesInc_20191223_S-1_EX-10.22_11931299_EX-10.22_Development Agreement",
+      "bytes": 19438,
+      "characters": 19435,
+      "sha256": "6c0d2d0e9da5975f82e5ab81cc2990cd20e41b5d75f389fd020247b2535eff18",
+      "path": "contracts/cuad-0434.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0435",
+      "title": "ICORECONNECTINC_10_13_2010-EX-7.1-Strategic Alliance Agreement",
+      "bytes": 25310,
+      "characters": 25246,
+      "sha256": "6536f2b9198ec8018b9b04b8aa9ed3d395d5462b658a9b4278bb211a2d199b00",
+      "path": "contracts/cuad-0435.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0436",
+      "title": "BANUESTRAFINANCIALCORP_09_08_2006-EX-10.16-AGENCY AGREEMENT",
+      "bytes": 45214,
+      "characters": 45214,
+      "sha256": "8a409e55f61a647c258e02748912d68112b3a13fce72f17a060135157c73cd9c",
+      "path": "contracts/cuad-0436.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0437",
+      "title": "ArtaraTherapeuticsInc_20200110_8-K_EX-10.5_11943350_EX-10.5_License Agreement",
+      "bytes": 38450,
+      "characters": 38330,
+      "sha256": "aa63496b5011130a8704272a732ce09d5ccea0103437b90a5cf4caa05fed3039",
+      "path": "contracts/cuad-0437.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0438",
+      "title": "NlsPharmaceuticsLtd_20200228_F-1_EX-10.14_12029046_EX-10.14_Development Agreement",
+      "bytes": 67957,
+      "characters": 67932,
+      "sha256": "7e79ea54ff155d02ae52f6e2cc9e2035a46b809f96e77885d99e1ab78c38f217",
+      "path": "contracts/cuad-0438.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0439",
+      "title": "TEARDROPGOLFCO_10_23_1996-EX-10.12-ENDORSEMENT AGREEMENT",
+      "bytes": 26215,
+      "characters": 26215,
+      "sha256": "3310cdd1e51609025da7bd6bfc11d72087bde2b2bdfdf2b8f371f2e159abf3b2",
+      "path": "contracts/cuad-0439.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0440",
+      "title": "VIRTUALSCOPICS,INC_11_12_2010-EX-10.1-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 46060,
+      "characters": 46057,
+      "sha256": "a9ccfbb7f803224e5c58009f8fd32250cd2cb2502551cea8f6adfb5be1e69309",
+      "path": "contracts/cuad-0440.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0441",
+      "title": "BellringBrandsInc_20190920_S-1_EX-10.12_11817081_EX-10.12_Manufacturing Agreement1",
+      "bytes": 42473,
+      "characters": 42473,
+      "sha256": "282c8f55337dd7866bdbad178bcefe679017c2be4e1ae80a37fef98acf995e44",
+      "path": "contracts/cuad-0441.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0442",
+      "title": "BLUEFLYINC_03_27_2002-EX-10.27-e-business Hosting Agreement",
+      "bytes": 37351,
+      "characters": 37351,
+      "sha256": "1e6bf0ff8fcb0744a42746de9f45fdda9cfa23a176c48d54e5000ee040f4316a",
+      "path": "contracts/cuad-0442.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0443",
+      "title": "ASIANDRAGONGROUPINC_08_11_2005-EX-10.5-Reseller Agreement",
+      "bytes": 45002,
+      "characters": 45002,
+      "sha256": "16bb9d1715c4e0e41dd3f47b5eff2630d3848065dd31573dc4fbe77b7415dbdd",
+      "path": "contracts/cuad-0443.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0444",
+      "title": "MANUFACTURERSSERVICESLTD_06_05_2000-EX-10.14-OUTSOURCING AGREEMENT",
+      "bytes": 338211,
+      "characters": 338211,
+      "sha256": "5cc2cbafdfe4b089bce0b1084cd4997a37f9a23b7c6307fec93a1777015fb690",
+      "path": "contracts/cuad-0444.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0445",
+      "title": "LiquidmetalTechnologiesInc_20200205_8-K_EX-10.1_11968198_EX-10.1_Development Agreement",
+      "bytes": 83975,
+      "characters": 83972,
+      "sha256": "4d133de7f434c2a615f0157c06df8785a82d98ca02aab46804b130131ec5efd7",
+      "path": "contracts/cuad-0445.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0446",
+      "title": "PlayboyEnterprisesInc_20090220_10-QA_EX-10.2_4091580_EX-10.2_Content License Agreement_ Marketing Agreement_ Sales-Purchase Agreement2",
+      "bytes": 3558,
+      "characters": 3558,
+      "sha256": "ccf10e1bed833697efe7893f85d96df2676b18d49671b9bf2465de2388862247",
+      "path": "contracts/cuad-0446.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0447",
+      "title": "ZtoExpressCaymanInc_20160930_F-1_EX-10.10_9752871_EX-10.10_Transportation Agreement",
+      "bytes": 9174,
+      "characters": 9174,
+      "sha256": "b18c00b398935e7fa82c85f6d21ca06e5db562d29032caa64b901bc74acd6256",
+      "path": "contracts/cuad-0447.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0448",
+      "title": "ScansourceInc_20190822_10-K_EX-10.39_11793959_EX-10.39_Distributor Agreement",
+      "bytes": 10893,
+      "characters": 10891,
+      "sha256": "73c1a2a9f68cdab2e62518200def5559058e20553d14f8dff4a6b7574d516416",
+      "path": "contracts/cuad-0448.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0449",
+      "title": "LOOKSMARTLTD_07_20_2012-EX-99.(D)(I)-SPONSORSHIP AGREEMENT",
+      "bytes": 25922,
+      "characters": 25922,
+      "sha256": "1455fd9c2d9b5abe65cbd8a5b96105312c40c612ad069775fff9619544b6f362",
+      "path": "contracts/cuad-0449.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0450",
+      "title": "2ThemartComInc_19990826_10-12G_EX-10.10_6700288_EX-10.10_Co-Branding Agreement_ Agency Agreement",
+      "bytes": 29454,
+      "characters": 29454,
+      "sha256": "6cdfab95eb5b30c0d2d4860c8204b96b36a54cb9e2025c5ceb1457d223afac41",
+      "path": "contracts/cuad-0450.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0451",
+      "title": "MOELIS_CO_03_24_2014-EX-10.19-STRATEGIC ALLIANCE AGREEMENT",
+      "bytes": 122054,
+      "characters": 122054,
+      "sha256": "64370af7f18a571fc8f2ce6df7ba2d95aa17466d19db2fa44eebe03f9ea15bce",
+      "path": "contracts/cuad-0451.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0452",
+      "title": "XYBERNAUTCORP_07_12_2002-EX-4-SPONSORSHIP AGREEMENT",
+      "bytes": 48489,
+      "characters": 48489,
+      "sha256": "40b817ce4ffa7162f5f8c2ebe5d0149cea8b76b5bd8482ca3a27c73a8bf68d4c",
+      "path": "contracts/cuad-0452.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0453",
+      "title": "CARDAX,INC_08_19_2014-EX-10.1-COLLABORATION AGREEMENT",
+      "bytes": 56539,
+      "characters": 56539,
+      "sha256": "fadc3c32a70d9d22999c3358d236b654dd60a147fba18704b9666ef7c9e9ee3e",
+      "path": "contracts/cuad-0453.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0454",
+      "title": "PcquoteComInc_19990721_S-1A_EX-10.11_6377149_EX-10.11_Co-Branding Agreement2",
+      "bytes": 857,
+      "characters": 857,
+      "sha256": "f4315bbc3c62769c0f78a6c62a6a452e9b0ebbc409a8f7ee6cd73de55a9e01c1",
+      "path": "contracts/cuad-0454.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0455",
+      "title": "MACY_S,INC_05_11_2020-EX-99.4-JOINT FILING AGREEMENT",
+      "bytes": 1402,
+      "characters": 1397,
+      "sha256": "2f1e7f7eb2aa0ee0d2de4976b8ceccccf618e24a4ea57bb8f75dd33c96477dac",
+      "path": "contracts/cuad-0455.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0456",
+      "title": "TALCOTTRESOLUTIONLIFEINSURANCECO-SEPARATEACCOUNTTWELVE_04_30_2020-EX-99.8(L)-SERVICE AGREEMENT",
+      "bytes": 29797,
+      "characters": 29797,
+      "sha256": "058d89037c36c9dc486680c17a129f00339d791f21f5b7e49ea60517673e8ae9",
+      "path": "contracts/cuad-0456.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0457",
+      "title": "ArmstrongFlooringInc_20190107_8-K_EX-10.2_11471795_EX-10.2_Intellectual Property Agreement",
+      "bytes": 56868,
+      "characters": 56858,
+      "sha256": "4311463a9da996c008b3c16e323d32c517ed1b785f283a30ee1aceccacf90558",
+      "path": "contracts/cuad-0457.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0458",
+      "title": "PFSFUNDS_06_26_2020-EX-99.H OTH MAT CONT-SERVICES AGREEMENT",
+      "bytes": 15052,
+      "characters": 15052,
+      "sha256": "5e5547691fe99cd023da22a15b906d7c5d506a416da4902a653efea4900170e4",
+      "path": "contracts/cuad-0458.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0459",
+      "title": "WaterNowInc_20191120_10-Q_EX-10.12_11900227_EX-10.12_Distributor Agreement",
+      "bytes": 48412,
+      "characters": 48412,
+      "sha256": "266cfed204be27d671b6ab02ded4106b6c854747a3c46604f4d10614b20fcc06",
+      "path": "contracts/cuad-0459.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0460",
+      "title": "MTITECHNOLOGYCORP_11_16_2004-EX-10.102-Reseller Agreement Premier Addendum",
+      "bytes": 32744,
+      "characters": 32744,
+      "sha256": "b13612159cc7a207a7669ee6f3fa52835dad6ee72ed9f3c63166a72a4fff884e",
+      "path": "contracts/cuad-0460.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0461",
+      "title": "SCOUTCAMINC_05_12_2020-EX-10.22-SERVICES AGREEMENT",
+      "bytes": 8315,
+      "characters": 8315,
+      "sha256": "1b5779a8d78732df0ef5604e6d5ea62fef8fab11a25d1945cf9469dc3c6d3f44",
+      "path": "contracts/cuad-0461.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0462",
+      "title": "PharmagenInc_20120803_8-KA_EX-10.1_7693204_EX-10.1_Endorsement Agreement",
+      "bytes": 17886,
+      "characters": 17886,
+      "sha256": "3dab8b717431455fd4ae11ed9b169b2e95336b28702a66c8044d6646771871f1",
+      "path": "contracts/cuad-0462.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0463",
+      "title": "DRKOOPCOMINC_04_21_1999-EX-10.28-SPONSORSHIP AGREEMENT",
+      "bytes": 39177,
+      "characters": 39177,
+      "sha256": "7bf1cc08ff20ba49840c64de72e9ce643050b5fbc7f0486562da6539a7e1d66b",
+      "path": "contracts/cuad-0463.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0464",
+      "title": "IMPCOTECHNOLOGIESINC_04_15_2003-EX-10.65-JOINT VENTURE AGREEMENT",
+      "bytes": 63439,
+      "characters": 63439,
+      "sha256": "7b93d296763d8c74b8c7f623b0524464a5b0f79c03c9a0a9b74bba3b5d55ed66",
+      "path": "contracts/cuad-0464.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0465",
+      "title": "EbixInc_20010515_10-Q_EX-10.3_4049767_EX-10.3_Co-Branding Agreement",
+      "bytes": 42972,
+      "characters": 42972,
+      "sha256": "c94be1a4bdea0863f185745689662951fe5dc0e32f6ed3637a780119a3e75a18",
+      "path": "contracts/cuad-0465.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0466",
+      "title": "VNUE,INC_07_10_2015-EX-10.1-SPONSORSHIP AGREEMENT",
+      "bytes": 20487,
+      "characters": 20487,
+      "sha256": "e3ce39469d5b67b169af1e3b0164b3457fdbf324855320d8cc5637f9f432a5d1",
+      "path": "contracts/cuad-0466.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0467",
+      "title": "LegacyEducationAllianceInc_20141110_8-K_EX-10.9_8828866_EX-10.9_Endorsement Agreement",
+      "bytes": 19919,
+      "characters": 19913,
+      "sha256": "58078cc191465e413069fc8ab1a717e56e50e10ca476f5f79f734d0638943280",
+      "path": "contracts/cuad-0467.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0468",
+      "title": "EcoScienceSolutionsInc_20180406_8-K_EX-10.1_11135398_EX-10.1_Sponsorship Agreement",
+      "bytes": 8052,
+      "characters": 8052,
+      "sha256": "a2bbc78780c5eee0b15768c43c3dd8b15181d714d98273f4a6c4f2478e76a02d",
+      "path": "contracts/cuad-0468.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0469",
+      "title": "PcquoteComInc_19990721_S-1A_EX-10.11_6377149_EX-10.11_Co-Branding Agreement3",
+      "bytes": 2558,
+      "characters": 2558,
+      "sha256": "6485dbaee5e11df2f5a7e8809acad1410c2ac2b535da0d4359f2ab0cb33a9180",
+      "path": "contracts/cuad-0469.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0470",
+      "title": "GluMobileInc_20070319_S-1A_EX-10.09_436630_EX-10.09_Content License Agreement4",
+      "bytes": 1902,
+      "characters": 1902,
+      "sha256": "b5dc6d1ea4c6ac711270a5b019707577e67579deb69b5bc6f6507b33a096987c",
+      "path": "contracts/cuad-0470.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0471",
+      "title": "GOOSEHEADINSURANCE,INC_04_02_2018-EX-10.6-Franchise Agreement",
+      "bytes": 300846,
+      "characters": 300768,
+      "sha256": "0c6be355977150d83d8f1ee5dd30f176e637a4e02df72b731131860b079f1b41",
+      "path": "contracts/cuad-0471.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0472",
+      "title": "OPTIMIZEDTRANSPORTATIONMANAGEMENT,INC_07_26_2000-EX-6.6-DISTRIBUTOR AGREEMENT",
+      "bytes": 10801,
+      "characters": 10801,
+      "sha256": "429171f2a7d1169131390ecfe3db7e1ab8e4b208374858e898f470a64b69a990",
+      "path": "contracts/cuad-0472.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0473",
+      "title": "IMAGEWARESYSTEMSINC_12_20_1999-EX-10.22-MAINTENANCE AGREEMENT",
+      "bytes": 21778,
+      "characters": 21778,
+      "sha256": "a3434e0b2e5eb0f8d1548c6d7ba40a4f7f46d26f6f7381dbb8831bb929226444",
+      "path": "contracts/cuad-0473.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0474",
+      "title": "NakedBrandGroupInc_20150731_POS AM (on S-1)_EX-10.75_9196027_EX-10.75_Endorsement Agreement",
+      "bytes": 48410,
+      "characters": 48410,
+      "sha256": "1510ddf504647e19470bab2f0046771166aed262af311bd99e5b6809b49ec15d",
+      "path": "contracts/cuad-0474.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0475",
+      "title": "IdeanomicsInc_20151124_8-K_EX-10.2_9354744_EX-10.2_Content License Agreement",
+      "bytes": 35257,
+      "characters": 35189,
+      "sha256": "c538e198298848d2e29a5e608ac164c5995768059b85485f564d184ae354f1c5",
+      "path": "contracts/cuad-0475.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0476",
+      "title": "ZONDWINDSYSTEMPARTNERSLTDSERIES85-B_04_03_2006-EX-10-MANAGEMENT AND MAINTENANCE AGREEMENT",
+      "bytes": 17712,
+      "characters": 17712,
+      "sha256": "c94676ada8fc7266325de382be5a9344950f52e6ae5eef5f9cdc8cbb49a6dbae",
+      "path": "contracts/cuad-0476.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0477",
+      "title": "IbioInc_20200313_8-K_EX-10.1_12052678_EX-10.1_Development Agreement",
+      "bytes": 30545,
+      "characters": 30544,
+      "sha256": "fe6a77cfa033b97cb63de02c84a7c8c3b6a7f7f49291c0490f0ba393e771cf0e",
+      "path": "contracts/cuad-0477.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0478",
+      "title": "BellringBrandsInc_20190920_S-1_EX-10.12_11817081_EX-10.12_Manufacturing Agreement4",
+      "bytes": 1742,
+      "characters": 1742,
+      "sha256": "2f5c0ad9164da9c7acb685fe4b1a2a5e0c141ca97ca8daacd3dfd25832e2ecf4",
+      "path": "contracts/cuad-0478.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0479",
+      "title": "ParatekPharmaceuticalsInc_20170505_10-KA_EX-10.29_10323872_EX-10.29_Outsourcing Agreement",
+      "bytes": 114902,
+      "characters": 114893,
+      "sha256": "dcd5345df0e45ae2954d2601ceacb0eec003128ec081ff4a8888ad9025f449d3",
+      "path": "contracts/cuad-0479.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0480",
+      "title": "JOINTCORP_09_19_2014-EX-10.15-FRANCHISE AGREEMENT",
+      "bytes": 167525,
+      "characters": 167259,
+      "sha256": "250123d9cb2426399badfbd57756dbf60be73d152c5a510a0ef00541cf623904",
+      "path": "contracts/cuad-0480.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0481",
+      "title": "VnueInc_20150914_8-K_EX-10.1_9259571_EX-10.1_Promotion Agreement",
+      "bytes": 10553,
+      "characters": 10553,
+      "sha256": "1cf474e83b78700c764b3d756a6ad0c4720327f851361993144fe2e734144f7d",
+      "path": "contracts/cuad-0481.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0482",
+      "title": "NEXSTARFINANCEHOLDINGSINC_03_27_2002-EX-10.26-OUTSOURCING AGREEMENT",
+      "bytes": 120459,
+      "characters": 120459,
+      "sha256": "6b8215ee167d155a4cee948c3846b07c8850b6277f9263bd6d29f331ecc83535",
+      "path": "contracts/cuad-0482.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0483",
+      "title": "SUNTRONCORP_05_17_2006-EX-10.22-MAINTENANCE AGREEMENT",
+      "bytes": 32263,
+      "characters": 32263,
+      "sha256": "691241b8540fc279c2ee8d72640cbfd5462e32ee7b6d991a7693b82227c88eb6",
+      "path": "contracts/cuad-0483.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0484",
+      "title": "SPIENERGYCO,LTD_03_09_2011-EX-99.5-OPERATIONS AND MAINTENANCE AGREEMENT",
+      "bytes": 54180,
+      "characters": 54160,
+      "sha256": "51d2e78315b1adab437d58922567571704bb637b575c9c730471d0bbc52486e9",
+      "path": "contracts/cuad-0484.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0485",
+      "title": "SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement",
+      "bytes": 18159,
+      "characters": 18157,
+      "sha256": "93c7b52c2c43487dae56a24e2c14aeec98b1a6bc74866fc0fa18f644edb3d337",
+      "path": "contracts/cuad-0485.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0486",
+      "title": "PRECIGEN,INC_01_22_2020-EX-99.1-JOINT FILING AGREEMENT",
+      "bytes": 976,
+      "characters": 972,
+      "sha256": "2366edd6ce385cadd88fc3a2bbd17a62775bb54e479b8452c0e2491ada6021e1",
+      "path": "contracts/cuad-0486.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0487",
+      "title": "PhotronicsInc_20171219_10-QA_EX-10.28_10982650_EX-10.28_Outsourcing Agreement",
+      "bytes": 25392,
+      "characters": 25392,
+      "sha256": "59b0d3dfd4d156a8bd7bb5a9ee77fe3886699636bfd79f7406b734bc7d100257",
+      "path": "contracts/cuad-0487.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0488",
+      "title": "KIROMICBIOPHARMA,INC_04_08_2020-EX-10.28-JOINT VENTURE AGREEMENT",
+      "bytes": 36622,
+      "characters": 36610,
+      "sha256": "5d49e97e8deb2ed6d588cdc8604572b6d70ffbe137f42be03a0548c1441e8d6b",
+      "path": "contracts/cuad-0488.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0489",
+      "title": "EMERALDHEALTHTHERAPEUTICSINC_06_10_2020-EX-4.5-CONSULTING AGREEMENT - DR. GAETANO MORELLO N.D. INC.",
+      "bytes": 20637,
+      "characters": 20637,
+      "sha256": "e9b670a117b0093c45379e52dd4aca10ae2e7f5e7460d89816e6546ff7875d96",
+      "path": "contracts/cuad-0489.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0490",
+      "title": "PlayboyEnterprisesInc_20090220_10-QA_EX-10.2_4091580_EX-10.2_Content License Agreement_ Marketing Agreement_ Sales-Purchase Agreement1",
+      "bytes": 117168,
+      "characters": 117118,
+      "sha256": "cb53054735cbbd216f4c96ff4ddcb0d36713de751760ee0b97e33c2c76555d21",
+      "path": "contracts/cuad-0490.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0491",
+      "title": "TubeMediaCorp_20060310_8-K_EX-10.1_513921_EX-10.1_Affiliate Agreement",
+      "bytes": 69984,
+      "characters": 69973,
+      "sha256": "920be40f24a6f9ac6cd8a438ef3932ae275589b0433f6a7a55241cf8ea865495",
+      "path": "contracts/cuad-0491.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0492",
+      "title": "MARSHALLHOLDINGSINTERNATIONAL,INC_04_14_2004-EX-10.15-ENDORSEMENT AGREEMENT",
+      "bytes": 12962,
+      "characters": 12962,
+      "sha256": "afd4934d5d26b8ac7a8248bd41652e2d463fdadd94e4cc812972bb41d334d387",
+      "path": "contracts/cuad-0492.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0493",
+      "title": "PcquoteComInc_19990721_S-1A_EX-10.11_6377149_EX-10.11_Co-Branding Agreement1",
+      "bytes": 19851,
+      "characters": 19851,
+      "sha256": "168e88036f475aca607e6652e1737b7ac92c79b17df3c5ae94ce5999d5e1284d",
+      "path": "contracts/cuad-0493.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0494",
+      "title": "BLACKBOXSTOCKSINC_08_05_2014-EX-10.1-DISTRIBUTOR AGREEMENT",
+      "bytes": 17245,
+      "characters": 17234,
+      "sha256": "0d2edecafe20a5de97f47ed19b08e2df988b3471e3da810944017ec8675adba5",
+      "path": "contracts/cuad-0494.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0495",
+      "title": "ALCOSTORESINC_12_14_2005-EX-10.26-AGENCY AGREEMENT",
+      "bytes": 11361,
+      "characters": 11355,
+      "sha256": "0d8be99620d364c5dc920fdbce6ccdbdec070aa58db2e9550ad6432b29f7e731",
+      "path": "contracts/cuad-0495.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0496",
+      "title": "WARNERCHILCOTTPLC_12_31_2003-EX-4.36-DEVELOPMENT AGREEMENT",
+      "bytes": 29683,
+      "characters": 29683,
+      "sha256": "041cf1228436df335d70b2c4b6b563780fe5c9f30b20a10e5fee807a669b5f8b",
+      "path": "contracts/cuad-0496.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0497",
+      "title": "VertexEnergyInc_20200113_8-K_EX-10.1_11943624_EX-10.1_Marketing Agreement",
+      "bytes": 45076,
+      "characters": 45072,
+      "sha256": "480cfbb8c3b84fd4e2e8bfb0a218b1b20d5c4634dc99a7defbd89c68f933ee88",
+      "path": "contracts/cuad-0497.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0498",
+      "title": "NETZEEINC_11_14_2002-EX-10.3-MAINTENANCE AGREEMENT",
+      "bytes": 3474,
+      "characters": 3474,
+      "sha256": "1590bce2bca6065376df0622a3cdd02d8d2436b5dc34e75419d60308cb128602",
+      "path": "contracts/cuad-0498.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0499",
+      "title": "REGANHOLDINGCORP_03_31_2008-EX-10-LICENSE AND HOSTING AGREEMENT",
+      "bytes": 55889,
+      "characters": 55889,
+      "sha256": "234a940d6953ff14c4abdde395f83cf0746539c3a006a2bfaa7cbdd80b4baf9e",
+      "path": "contracts/cuad-0499.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0500",
+      "title": "INGEVITYCORP_05_16_2016-EX-10.5-INTELLECTUAL PROPERTY AGREEMENT",
+      "bytes": 63376,
+      "characters": 63376,
+      "sha256": "d7eaeae37b293bb0530fb5ff9a62692bd4946598905f1093a534589dd9a32af1",
+      "path": "contracts/cuad-0500.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0501",
+      "title": "MidwestEnergyEmissionsCorp_20080604_8-K_EX-10.2_3093976_EX-10.2_Content License Agreement",
+      "bytes": 33917,
+      "characters": 33917,
+      "sha256": "23c6922eb12fba24d2317a693ca12bd18764ec113ec78c4a716e2e6fd455f094",
+      "path": "contracts/cuad-0501.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0502",
+      "title": "NOVOINTEGRATEDSCIENCES,INC_12_23_2019-EX-10.1-JOINT VENTURE AGREEMENT",
+      "bytes": 21971,
+      "characters": 21955,
+      "sha256": "ed8ec45674420e7e9d118f9141a3d0ad67b283c76ff1e2a703d339f731d65c2b",
+      "path": "contracts/cuad-0502.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0503",
+      "title": "HYDRONTECHNOLOGIESINC_03_31_1997-EX-10.47-SPONSORSHIP AGREEMENT",
+      "bytes": 28932,
+      "characters": 28932,
+      "sha256": "22ec07c8d251ab90a989794c5325cdd87969adc3e44df5a4df033f4ae1ea6ad3",
+      "path": "contracts/cuad-0503.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0504",
+      "title": "CcRealEstateIncomeFundadv_20181205_POS 8C_EX-99.(H)(3)_11447739_EX-99.(H)(3)_Marketing Agreement",
+      "bytes": 30127,
+      "characters": 30127,
+      "sha256": "4a3e5cdd6270a41de613dd009d247d83debd7302680cfb60d887bd00246af8a8",
+      "path": "contracts/cuad-0504.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0505",
+      "title": "BLUEROCKRESIDENTIALGROWTHREIT,INC_06_01_2016-EX-1.1-AGENCY AGREEMENT",
+      "bytes": 134181,
+      "characters": 134179,
+      "sha256": "54c6d5857db6f23b8915955e0e6935f00ce31c3deea2291b2e66b57101ae1f60",
+      "path": "contracts/cuad-0505.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0506",
+      "title": "XinhuaSportsEntertainmentLtd_20070221_F-1_EX-99.4_645553_EX-99.4_Content License Agreement",
+      "bytes": 19128,
+      "characters": 19128,
+      "sha256": "d20ca7099b4894b290f3e0399f466b78ab1cd297bdfc9b270b80528607dcab51",
+      "path": "contracts/cuad-0506.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0507",
+      "title": "MERITLIFEINSURANCECO_06_19_2020-EX-10.(XIV)-MASTER SERVICES AGREEMENT",
+      "bytes": 22090,
+      "characters": 22090,
+      "sha256": "09eac9cb5a8cacc009776409a7206c71ac2817174426dc2009ec7e06c2fb7af9",
+      "path": "contracts/cuad-0507.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0508",
+      "title": "TALLGRASSENERGY,LP_02_20_2020-EX-99.26-JOINT FILING AGREEMENT",
+      "bytes": 3971,
+      "characters": 3971,
+      "sha256": "ef9fbeaf4e2c4e5ca84031eb0b5838ca7db0e2bbe943c4bf419639ddd592a6f2",
+      "path": "contracts/cuad-0508.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0509",
+      "title": "KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT",
+      "bytes": 173273,
+      "characters": 173240,
+      "sha256": "92a552b93eee815071993af2c822aa2133f5588b3bf6dcec3de7e07bfa542d6a",
+      "path": "contracts/cuad-0509.txt",
+      "kind": "real_contract"
+    },
+    {
+      "id": "cuad-0510",
+      "title": "PerformanceSportsBrandsInc_20110909_S-1_EX-10.10_7220214_EX-10.10_Endorsement Agreement",
+      "bytes": 27168,
+      "characters": 27166,
+      "sha256": "227ae95e0e331a4ae924dfbba4377a343fe94e9f4c98826dab2a1dd5e2662c34",
+      "path": "contracts/cuad-0510.txt",
+      "kind": "real_contract"
+    }
+  ],
+  "validated_answer_spans": 13823,
+  "composite": {
+    "path": "stress/cuad-composite.txt",
+    "kind": "synthetic_concatenation",
+    "bytes": 26841378,
+    "characters": 26828043
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "source": "https://uscode.house.gov/download/releasepoints/us/pl/119/120/xml_usc42@119-120.zip",
+  "kind": "real_legal_compilation_not_single_contract",
+  "xml_bytes": 113744033,
+  "xml_sha256": "0e751179a4003df799a08e786fee08480c8f5085bd44ea740440a6e515251452",
+  "text_bytes": 57258914,
+  "characters": 56257925,
+  "text_sha256": "cef0b62ab7c89c345f1474780806c19b958fd6162f3ee0503a7ad1b101461c9a",
+  "extraction": "XML itertext, stripped nonempty text nodes joined with newline; frozen as canonical fixture",
+  "replace_seconds_single_run": 0.03199020799911523,
+  "index_seconds_single_run": 0.519169207998857,
+  "phrase_query_seconds_single_run": 0.0004329169987613568,
+  "caveat": "Local smoke experiment, not an end-to-end or concurrent benchmark."
+}

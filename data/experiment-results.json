@@ -1,0 +1,157 @@
+{
+  "sqlite_version": "3.50.4",
+  "contract_count": 510,
+  "corpus_bytes": 26820468,
+  "largest_contract": {
+    "id": "cuad-0444",
+    "title": "MANUFACTURERSSERVICESLTD_06_05_2000-EX-10.14-OUTSOURCING AGREEMENT",
+    "bytes": 338211,
+    "characters": 338211,
+    "sha256": "5cc2cbafdfe4b089bce0b1084cd4997a37f9a23b7c6307fec93a1777015fb690",
+    "path": "contracts/cuad-0444.txt",
+    "kind": "real_contract"
+  },
+  "composite_bytes": 26841378,
+  "validated_answer_spans": 13823,
+  "index_build_seconds": 0.2626324579996435,
+  "database_bytes": 36458496,
+  "search_samples": [
+    {
+      "query": "\"termination\"",
+      "seconds": 0.007266083999638795,
+      "hits": [
+        {
+          "document_id": "cuad-0328",
+          "score": -2.1342553837335573e-06,
+          "snippet": "EXHIBIT B   MUTUAL [TERMINATION] AGREEMENT   THIS MUTUAL [TERMINATION] AGREEMENT (\"[Termination] Agreement\") is made and entered into this day of , 2009, by and between Beijing..."
+        },
+        {
+          "document_id": "cuad-0079",
+          "score": -2.1342025238472457e-06,
+          "snippet": "...Qualification for your Annual Performance Bonus will require that you are employed by the Company (and have not served notice of [termination] of your..."
+        },
+        {
+          "document_id": "cuad-0028",
+          "score": -2.120239240639745e-06,
+          "snippet": "...CHINA REAL ESTATE INFORMATION CORP, F-1, 9/29/2009\n\n\n\n\n\n\n\nEXHIBIT B\n\nMUTUAL [TERMINATION] AGREEMENT\n\nTHIS MUTUAL [TERMINATION] AGREEMENT (\"[Termination] Agreement\") is made and..."
+        },
+        {
+          "document_id": "cuad-0439",
+          "score": -2.1108520076174477e-06,
+          "snippet": "...TPC further agrees that upon the [termination] of this Endorsement Agreement for any cause whatsoever, it will cease using the Ogle Endorsement, the name..."
+        },
+        {
+          "document_id": "cuad-0259",
+          "score": -2.1089279123459607e-06,
+          "snippet": "...Upon [termination] of this Agreement by Sanofi pursuant to Section 12.2(a)(iii) ([Termination] by Sanofi for Safety), Section 12.2(b) ([Termination]..."
+        }
+      ]
+    },
+    {
+      "query": "\"assignment\"",
+      "seconds": 0.007466125000064494,
+      "hits": [
+        {
+          "document_id": "cuad-0333",
+          "score": -2.1366178056979582e-06,
+          "snippet": "...SCHEDULE A TO PATENT [ASSIGNMENT]\n\n\n\n\n\nExhibit C - Form of Trademark [Assignment]\n\nFORM OF TRADEMARK [ASSIGNMENT]\n\nThis TRADEMARK [ASSIGNMENT] (the \"[Assignment]\"), dated as of December..."
+        },
+        {
+          "document_id": "cuad-0289",
+          "score": -2.136181833475526e-06,
+          "snippet": "...EXHIBIT C FORM OF [ASSIGNMENT] AND ASSUMPTION AGREEMENT This [Assignment] and Assumption Agreement (this \"[Assignment]\"), dated as of __, 2018 (the \"[Assignment] and Assumption Date..."
+        },
+        {
+          "document_id": "cuad-0403",
+          "score": -2.113573540456599e-06,
+          "snippet": "...Interpretation 16\n\nEXHIBIT A1 - Patent [Assignment] Agreement EXHIBIT A2 - Trademark [Assignment] Agreement EXHIBIT A3 - Copyright [Assignment] Agreement EXHIBIT A4 - Domain Name [Assignment] Agreement EXHIBIT..."
+        },
+        {
+          "document_id": "cuad-0015",
+          "score": -2.1045574224899265e-06,
+          "snippet": "...Definitions 1\n\nARTICLE II RECORDATION OF INTELLECTUAL PROPERTY RIGHTS [ASSIGNMENT] AGREEMENTS\n\nSection 2.01. Intellectual Property [Assignment] Agreements 5 Section 2.02. Recordation 5..."
+        },
+        {
+          "document_id": "cuad-0112",
+          "score": -2.0757408601006947e-06,
+          "snippet": "...Subject to the satisfaction of such          conditions by the Releasing Shipper and the Replacement Shipper,          Transporter will consent to this partial and permanent [assignment]..."
+        }
+      ]
+    },
+    {
+      "query": "\"governing law\"",
+      "seconds": 0.0048264170000038575,
+      "hits": [
+        {
+          "document_id": "cuad-0060",
+          "score": -1.8358560278692296e-06,
+          "snippet": "...[GOVERNING LAW] - ARBITRATION\n\n5.1 [Governing law]:\n\nPursuant to and in accordance with Section 5-1401 of the New York General Obligations Law, the..."
+        },
+        {
+          "document_id": "cuad-0298",
+          "score": -1.7299150750802417e-06,
+          "snippet": "...The terms of the [Governing Law] and Dispute Resolution provisions of the Distribution Agreement will apply to this Addendum.\n\nSource: SCANSOURCE, INC., 10-Q..."
+        },
+        {
+          "document_id": "cuad-0506",
+          "score": -1.7034479162356882e-06,
+          "snippet": "...Costs And Expenses...................................................     6 14. Counterparts.........................................................     6 15. Notice...............................................................     6 16. [Governing Law] And Arbitration........................................     7 Execution................................................................     8\n\nSchedule 1 - Contents\n\n                                       -i-\n\nTHIS AGREEMENT..."
+        },
+        {
+          "document_id": "cuad-0273",
+          "score": -1.6933483048729996e-06,
+          "snippet": "...And Export Control And Antiboycott Laws...........................................................................................................................................   7 16. Arbitration.................................................................................................................................. 7 17. [Governing Law].......................................................................................................................... 7 18. Binding Effect............................................................................................................................ 7 19. Counterparts............................................................................................................................... 7 20. No Reliance..."
+        },
+        {
+          "document_id": "cuad-0247",
+          "score": -1.630983953273859e-06,
+          "snippet": "...relieve the assigning party of any of its obligations hereunder. 4. [Governing Law]. (a) THIS AGREEMENT SHALL BE GOVERNED BY AND CONSTRUED IN ACCORDANCE..."
+        }
+      ]
+    },
+    {
+      "query": "\"confidentiality\"",
+      "seconds": 0.006438582999180653,
+      "hits": [
+        {
+          "document_id": "cuad-0429",
+          "score": -2.1184009191747653e-06,
+          "snippet": "...The copy file herewith omits information subject to the [confidentiality] request. Omissions are designated as [*****]. A complete version of this agreement has been filed..."
+        },
+        {
+          "document_id": "cuad-0071",
+          "score": -2.1077425185644556e-06,
+          "snippet": "...This copy omits the information subject to the [confidentiality] request. Omissions are designated as [***]. A complete version of this exhibit has been provided separately..."
+        },
+        {
+          "document_id": "cuad-0421",
+          "score": -2.059797075174893e-06,
+          "snippet": "...INTELLECTUAL PROPERTY RIGHTS, [CONFIDENTIALITY] AND NON-USE. The Professional acknowledges her obligations under the provisions of the Intellectual Property Rights [Confidentiality] and Non-Use..."
+        },
+        {
+          "document_id": "cuad-0189",
+          "score": -2.045195688675774e-06,
+          "snippet": "...Separate [Confidentiality] Agreement. If the Parties entered into one or more separate [confidentiality] agreements or non-disclosure agreements (each, a \"[Confidentiality] Agreement\"), such [Confidentiality]..."
+        },
+        {
+          "document_id": "cuad-0264",
+          "score": -2.026591764556748e-06,
+          "snippet": "...ARTICLE VIII  [[Confidentiality]]\n\n                                 [Confidentiality]\n\n         Section 8.01  [[Confidentiality]]. [Confidentiality]. PrimeCall and DeltaThree each agree that for the longest period permitted by law each shall..."
+        }
+      ]
+    }
+  ],
+  "replacement_samples": [
+    {
+      "input_utf8_bytes": 10488991,
+      "input_characters": 10485760,
+      "replace_seconds_single_run": 0.005080875000203378
+    },
+    {
+      "input_utf8_bytes": 26227682,
+      "input_characters": 26214400,
+      "replace_seconds_single_run": 0.019034749999264022
+    }
+  ],
+  "caveat": "Single-run local smoke experiment; no concurrency or latency percentile claims."
+}
