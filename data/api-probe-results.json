@@ -1,0 +1,148 @@
+{
+  "passed": 16,
+  "failed": 8,
+  "results": [
+    {
+      "name": "negative",
+      "passed": true,
+      "status": 422
+    },
+    {
+      "name": "reversed",
+      "passed": true,
+      "status": 422
+    },
+    {
+      "name": "fractional",
+      "passed": true,
+      "status": 422
+    },
+    {
+      "name": "boolean",
+      "passed": true,
+      "status": 422
+    },
+    {
+      "name": "out_of_bounds",
+      "passed": true,
+      "status": 422
+    },
+    {
+      "name": "stale_revision",
+      "passed": true,
+      "status": 409,
+      "reason": "STALE_VERSION"
+    },
+    {
+      "name": "simultaneous_overlap",
+      "passed": true,
+      "statuses": [
+        200,
+        409
+      ]
+    },
+    {
+      "name": "insertion_at_reserved_boundary",
+      "passed": true,
+      "status": 409
+    },
+    {
+      "name": "emoji_anchor_is_one_codepoint",
+      "passed": true,
+      "text": "AXBC other clause"
+    },
+    {
+      "name": "duplicate_submit_exactly_once",
+      "passed": true,
+      "status": 200,
+      "version": 2
+    },
+    {
+      "name": "changed_retry_rejected",
+      "passed": true,
+      "status": 409
+    },
+    {
+      "name": "overlapping_batch_rolls_back",
+      "passed": true,
+      "status": 409,
+      "reservations": 0
+    },
+    {
+      "name": "reservation_batch_outputs_are_submittable",
+      "passed": false,
+      "reserve_status": 200,
+      "returned_rows": 2,
+      "distinct_ids": 1,
+      "submit_status": 422
+    },
+    {
+      "name": "typing_makes_draft_nonexpiring",
+      "passed": false,
+      "draft_status": 200,
+      "has_expiry": true,
+      "rival_status": 200,
+      "next_keystroke_status": 409,
+      "next_keystroke_reason": "RANGE_RESERVED"
+    },
+    {
+      "name": "expired_uncontested_highlight_can_start_typing",
+      "passed": false,
+      "status": 409,
+      "reason": "LEASE_EXPIRED"
+    },
+    {
+      "name": "nul_search",
+      "passed": false,
+      "status": 500,
+      "reason": "INTERNAL_ERROR"
+    },
+    {
+      "name": "nul_draft",
+      "passed": false,
+      "status": 500,
+      "reason": "INTERNAL_ERROR"
+    },
+    {
+      "name": "nul_replacement",
+      "passed": false,
+      "status": 500,
+      "reason": "INTERNAL_ERROR"
+    },
+    {
+      "name": "nul_document_id",
+      "passed": false,
+      "status": 500,
+      "reason": "INTERNAL_ERROR"
+    },
+    {
+      "name": "lone_surrogate_search",
+      "passed": true,
+      "status": 422,
+      "reason": "INVALID_REQUEST"
+    },
+    {
+      "name": "invalid_text_did_not_poison_queue",
+      "passed": true,
+      "reservation_status": "active"
+    },
+    {
+      "name": "empty_search_scope_returns_none",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "timeout_retry_reuses_durable_work",
+      "passed": true,
+      "first_status": 504,
+      "retry_status": 200,
+      "version": 2
+    },
+    {
+      "name": "malformed_socket_version_is_handled",
+      "passed": false,
+      "exception": "ValueError",
+      "detail": "invalid literal for int() with base 10: '\u00b2'"
+    }
+  ]
+}
