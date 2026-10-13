@@ -92,7 +92,7 @@ class Stack:
     def __init__(self, output, dsn):
         self.output, self.external_dsn = output, dsn
         self.processes, self.logs = [], []
-        self.temp = tempfile.TemporaryDirectory(prefix='sandstone-benchmark-')
+        self.temp = tempfile.TemporaryDirectory(prefix='document-redlining-benchmark-')
         self.directory = Path(self.temp.name)
         self.schema = 'benchmark_' + uuid4().hex
         self.admin_dsn = None

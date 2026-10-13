@@ -1,6 +1,6 @@
 """Adversarial requests against a disposable PostgreSQL schema.
 
-Run: REDLINING_TEST_DATABASE_URL=postgresql://localhost/sandstone_test \
+Run: REDLINING_TEST_DATABASE_URL=postgresql://localhost/document_redlining_test \
      .venv/bin/python -m scripts.probe_api_assumptions
 No application documents are touched. Expiry is accelerated only in probe rows.
 """

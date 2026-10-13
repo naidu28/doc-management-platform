@@ -12,8 +12,8 @@ Prerequisites: Python 3.11+, PostgreSQL 16+, and Redis. From the repository root
 ```sh
 python3 -m venv .venv
 .venv/bin/python -m pip install -e '.[test]'
-createdb sandstone
-export DATABASE_URL=postgresql://localhost/sandstone
+createdb document_redlining
+export DATABASE_URL=postgresql://localhost/document_redlining
 export REDIS_URL=redis://localhost:6379/0
 ```
 
@@ -40,8 +40,8 @@ authenticated user.
 Import a UTF-8 text file through the CLI. This example supplies the document used below:
 
 ```sh
-printf '30 days; other clause.' > /tmp/sandstone-example.txt
-.venv/bin/python -m src.cli load /tmp/sandstone-example.txt --id contract-1
+printf '30 days; other clause.' > /tmp/document-redlining-example.txt
+.venv/bin/python -m src.cli load /tmp/document-redlining-example.txt --id contract-1
 .venv/bin/python -m src.cli reindex
 
 curl -s localhost:8000/documents
@@ -234,8 +234,8 @@ rather than polling the operation endpoint.
 ## Tests and further reading
 
 ```sh
-createdb sandstone_test
-REDLINING_TEST_DATABASE_URL=postgresql://localhost/sandstone_test .venv/bin/python -m pytest -q
+createdb document_redlining_test
+REDLINING_TEST_DATABASE_URL=postgresql://localhost/document_redlining_test .venv/bin/python -m pytest -q
 npm --prefix frontend ci
 npm --prefix frontend test
 npm --prefix frontend run build

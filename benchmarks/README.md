@@ -17,7 +17,7 @@ Alternatively use a dedicated development database whose user can create schemas
 
 ```bash
 .venv/bin/python -m benchmarks.run \
-  --database-url postgresql://localhost/sandstone_benchmark \
+  --database-url postgresql://localhost/document_redlining_benchmark \
   --repetitions 5 --output reports/my-run
 ```
 

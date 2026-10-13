@@ -1,4 +1,4 @@
-# Sandstone review UI
+# Document review UI
 
 Minimal React/Vite interface for the Python service: search this document, search all documents, document selector, viewer/redliner, and Submit edits. Server state is delivered through one WebSocket-backed external store (`useSyncExternalStore`). Local state covers navigation/search controls, transient selection anchors, and unsubmitted replacement text. No client document persistence or operation polling.
 
@@ -11,7 +11,7 @@ root README. Then, from the repository root:
 npm --prefix frontend install
 .venv/bin/python scripts/download_corpus.py
 .venv/bin/python scripts/prepare_corpus.py
-DATABASE_URL=postgresql://localhost/sandstone .venv/bin/python -m scripts.review_demo
+DATABASE_URL=postgresql://localhost/document_redlining .venv/bin/python -m scripts.review_demo
 ```
 
 In a second terminal:

@@ -1,4 +1,4 @@
-# Sandstone Take-Home: Production Strategy
+# Document Redlining: Production Strategy
 
 **Author: Sai Naidu**
 

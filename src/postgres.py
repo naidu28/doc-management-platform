@@ -21,7 +21,7 @@ from .ranges import overlap
 from .ranking import ranking_sections
 from .query_cache import QueryResultCache
 
-DEFAULT_DSN = 'postgresql://localhost/sandstone'
+DEFAULT_DSN = 'postgresql://localhost/document_redlining'
 SCHEMA = '''
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 CREATE TABLE IF NOT EXISTS documents(id text PRIMARY KEY, title text NOT NULL, version bigint NOT NULL);

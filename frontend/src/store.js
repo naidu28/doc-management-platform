@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from "react";
 import { applyState } from "./protocol.js";
-const key = "sandstone-client";
+const key = "document-redlining-client";
 export const clientId = sessionStorage.getItem(key) || crypto.randomUUID();
 sessionStorage.setItem(key, clientId);
 export async function api(path, options = {}) {
