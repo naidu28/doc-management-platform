@@ -52,7 +52,7 @@ and its protection intact. Recovery executes uncommitted work, never a second co
 of a committed replacement. Same-text resubmission returns its original identity.
 
 SUBSCRIPTIONS / PROJECTIONS
-POST /replacements stays open until execution completes, returning 200 ChangeResult
+POST /documents/{id}/replacements awaits execution, returning 200 ReplacementResult
 with document_id, reservation_id, version and full text. Read the immutable revision
 recorded in the operation outcome, never the latest head. Same-text resubmission
 returns that original result even after subsequent edits. Stored failure becomes
@@ -97,7 +97,7 @@ are archived as legacy_commands/legacy_document_sequences; historical replacemen
 outcomes are copied into replacements to preserve deduplication. The archived tables
 are not used for admission or scheduling. Fresh databases create neither old table.
 """
-from redlining.models import ChangeResult, DocumentAnchor, DocumentUpdated, ReservationSnapshot, SearchRequest
+from redlining.models import ReplacementResult, DocumentAnchor, DocumentUpdated, ReservationSnapshot, SearchRequest
 from redlining.services import ReplaceCommand
 
 
@@ -110,13 +110,18 @@ from redlining.services import ReplaceCommand
 # protected anchors advance by cumulative deltas. All item protection is consumed
 # on success or released on terminal failure; crashes roll back for recovery.
 # Complete identical batches replay regardless of item order. Partial/changed
-# replay and cross-document membership fail. Single endpoints stay compatible.
+# replay and cross-document membership fail. Single-item arrays use the same execution path.
 # Old workers and clients must be stopped/upgraded before enabling batch writes.
 
 # One-shot POST /documents/{id}/replacements accepts versioned ranges + text.
 # Required Idempotency-Key is scoped to document/client and stored atomically with
 # reservation acquisition and durable admission; complete replay returns the
-# original revision even after newer edits. Existing reservation APIs remain.
+# original revision even after newer edits. The same replacement endpoint accepts reserved arrays or target-based arrays.
 # Browser presence uses shared PG connection rows: explicit leave releases only
 # unsubmitted reservations after the last connection leaves; reconnect grace 5s,
 # heartbeat TTL 20s. Worker cleanup survives API crashes. API-only leases unchanged.
+
+# Unified contracts: POST document edit-reservations accepts targets[] and returns
+# reservations[]. POST document replacements accepts homogeneous reserved or
+# targeted replacements[]; every result has reservation_ids[] and every update
+# has patches[]. Retired root/batch endpoints are removed; historic state survives.

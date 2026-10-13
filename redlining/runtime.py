@@ -9,7 +9,8 @@ from redis.asyncio import Redis
 from redis.exceptions import ResponseError
 
 from .services import ServiceError
-from .models import ReplacementAccepted
+from .models import ReplacementAccepted, ReplacementResult, ChangeResult, CreateEditReservationRequest, EditReservationsResult
+from .services import ReplaceCommand
 from .postgres import PostgresStore
 
 log = logging.getLogger(__name__)
@@ -27,6 +28,11 @@ class DocumentService:
         return await asyncio.to_thread(self.store.reserve, client_id, document_id, request)
 
     async def reserve_batch(self, client_id, document_id, request):
+        if not hasattr(self.store, 'reserve_batch'):
+            if len(request.targets) != 1:
+                raise ServiceError(501,'LEGACY_ADAPTER','Multiple edits require PostgreSQL')
+            reservation = await self.reserve(client_id,document_id,CreateEditReservationRequest(target=request.targets[0]))
+            return EditReservationsResult(reservations=[reservation])
         return await asyncio.to_thread(self.store.reserve_batch, client_id, document_id, request)
 
     async def reserve_and_replace(self, client_id, document_id, request_key, request):
@@ -34,6 +40,14 @@ class DocumentService:
                                           client_id, document_id, request_key, request)
 
     async def change_batch(self, document_id, request):
+        if not hasattr(self.store, 'admit_batch'):
+            if len(request.replacements) != 1:
+                raise ServiceError(501,'LEGACY_ADAPTER','Multiple edits require PostgreSQL')
+            item = request.replacements[0]
+            reservation = await self.reservation(item.reservation_id)
+            if reservation.document_id != document_id:
+                raise ServiceError(409,'DOCUMENT_MISMATCH','Reservation belongs to another document')
+            return await self.change(ReplaceCommand(item.reservation_id,item.replacement))
         return await self.wait_for_change(document_id, self.store.admit_batch, document_id, request.replacements)
 
     async def reservation(self, rid):
@@ -72,6 +86,9 @@ class DocumentService:
                 signal.clear()
                 result = await asyncio.to_thread(self.store.replacement_result, oid)
                 if result is not None:
+                    if isinstance(result, ChangeResult):
+                        return ReplacementResult(document_id=result.document_id,version=result.version,
+                                                 text=result.text,reservation_ids=[result.reservation_id])
                     return result
                 remaining = deadline - asyncio.get_running_loop().time()
                 if remaining <= 0:

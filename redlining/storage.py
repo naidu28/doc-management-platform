@@ -9,7 +9,7 @@ from uuid import uuid4
 
 from .models import (
     ChangeResult, OperationStatus, CompletedOperation, Document, DocumentAnchor, Error, FailedOperation,
-    PendingOperation, Reservation, ReservationSnapshot, SearchHit, SearchResponse, DocumentUpdated,
+    PendingOperation, Reservation, ReservationSnapshot, SearchHit, SearchResponse, LegacyDocumentUpdated,
 )
 from .services import ServiceError
 
@@ -262,14 +262,14 @@ class Store:
             return CompletedOperation(**common, document=self.document_in(db, r['document_id'], op['result_version']))
 
     def replacement_status(self, operation_id):
-        from .models import ReplacementAccepted, ReplacementCompleted, ReplacementFailed
+        from .models import ReplacementAccepted, ReplacementCompleted, ReplacementFailed, ReplacementResult
         result = self.operation(operation_id)
         if isinstance(result, PendingOperation):
             return ReplacementAccepted(operation_id=operation_id,status_url=f'/replacement-operations/{operation_id}')
         if isinstance(result, FailedOperation):
             return ReplacementFailed(operation_id=operation_id,error=result.failure)
         return ReplacementCompleted(operation_id=operation_id,
-            result=ChangeResult(**result.document.model_dump(),reservation_id=result.reservation_id))
+            result=ReplacementResult(**result.document.model_dump(),reservation_ids=[result.reservation_id]))
 
     def replacement_result(self, operation_id):
         result = self.operation(operation_id)
@@ -368,7 +368,7 @@ class Store:
                     ON o.document_id=r.document_id AND o.version=r.version AND o.kind='document_updated'
                     WHERE r.document_id=? AND r.version>? ORDER BY r.version''',
                                   (document_id, after_version)).fetchall()
-                content = {'updates': [DocumentUpdated(event_id=r['event_id'], document_id=document_id,
+                content = {'updates': [LegacyDocumentUpdated(event_id=r['event_id'], document_id=document_id,
                             previous_version=r['version']-1, version=r['version'],
                             patch=json.loads(r['patch'])).model_dump() for r in rows]}
             drafts = [dict(r) for r in db.execute("SELECT d.* FROM drafts d JOIN reservations r ON r.id=d.reservation_id WHERE r.document_id=? AND r.status IN ('active','submitted')", (document_id,))]

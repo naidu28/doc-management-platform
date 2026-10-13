@@ -5,7 +5,7 @@ from fastapi.testclient import TestClient
 
 from redlining.api import create_app
 from redlining.models import (
-    DocumentAnchor, ChangeResult, Document,
+    DocumentAnchor, ReplacementResult, Document, EditReservationsResult,
     Reservation, SearchHit, SearchResponse,
 )
 from redlining.services import RedliningService, RetrievalService, ServiceError
@@ -15,7 +15,7 @@ TARGET = {"version": 1, "start": 0, "end": 2}
 CHANGE = {"reservation_id": "r-1", "replacement": "60"}
 HEADERS = {}
 DOC = Document(document_id="X", version=2, text="60 days")
-RESULT = ChangeResult(**DOC.model_dump(), reservation_id="r-1")
+RESULT = ReplacementResult(**DOC.model_dump(), reservation_ids=["r-1"])
 
 
 @pytest.fixture
@@ -30,9 +30,9 @@ def api():
 def test_write_requires_collaboration_client_id():
     writer = AsyncMock(spec=RedliningService)
     with TestClient(create_app(writer)) as client:
-        response = client.post("/documents/X/edit-reservations", json={"target": TARGET})
+        response = client.post("/documents/X/edit-reservations", json={'targets': [TARGET]})
     assert response.status_code == 422
-    writer.reserve.assert_not_awaited()
+    writer.reserve_batch.assert_not_awaited()
 
 
 def test_missing_adapter_is_explicit():
@@ -43,8 +43,8 @@ def test_missing_adapter_is_explicit():
 
 def test_change_returns_committed_document_without_polling(api):
     client, writer, _ = api
-    writer.change.return_value = RESULT
-    response = client.post("/replacements", json=CHANGE)
+    writer.change_batch.return_value = RESULT
+    response = client.post('/documents/X/replacements', json={'replacements': [CHANGE]})
     assert response.status_code == 200
     assert response.json() == RESULT.model_dump()
     assert "location" not in response.headers
@@ -54,8 +54,8 @@ def test_change_returns_committed_document_without_polling(api):
 @pytest.mark.parametrize("status,reason", [(409, "EDIT_CONFLICT"), (404, "DOCUMENT_NOT_FOUND")])
 def test_service_errors(api, status, reason):
     client, writer, _ = api
-    writer.change.side_effect = ServiceError(status, reason, "Cannot apply edit", current_version=3)
-    response = client.post("/replacements", json=CHANGE, headers=HEADERS)
+    writer.change_batch.side_effect = ServiceError(status, reason, "Cannot apply edit", current_version=3)
+    response = client.post('/documents/X/replacements', json={'replacements': [CHANGE]}, headers=HEADERS)
     assert response.status_code == status
     assert response.json() == {"error": "Cannot apply edit", "code": status, "reason": reason, "current_version": 3}
 
@@ -66,22 +66,22 @@ def test_service_errors(api, status, reason):
 ])
 def test_invalid_anchors_never_reach_writer(api, target):
     client, writer, _ = api
-    response = client.post("/documents/X/edit-reservations", json={"target": target})
+    response = client.post("/documents/X/edit-reservations", json={'targets': [target]})
     assert response.status_code == 422
-    writer.change.assert_not_awaited()
+    writer.change_batch.assert_not_awaited()
 
 
 def test_unknown_fields_are_rejected(api):
     client, writer, _ = api
-    assert client.post("/replacements", json={**CHANGE, "actor_id": "admin"}).status_code == 422
-    assert client.post("/replacements", json={**CHANGE, "target": {**TARGET, "expected_text": "30"}}).status_code == 422
-    writer.change.assert_not_awaited()
+    assert client.post('/documents/X/replacements', json={'replacements': [{**CHANGE, "actor_id": "admin"}]}).status_code == 422
+    assert client.post('/documents/X/replacements', json={'replacements': [{**CHANGE, "target": {**TARGET, "expected_text": "30"}}]}).status_code == 422
+    writer.change_batch.assert_not_awaited()
 
 
 def test_empty_replacement(api):
     client, writer, _ = api
-    writer.change.return_value = RESULT
-    assert client.post("/replacements", json={"reservation_id": "r-1", "replacement": ""}).status_code == 200
+    writer.change_batch.return_value = RESULT
+    assert client.post('/documents/X/replacements', json={'replacements': [{"reservation_id": "r-1", "replacement": ""}]}).status_code == 200
 
 
 def test_zero_width_anchor():
@@ -94,11 +94,11 @@ def test_reservation_lifecycle_routes(api, state, code):
     reservation = Reservation(reservation_id="r-1", document_id="X", client_id=CLIENT_ID, target=DocumentAnchor(**TARGET),
                               created_at="2026-10-12T18:00:00Z", status=state,
                               expires_at="2026-10-12T18:00:30Z" if state == "active" else None)
-    writer.reserve.return_value = reservation
+    writer.reserve_batch.return_value = EditReservationsResult(reservations=[reservation])
     writer.reservation.return_value = reservation
     writer.renew.return_value = reservation
     writer.release.return_value = None
-    response = client.post("/documents/X/edit-reservations", json={"target": TARGET}, headers=HEADERS)
+    response = client.post("/documents/X/edit-reservations", json={'targets': [TARGET]}, headers=HEADERS)
     assert response.status_code == code
     assert client.get("/edit-reservations/r-1").json()["status"] == state
     assert client.post("/edit-reservations/r-1/renew", headers=HEADERS).status_code == 200
@@ -146,7 +146,7 @@ def test_unexpected_error_does_not_expose_document_text(api):
 def test_openapi_documents_committed_response(api):
     client, _, _ = api
     schema = client.get("/openapi.json").json()
-    responses = schema["paths"]["/replacements"]["post"]["responses"]
+    responses = schema["paths"]["/documents/{document_id}/replacements"]["post"]["responses"]
     assert {"200", "202", "409", "422"} <= responses.keys()
     assert "504" not in responses
     assert responses["202"]["content"]["application/json"]["schema"]["$ref"].endswith("/ReplacementAccepted")
@@ -167,8 +167,8 @@ def test_reads_require_no_client_header(api):
 @pytest.mark.parametrize("reason", ["EDIT_CONFLICT", "REFRESH_REQUIRED", "REPLACEMENT_MISMATCH", "RESERVATION_RELEASED"])
 def test_reserved_change_conflict_mapping(api, reason):
     client, writer, _ = api
-    writer.change.side_effect = ServiceError(409, reason, "Cannot apply edit", 3)
-    response = client.post("/replacements", json={"reservation_id": "r-1", "replacement": "60"})
+    writer.change_batch.side_effect = ServiceError(409, reason, "Cannot apply edit", 3)
+    response = client.post('/documents/X/replacements', json={'replacements': [{"reservation_id": "r-1", "replacement": "60"}]})
     assert response.status_code == 409
     assert response.json()["reason"] == reason
     assert response.json()["current_version"] == 3
@@ -178,18 +178,19 @@ def test_reserved_change_looks_up_identity_from_reservation(api):
     from redlining.services import ReplaceCommand
     client, writer, _ = api
     client.headers.pop("X-Client-ID")
-    writer.change.return_value = RESULT
-    response = client.post("/replacements", json={"reservation_id": "r-1", "replacement": "60"})
+    writer.change_batch.return_value = RESULT
+    response = client.post('/documents/X/replacements', json={'replacements': [{"reservation_id": "r-1", "replacement": "60"}]})
     assert response.status_code == 200
-    writer.change.assert_awaited_once_with(ReplaceCommand("r-1", "60"))
+    assert writer.change_batch.call_args.args[0] == "X"
+    assert writer.change_batch.call_args.args[1].replacements[0].reservation_id == "r-1"
     assert response.json() == RESULT.model_dump()
 
 
 @pytest.mark.parametrize("body", [{"replacement": "60"}, {"reservation_id": "r-1", "replacement": "60", "target": TARGET}])
 def test_reserved_change_rejects_missing_reservation_or_redundant_anchor(api, body):
     client, writer, _ = api
-    assert client.post("/replacements", json=body).status_code == 422
-    writer.change.assert_not_awaited()
+    assert client.post('/documents/X/replacements', json={'replacements': [body]}).status_code == 422
+    writer.change_batch.assert_not_awaited()
 
 
 def test_reacquisition_blocked_by_active_reservation(api):
@@ -204,7 +205,7 @@ def test_socket_payload_versions_and_range():
     from pydantic import ValidationError
     from redlining.models import DocumentUpdated
     body = dict(event_id="e-1", document_id="X", previous_version=1, version=2,
-                patch={"start": 0, "end": 2, "replacement": "60"})
+                patches=[{"start": 0, "end": 2, "replacement": "60"}])
     assert DocumentUpdated(**body).version == 2
     with pytest.raises(ValidationError):
         DocumentUpdated(**{**body, "version": 4})
@@ -237,6 +238,41 @@ def test_one_shot_is_documented_with_required_idempotency_key(api):
     client, _, _ = api
     schema = client.get("/openapi.json").json()
     operation = schema["paths"]["/documents/{document_id}/replacements"]["post"]
-    assert "ReserveAndReplaceRequest" in schema["components"]["schemas"]
-    assert any(p["name"] == "Idempotency-Key" and p["required"] for p in operation["parameters"])
+    assert "TargetedReplacementsRequest" in schema["components"]["schemas"]
+    assert any(p["name"] == "Idempotency-Key" for p in operation["parameters"])
+    # Conditional requirement is enforced only for target-based bodies.
+    assert len(operation["requestBody"]["content"]["application/json"]["schema"]["anyOf"]) == 2
     assert "200" in operation["responses"]
+
+
+def test_retired_routes_are_absent(api):
+    client,_,_=api
+    paths=client.get('/openapi.json').json()['paths']
+    for route in ['/replacements','/documents/{document_id}/replacement-batches','/documents/{document_id}/edit-reservation-batches']:
+        assert route not in paths
+    for route in ['/replacements','/documents/X/replacement-batches','/documents/X/edit-reservation-batches']:
+        assert client.post(route,json={}).status_code==404
+
+
+@pytest.mark.parametrize('items',[
+    [],
+    [{'reservation_id':'r','replacement':'x'}, {'target':TARGET,'replacement':'x'}],
+    [{'reservation_id':'r','target':TARGET,'replacement':'x'}],
+    [{'reservation_id':'r','replacement':'x'}]*2,
+    [{'target':TARGET,'replacement':'x'}]*101,
+])
+def test_unified_replacement_rejects_mixed_empty_duplicate_and_oversized_requests(api,items):
+    client,writer,_=api
+    assert client.post('/documents/X/replacements',json={'replacements':items}).status_code==422
+    writer.change_batch.assert_not_awaited()
+    writer.reserve_and_replace.assert_not_awaited()
+
+
+def test_target_headers_are_conditional_and_unary_result_is_array(api):
+    client,writer,_=api
+    writer.reserve_and_replace.return_value=RESULT
+    body={'replacements':[{'target':TARGET,'replacement':'60'}]}
+    assert client.post('/documents/X/replacements',json=body).status_code==422
+    response=client.post('/documents/X/replacements',json=body,headers={'Idempotency-Key':'key'})
+    assert response.status_code==200 and response.json()['reservation_ids']==['r-1']
+    writer.reserve_and_replace.assert_awaited_once()

@@ -36,12 +36,12 @@ def main():
             def doc(name,text='A😀BC other clause'):
                 store.create_document(name,text);store.index_revision(name,1)
             def reserve(name,start=0,end=1,version=1,who='a'):
-                return client.post(f'/documents/{name}/edit-reservations',headers={'X-Client-ID':who},json={'target':dict(version=version,start=start,end=end)})
+                return client.post(f'/documents/{name}/edit-reservations',headers={'X-Client-ID':who},json={'targets':[dict(version=version,start=start,end=end)]})
             def draft(rid,text):
                 return client.put(f'/edit-reservations/{rid}/draft',headers={'X-Client-ID':'a'},json={'replacement':text})
             doc('validation')
             for name,target in [('negative',dict(version=1,start=-1,end=1)),('reversed',dict(version=1,start=3,end=1)),('fractional',dict(version=1,start=.5,end=1)),('boolean',dict(version=1,start=True,end=2)),('out_of_bounds',dict(version=1,start=0,end=999999))]:
-                r=client.post('/documents/validation/edit-reservations',headers={'X-Client-ID':'a'},json={'target':target})
+                r=client.post('/documents/validation/edit-reservations',headers={'X-Client-ID':'a'},json={'targets':[target]})
                 record(name,r.status_code==422,status=r.status_code)
             r=reserve('validation',version=99);record('stale_revision',r.status_code==409,status=r.status_code,reason=r.json().get('reason'))
             doc('racing')
@@ -50,35 +50,35 @@ def main():
             record('simultaneous_overlap',sorted(r.status_code for r in responses)==[200,409],statuses=[r.status_code for r in responses])
             doc('boundary');reserve('boundary',0,1)
             r=reserve('boundary',1,1,who='b');record('insertion_at_reserved_boundary',r.status_code==409,status=r.status_code)
-            doc('unicode');rid=reserve('unicode',1,2).json()['reservation_id']
+            doc('unicode');rid=reserve('unicode',1,2).json()['reservations'][0]['reservation_id']
             oid=store.admit(ReplaceCommand(rid,'X'));store.process_next()
             record('emoji_anchor_is_one_codepoint',store.get_document('unicode').text=='AXBC other clause',text=store.get_document('unicode').text)
-            r=client.post('/replacements',json={'reservation_id':rid,'replacement':'X'})
+            r=client.post('/documents/unicode/replacements',json={'replacements':[{'reservation_id':rid,'replacement':'X'}]})
             record('duplicate_submit_exactly_once',r.status_code==200 and store.get_document('unicode').version==2,status=r.status_code,version=store.get_document('unicode').version)
-            r=client.post('/replacements',json={'reservation_id':rid,'replacement':'Y'})
+            r=client.post('/documents/unicode/replacements',json={'replacements':[{'reservation_id':rid,'replacement':'Y'}]})
             record('changed_retry_rejected',r.status_code==409,status=r.status_code)
-            doc('atomic');r=client.post('/documents/atomic/edit-reservation-batches',headers={'X-Client-ID':'a'},json={'targets':[dict(version=1,start=0,end=1),dict(version=1,start=0,end=2)]})
+            doc('atomic');r=client.post('/documents/atomic/edit-reservations',headers={'X-Client-ID':'a'},json={'targets':[dict(version=1,start=0,end=1),dict(version=1,start=0,end=2)]})
             record('overlapping_batch_rolls_back',r.status_code==409 and not store.reservation_snapshot('atomic').reservations,status=r.status_code,reservations=len(store.reservation_snapshot('atomic').reservations))
             doc('duplicates')
-            duplicate=client.post('/documents/duplicates/edit-reservation-batches',headers={'X-Client-ID':'a'},json={'targets':[dict(version=1,start=0,end=1)]*2})
+            duplicate=client.post('/documents/duplicates/edit-reservations',headers={'X-Client-ID':'a'},json={'targets':[dict(version=1,start=0,end=1)]*2})
             rows=duplicate.json().get('reservations',[])
-            submitted=client.post('/documents/duplicates/replacement-batches',json={'replacements':[{'reservation_id':r['reservation_id'],'replacement':'X'} for r in rows]}) if rows else None
+            submitted=client.post('/documents/duplicates/replacements',json={'replacements':[{'reservation_id':r['reservation_id'],'replacement':'X'} for r in rows]}) if rows else None
             record('reservation_batch_outputs_are_submittable',duplicate.status_code==422 or len({r['reservation_id'] for r in rows})==len(rows),reserve_status=duplicate.status_code,returned_rows=len(rows),distinct_ids=len({r['reservation_id'] for r in rows}),submit_status=submitted.status_code if submitted is not None else None)
-            doc('expiry');rid=reserve('expiry').json()['reservation_id'];saved=draft(rid,'Proposed')
+            doc('expiry');rid=reserve('expiry').json()['reservations'][0]['reservation_id'];saved=draft(rid,'Proposed')
             after_save=store.reservation(rid)
             with store.connection(True) as db:db.execute('UPDATE reservations SET expires=0 WHERE id=%s',(rid,))
             rival=reserve('expiry',who='b');again=draft(rid,'More typing')
             record('typing_makes_draft_nonexpiring',saved.status_code==200 and after_save.expires_at is None and rival.status_code==409,
                    draft_status=saved.status_code,has_expiry=after_save.expires_at is not None,rival_status=rival.status_code,next_keystroke_status=again.status_code,next_keystroke_reason=again.json().get('reason'))
-            doc('expired-selection');rid=reserve('expired-selection').json()['reservation_id']
+            doc('expired-selection');rid=reserve('expired-selection').json()['reservations'][0]['reservation_id']
             with store.connection(True) as db:db.execute('UPDATE reservations SET expires=0 WHERE id=%s',(rid,))
             r=draft(rid,'First keystroke after thinking')
             record('expired_uncontested_highlight_can_start_typing',r.status_code==200,status=r.status_code,reason=r.json().get('reason'))
-            doc('nul');rid=reserve('nul').json()['reservation_id']
+            doc('nul');rid=reserve('nul').json()['reservations'][0]['reservation_id']
             for name,path,method,body in [
                 ('nul_search','/search','post',{'text':'\x00','mode':'literal'}),
                 ('nul_draft',f'/edit-reservations/{rid}/draft','put',{'replacement':'a\x00b'}),
-                ('nul_replacement','/replacements','post',{'reservation_id':rid,'replacement':'a\x00b'}),
+                ('nul_replacement','/documents/nul/replacements','post',{'replacements':[{'reservation_id':rid,'replacement':'a\x00b'}]}),
                 ('nul_document_id','/search','post',{'text':'A','document_ids':['bad\x00id']}),
                 ('lone_surrogate_search','/search','post',{'text':'\ud800'}),
             ]:
@@ -86,9 +86,9 @@ def main():
                 record(name,response.status_code in (200,422),status=response.status_code,reason=response.json().get('reason'))
             record('invalid_text_did_not_poison_queue',not store.process_next(),reservation_status=store.reservation(rid).status)
             r=client.post('/search',json={'text':'A','document_ids':[]});record('empty_search_scope_returns_none',r.status_code==200 and r.json()['hits']==[],status=r.status_code)
-            doc('timeout');rid=reserve('timeout').json()['reservation_id']
-            r=client.post('/replacements',json={'reservation_id':rid,'replacement':'Z'});store.process_next()
-            replay=client.post('/replacements',json={'reservation_id':rid,'replacement':'Z'})
+            doc('timeout');rid=reserve('timeout').json()['reservations'][0]['reservation_id']
+            r=client.post('/documents/timeout/replacements',json={'replacements':[{'reservation_id':rid,'replacement':'Z'}]});store.process_next()
+            replay=client.post('/documents/timeout/replacements',json={'replacements':[{'reservation_id':rid,'replacement':'Z'}]})
             record('timeout_retry_reuses_durable_work',r.status_code==202 and replay.status_code==200 and store.get_document('timeout').version==2,first_status=r.status_code,retry_status=replay.status_code,version=store.get_document('timeout').version)
         from redlining.main import build_app
         with TestClient(build_app(database_url=store.dsn,redis_url='redis://127.0.0.1:1'),raise_server_exceptions=False) as socket_client:

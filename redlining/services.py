@@ -9,8 +9,8 @@ from dataclasses import dataclass
 from typing import Protocol
 
 from .models import (
-    ChangeResult, Document, CreateEditReservationBatchRequest, EditReservationBatchResult,
-    ApplyReplacementBatchRequest, ReplacementBatchResult, ReserveAndReplaceRequest, ReplacementAccepted, ReplacementOperation,
+    ChangeResult, Document, CreateEditReservationsRequest, EditReservationsResult,
+    ReservedReplacementsRequest, ReplacementResult, TargetedReplacementsRequest, ReplacementAccepted, ReplacementOperation,
     Reservation, ReservationSnapshot, CreateEditReservationRequest, SearchRequest, SearchResponse,
 )
 
@@ -32,10 +32,10 @@ class ReplaceCommand:
 
 
 class RedliningService(Protocol):
-    async def reserve_and_replace(self, client_id: str, document_id: str, request_key: str, request: ReserveAndReplaceRequest) -> ReplacementBatchResult | ReplacementAccepted: ...
+    async def reserve_and_replace(self, client_id: str, document_id: str, request_key: str, request: TargetedReplacementsRequest) -> ReplacementResult | ReplacementAccepted: ...
     async def replacement_operation(self, operation_id: str) -> ReplacementOperation: ...
-    async def reserve_batch(self, client_id: str, document_id: str, request: CreateEditReservationBatchRequest) -> EditReservationBatchResult: ...
-    async def change_batch(self, document_id: str, request: ApplyReplacementBatchRequest) -> ReplacementBatchResult | ReplacementAccepted: ...
+    async def reserve_batch(self, client_id: str, document_id: str, request: CreateEditReservationsRequest) -> EditReservationsResult: ...
+    async def change_batch(self, document_id: str, request: ReservedReplacementsRequest) -> ReplacementResult | ReplacementAccepted: ...
     async def reserve(self, client_id: str, document_id: str, request: CreateEditReservationRequest) -> Reservation: ...
     async def reservation_snapshot(self, document_id: str) -> ReservationSnapshot:
         """Read current version and all protected ranges in one read transaction."""
@@ -47,7 +47,7 @@ class RedliningService(Protocol):
     async def release(self, reservation_id: str) -> None:
         """Logical release only; never deletes dedupe history. Pending work conflicts."""
         ...
-    async def change(self, command: ReplaceCommand) -> ChangeResult | ReplacementAccepted:
+    async def change(self, command: ReplaceCommand) -> ReplacementResult | ReplacementAccepted:
         """Await execution and return the exact committed document revision."""
         ...
 

@@ -28,7 +28,7 @@ class CreateEditReservationRequest(Model):
     target: DocumentAnchor
 
 
-class ApplyDocumentChangeRequest(Model):
+class ReservedReplacement(Model):
     reservation_id: Identifier
     replacement: str
 
@@ -156,7 +156,7 @@ class DocumentPatch(Model):
         return self
 
 
-class DocumentUpdated(Model):
+class LegacyDocumentUpdated(Model):
     """Committed patch payload; live state bundles contain patches and reservations."""
     event_id: Identifier
     document_id: Identifier
@@ -171,7 +171,7 @@ class DocumentUpdated(Model):
         return self
 
 
-class CreateEditReservationBatchRequest(Model):
+class CreateEditReservationsRequest(Model):
     targets: list[DocumentAnchor] = Field(min_length=1, max_length=100)
 
     @model_validator(mode='after')
@@ -181,12 +181,12 @@ class CreateEditReservationBatchRequest(Model):
         return self
 
 
-class EditReservationBatchResult(Model):
+class EditReservationsResult(Model):
     reservations: list[Reservation]
 
 
-class ApplyReplacementBatchRequest(Model):
-    replacements: list[ApplyDocumentChangeRequest] = Field(min_length=1, max_length=100)
+class ReservedReplacementsRequest(Model):
+    replacements: list[ReservedReplacement] = Field(min_length=1, max_length=100)
 
     @model_validator(mode='after')
     def unique_reservations(self):
@@ -196,11 +196,11 @@ class ApplyReplacementBatchRequest(Model):
         return self
 
 
-class ReplacementBatchResult(Document):
+class ReplacementResult(Document):
     reservation_ids: list[Identifier]
 
 
-class DocumentBatchUpdated(Model):
+class DocumentUpdated(Model):
     """Sorted nonoverlapping patches, all relative to previous_version."""
     event_id: Identifier
     document_id: Identifier
@@ -208,14 +208,24 @@ class DocumentBatchUpdated(Model):
     version: Version
     patches: list[DocumentPatch] = Field(min_length=1, max_length=100)
 
+    @model_validator(mode='after')
+    def next_version(self):
+        if self.version != self.previous_version + 1:
+            raise ValueError('update must advance exactly one revision')
+        for left,right in zip(self.patches,self.patches[1:]):
+            if right.start < left.end or (right.start == left.end and
+                    (left.start == left.end or right.start == right.end)):
+                raise ValueError('patches must be sorted and nonoverlapping')
+        return self
 
-class ReservedReplacement(Model):
+
+class TargetedReplacement(Model):
     target: DocumentAnchor
     replacement: str
 
 
-class ReserveAndReplaceRequest(Model):
-    replacements: list[ReservedReplacement] = Field(min_length=1, max_length=100)
+class TargetedReplacementsRequest(Model):
+    replacements: list[TargetedReplacement] = Field(min_length=1, max_length=100)
 
     @model_validator(mode='after')
     def coherent_targets(self):
@@ -236,7 +246,7 @@ class ReplacementAccepted(Model):
 class ReplacementCompleted(Model):
     operation_id: Identifier
     status: Literal['completed'] = 'completed'
-    result: ChangeResult | ReplacementBatchResult
+    result: ReplacementResult
 
 
 class ReplacementFailed(Model):

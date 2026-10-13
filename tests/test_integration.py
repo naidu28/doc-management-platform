@@ -25,11 +25,11 @@ def test_http_reserve_submit_acknowledge_search(tmp_path):
     store.create_document('X','30 days contract')
     service=SQLiteService(store)
     with TestClient(create_app(service,service)) as client:
-        r=client.post('/documents/X/edit-reservations',headers={'X-Client-ID':'a'},json={'target':{'version':1,'start':0,'end':2}})
+        r=client.post('/documents/X/edit-reservations',headers={'X-Client-ID':'a'},json={'targets':[{'version':1,'start':0,'end':2}]})
         assert r.status_code==200
-        body={'reservation_id':r.json()['reservation_id'],'replacement':'60'}
+        body={'reservation_id':r.json()['reservations'][0]['reservation_id'],'replacement':'60'}
         with ThreadPoolExecutor() as pool:
-            pending=pool.submit(client.post,'/replacements',json=body)
+            pending=pool.submit(client.post,'/documents/X/replacements',json={'replacements': [body]})
             for _ in range(100):
                 if store.process_next(): break
                 time.sleep(.01)
@@ -37,8 +37,8 @@ def test_http_reserve_submit_acknowledge_search(tmp_path):
         assert response.status_code==200
         assert response.json()['text']=='60 days contract'
         assert store.live_state('X')['operations'][0]['status']=='completed'
-        assert client.post('/replacements',json=body).json()==response.json()
-        assert client.post('/replacements',json={**body,'replacement':'90'}).status_code==409
+        assert client.post('/documents/X/replacements',json={'replacements': [body]}).json()==response.json()
+        assert client.post('/documents/X/replacements',json={'replacements': [{**body,'replacement':'90'}]}).status_code==409
         store.index_revision('X',2)
         hit=client.post('/search',json={'text':'60','mode':'literal'}).json()['hits'][0]
         assert hit['target']=={'version':2,'start':0,'end':2}
@@ -106,7 +106,7 @@ def test_websocket_initial_snapshot_and_commit_catchup(tmp_path,redis_url):
                 state=ws.receive_json()
                 if state['reservations']['document_version']==2:
                     break
-            assert state['updates'][0]['patch']['replacement']=='60'
+            assert state['updates'][0]['patches'][0]['replacement']=='60'
             assert state['reservations']['reservations']==[]
             redis.close()
 
@@ -154,16 +154,16 @@ def test_real_http_worker_and_websocket(tmp_path, redis_url):
             with connect(f'ws://127.0.0.1:{port}/documents/X/updates',proxy=None) as ws:
                 assert json.loads(ws.recv(timeout=5))['document']['text']=='30 days'
                 reservation=client.post('/documents/X/edit-reservations',headers={'X-Client-ID':'browser'},
-                    json={'target':{'version':1,'start':0,'end':2}}).json()
-                result=client.post('/replacements',json={'reservation_id':reservation['reservation_id'],'replacement':'60'})
+                    json={'targets':[{'version':1,'start':0,'end':2}]}).json()['reservations'][0]
+                result=client.post('/documents/X/replacements',json={'replacements': [{'reservation_id':reservation['reservation_id'],'replacement':'60'}]})
                 assert result.status_code==200
-                assert result.json()['reservation_id']==reservation['reservation_id']
+                assert result.json()['reservation_ids'][0]==reservation['reservation_id']
                 for _ in range(10):
                     state=json.loads(ws.recv(timeout=5))
                     if state['reservations']['document_version']==2:
-                        assert state['updates'][0]['patch']['replacement']=='60'
+                        assert state['updates'][0]['patches'][0]['replacement']=='60'
                         assert state['operations'][0]['status']=='completed'
-                        assert state['operations'][0]['reservation_id']==result.json()['reservation_id']
+                        assert state['operations'][0]['reservation_id']==result.json()['reservation_ids'][0]
                         assert result.json()['text']=='60 days'
                         break
                 else:

@@ -82,117 +82,126 @@ These archives do not participate in runtime ordering. Existing SQLite data is n
 
 ## API
 
-| Method | Path | PostgreSQL behavior |
+One item and many items use the same contracts. Collections contain 1–100 items;
+all edits in a request belong to one document and commit atomically.
+
+| Method | Path | Contract |
 |---|---|---|
-| POST | `/documents/{id}/edit-reservations` | 200 reservation; target + `X-Client-ID` |
-| POST | `/edit-reservations/{id}/renew` | 200 renewed reservation |
-| DELETE | `/edit-reservations/{id}` | 204 after release; 409 while replacement pending |
-| PUT | `/edit-reservations/{id}/draft` | 200 saved draft; owning `X-Client-ID` required |
-| POST | `/documents/{id}/edit-reservation-batches` | Atomically acquire 1–100 ranges; same version and `X-Client-ID` |
-| POST | `/documents/{id}/replacement-batches` | Atomically commit 1–100 reserved replacements as one revision |
-| POST | `/documents/{id}/replacements` | Reserve + submit 1–100 edits atomically; `X-Client-ID` and `Idempotency-Key` required |
-| POST | `/replacements` | 200 committed text/version or 202 pending; reservation_id + replacement |
+| POST | `/documents/{id}/edit-reservations` | `{targets: [...]}` → `{reservations: [...]}`; requires `X-Client-ID` |
+| POST | `/documents/{id}/replacements` | `{replacements: [...]}` using reservation IDs **or** targets; 200 committed result or 202 pending |
 | GET | `/replacement-operations/{id}` | Pending, completed with exact result, or failed with error |
-| GET | `/documents/{id}/edit-reservations` | Complete current protected set |
+| POST | `/edit-reservations/{id}/renew` | Explicitly renew one reservation |
+| DELETE | `/edit-reservations/{id}` | Release; 409 while submitted |
+| PUT | `/edit-reservations/{id}/draft` | Save draft; owning `X-Client-ID` required |
+| GET | `/documents/{id}/edit-reservations` | Complete protected reservation snapshot |
 | GET | `/edit-reservations/{id}` | Reservation state |
-| GET | `/documents/{id}?version=1` | Current or immutable requested revision |
+| GET | `/documents/{id}?version=1` | Current or immutable revision |
 | GET | `/documents/{id}/search?q=contract` | Literal search within indexed document |
-| POST | `/search` | Literal, phrase or terms search |
-| GET | `/documents` | Document discovery for workbench |
-| WS | `/documents/{id}/updates` | Text, protected reservations, drafts, replacement outcomes |
+| POST | `/search` | Literal, phrase or terms search, optional document IDs |
+| GET | `/documents` | Document discovery |
+| WS | `/documents/{id}/updates` | Patches, protected reservations, drafts and outcomes |
 
-Reservation and draft actions return after their transaction commits; state conflicts
-are synchronous HTTP errors. POST /replacements returns 200 ChangeResult containing
-{document_id, reservation_id, version, text}. The text is the immutable revision
-created by this replacement, even if later edits have already committed.
+### Reserve, then replace
 
-The HTTP handler registers for document notifications before durable admission and
-waits asynchronously, without holding a database transaction. Notifications wake a
-read of the stored outcome; two-second reconciliation covers missed notifications.
-When the completion wait expires, the response is **202 Accepted**, not a failed
-write. It includes `Location: /replacement-operations/{id}`, `Retry-After: 2`, and:
+For a v1 document containing `30 days; other clause.`:
+
+```sh
+curl -X POST localhost:8000/documents/contract-1/edit-reservations \
+  -H 'Content-Type: application/json' -H 'X-Client-ID: example-client' \
+  -d '{"targets":[{"version":1,"start":0,"end":2}]}'
+# 200: {"reservations":[{"reservation_id":"<id>", ...}]}
+
+curl -X POST localhost:8000/documents/contract-1/replacements \
+  -H 'Content-Type: application/json' \
+  -d '{"replacements":[{"reservation_id":"<id>","replacement":"60"}]}'
+# 200: {"document_id":"contract-1","reservation_ids":["<id>"],"version":2,"text":"60 days; other clause."}
+```
+
+Add items to either array for multiple edits; there is no separate batch route.
+Acquisition checks all ranges against the current version, existing protection and
+each other in one transaction. If any fail, none are acquired. Item-specific errors
+include zero-based `item_index`. All newly created leases share a deadline; reused
+reservations retain their previous deadlines. Duplicate exact targets return the
+same reservation ID in the corresponding response positions. Replacements must use
+distinct reservation IDs, so deduplicate such IDs before submitting.
+
+Reserved replacements derive client/document/anchor identity from the reservations;
+no client header or new idempotency key is needed. The document path is validated.
+Replaying the same complete set and texts, in any order, returns the original result.
+Changed payloads, partial replays and combining already-bound operations return 409.
+
+### Reserve and replace in one call
+
+Use the same replacement endpoint with targets instead of reservation IDs:
+
+```sh
+curl -X POST localhost:8000/documents/contract-1/replacements \
+  -H 'Content-Type: application/json' \
+  -H 'X-Client-ID: integration-client' -H 'Idempotency-Key: edit-001' \
+  -d '{"replacements":[{"target":{"version":1,"start":0,"end":2},"replacement":"60"}]}'
+```
+
+All items must use one mode; mixing targets and reservation IDs is rejected. Every
+target must reference the same current version. Target-based requests require both
+headers; acquisition and durable admission happen in the same transaction. They
+respect existing reservation protection, including for single-item requests.
+
+The key is scoped to document + client. Identical replay (item order immaterial)
+returns the original outcome even after later revisions. A changed payload with
+the same key returns 409 `IDEMPOTENCY_MISMATCH`. Rejected admission does not consume
+the key. Keys and outcomes are retained indefinitely. A new intended edit needs a
+new key. No WebSocket is required for API-only callers.
+
+### Completion and subscriptions
+
+Every successful replacement returns the same shape, with `reservation_ids` as an
+array and one new version regardless of item count. Admission protects all items;
+a worker sorts ranges, assembles the document once and commits them together.
+An invariant failure applies none and releases all operation protection; a crash
+rolls back execution and leaves durable work available for recovery.
+
+The HTTP request waits outside a transaction for completion. **200** includes the
+exact committed text/version, never a newer head. When the wait ends, **202** means
+accepted and still pending, with `Location`, `Retry-After: 2` and this body:
 
 ```json
 {"operation_id":"<id>","status":"pending","status_url":"/replacement-operations/<id>"}
 ```
 
-`GET` that URL returns HTTP 200 for an existing operation, with one of:
+GET the status URL returns 200 with `status: pending`, `status: completed` plus
+`result` (the same committed response shape), or `status: failed` plus structured
+`error`. Unknown operations return 404. Status reads disable caching; pending reads
+include `Retry-After`. Clients can also repeat the identical submission safely.
+A 202 or disconnected request never cancels admitted work. Stored failures observed
+during the POST wait remain structured HTTP errors.
 
-- `{"operation_id":"...","status":"pending","status_url":"..."}`
-- `{"operation_id":"...","status":"completed","result":{...}}`
-- `{"operation_id":"...","status":"failed","error":{...}}`
+The default completion wait is 30 seconds after admission; set
+`REPLACEMENT_WAIT_SECONDS=0..30` below deployment proxy timeouts. Zero returns 202
+unless already completed. Idempotency is still needed for infrastructure timeouts.
 
-`result` is the original committed document response, including text/version and
-reservation ID(s), never a newer head. `error` is the stored structured failure.
-An unknown operation returns 404. Status responses disable caching; pending reads
-also include `Retry-After: 2`. API clients can inspect this URL or repeat their
-identical submission. The UI uses WebSocket outcomes without polling or automatic
-resubmission. A 202 confirms acceptance, not successful completion.
+Every new WebSocket revision uses `patches: [...]`, including a single edit. All
+patches are sorted and refer to the same previous version. The gateway normalizes
+historical single patches on read. The UI assembles text once, shifts selections
+by cumulative deltas and waits for subscription outcomes after 202; it never polls
+or overwrites a newer subscribed version with an older HTTP response.
 
-The default wait is 30 seconds **after admission**. Set `REPLACEMENT_WAIT_SECONDS`
-to 0–30 (e.g. 10) to fit below deployment proxy timeouts; zero returns 202 immediately
-unless the operation has already completed. Infrastructure timeouts can still
-occur, so idempotency remains necessary. Disconnects/202 never cancel accepted work.
-Stored failures observed during the POST wait remain structured HTTP errors.
+`DocumentAnchor` uses half-open Unicode code-point offsets, not UTF-16 or byte
+offsets. Insertion points conflict at either boundary of a protected range. Text
+assembly costs O(n + total replacement length), plus O(k log k) sorting for k edits.
+Overlap checks cost O(k*a + k²) for a other protected reservations; cumulative
+anchor shifts use prefix sums and binary search. Document length is read once per
+request. Cross-document atomic operations and partial success are unsupported.
 
-WebSocket operations still report queued/completed/failed, result_version and failure.
-The UI keeps its document on that stream rather than overwriting a newer version
-with the HTTP response. Client IDs identify sessions, not authenticated principals.
+### Contract upgrade
 
-Example after importing a document containing “30 days” at offsets 0–7:
-
-```sh
-curl -X POST localhost:8000/documents/contract-1/edit-reservations \
-  -H 'Content-Type: application/json' -H 'X-Client-ID: example-client' \
-  -d '{"target":{"version":1,"start":0,"end":2}}'
-# Copy reservation_id from that response:
-curl -X POST localhost:8000/replacements \
-  -H 'Content-Type: application/json' \
-  -d '{"reservation_id":"RETURNED_ID","replacement":"60"}'
-# 200: {"document_id":"contract-1","reservation_id":"RETURNED_ID","version":2,"text":"60 days..."}
-```
-
-`DocumentAnchor` uses half-open Unicode code-point offsets, not JavaScript UTF-16
-indices. Insertion points conflict at either boundary of another protected range.
-Reservation acquisition requires the current version. Concurrent document updates
-shift existing protected anchors eagerly. Client awareness reduces stale requests,
-but racing and disconnected clients still need conflict handling.
-
-## One-shot API: reserve and replace
-
-API consumers can submit ranges directly. The service creates/reuses reservations
-and durably admits the replacements in **one transaction**, then returns the
-committed document. It enforces the same reservation protections as the two-step
-workflow; it never bypasses another client's selection. No WebSocket is required.
-
-For document `contract-1` at v1 containing `30 days; other clause.`:
-
-```sh
-curl -X POST localhost:8000/documents/contract-1/replacements \
-  -H 'Content-Type: application/json' \
-  -H 'X-Client-ID: integration-client' \
-  -H 'Idempotency-Key: contract-1-edit-001' \
-  -d '{"replacements":[{"target":{"version":1,"start":0,"end":2},"replacement":"60"}]}'
-# 200: {"document_id":"contract-1","reservation_ids":["<server-generated>"],
-#       "version":2,"text":"60 days; other clause."}
-```
-
-Add more `{target, replacement}` items to the same array for an atomic batch
-(maximum 100). All targets use the same current version, are distinct and must
-not overlap. A failure rolls back all newly acquired reservations and admission.
-Responses include the server-created/reused reservation IDs for inspection.
-
-`Idempotency-Key` is required because a caller may lose the response before it
-learns those IDs. The key is scoped to client ID + document ID. Repeat the same
-key and payload after a timeout/disconnect to retrieve the original outcome,
-even after later revisions. Item order is immaterial. A changed payload with the
-same key returns 409 `IDEMPOTENCY_MISMATCH`; a new intended edit uses a new key.
-Records are retained indefinitely, like other replacement history. Rejected
-admissions do not consume a key. A 202 supplies the status URL for accepted work.
-
-The existing reservation APIs remain available for interactive selection and
-protected typing; `/replacements` and `/documents/{id}/replacement-batches` still
-accept previously acquired reservation IDs.
+The old root replacement route and separate batch routes are removed, not aliases.
+Update API callers and deploy backend workers/UI together. Existing reservation IDs,
+operation IDs and one-shot keys remain valid. Old singleton operations replay through
+the new array contract with the same outcome; legacy revision patches are normalized.
+PostgreSQL uses one operation/items execution path regardless of item count. Retained
+leading-item database columns support historical migration, not a unary execution mode.
+The explicit SQLite fixture adapter supports only single-item arrays; PostgreSQL is
+the application backend for full operation sets.
 
 ## Browser departure
 
@@ -212,58 +221,6 @@ An in-flight acquisition arriving after departure cleanup still has the ordinary
 30-second lease bound. API-only clients do not register browser presence and keep
 normal lease behavior. Draft text/history is retained, but released drafts no
 longer hold ranges or appear as active edits.
-
-## Per-document batches
-
-Batch reservation and replacement are all-or-nothing. All ranges/reservations must
-belong to the named document. The original single-item endpoints remain supported.
-
-```sh
-curl -X POST localhost:8000/documents/contract-1/edit-reservation-batches \
-  -H 'Content-Type: application/json' -H 'X-Client-ID: example-client' \
-  -d '{"targets":[{"version":1,"start":0,"end":2},{"version":1,"start":9,"end":14}]}'
-# Response: {"reservations":[...]} in request order. Use their actual IDs:
-curl -X POST localhost:8000/documents/contract-1/replacement-batches \
-  -H 'Content-Type: application/json' \
-  -d '{"replacements":[{"reservation_id":"FIRST_ID","replacement":"60"},{"reservation_id":"SECOND_ID","replacement":"updated"}]}'
-# 200: {"document_id":"contract-1","reservation_ids":[...],"version":2,"text":"..."}
-```
-
-The example offsets assume a v1 document containing `30 days; other clause.`.
-A reservation batch validates every range against one current version, existing
-protection and its own newly reserved ranges, under one document lock. New leases
-share a 30-second deadline. Reused reservations keep their original deadlines;
-repeated exact targets return the same ID at each corresponding response position.
-If any item fails, no reservations or events from the batch commit. Item-specific
-errors include zero-based `item_index`; malformed bodies return 422.
-
-Replacement batches require distinct reservation IDs. Admission validates the entire
-set and protects it atomically. One durable operation owns multiple replacement
-items. Execution sorts ranges, assembles text in one pass and commits exactly one
-revision, consumes all reservations and updates other protected anchors by the
-combined displacement. Patches share the preceding revision's coordinate system.
-WebSocket updates for batches carry `patches: [...]`; single edits retain `patch`.
-The UI handles both and submits multiple saved drafts as one atomic batch.
-
-Replaying the same complete batch in any order returns its original result.
-Changed payloads, partial replays, or combining previously bound operations produce
-409. A batch cannot be replayed through the single-replacement endpoint, or vice
-versa. The configured completion wait applies to the whole operation;
-202 leaves it running. Inspect its status URL or repeat the exact complete batch.
-Infrastructure failure rolls back execution and leaves all items durable; an
-invariant failure commits a failed outcome and releases all batch protection.
-
-For k edits, text assembly costs O(n + total replacement length), plus O(k log k)
-sorting. Anchor displacement uses prefix sums and binary search; overlap validation
-also checks protected ranges (O(k*a + k²), for a other reservations). k is bounded
-at 100. Document length is read once per admission/reservation batch, not per item.
-Cross-document batches and partial success are deliberately unsupported.
-
-Upgrade with old API/worker processes stopped, and deploy the updated UI together
-with the backend: old workers/clients do not understand multi-patch revisions.
-Initialization backfills item membership for existing durable single replacements;
-queued operations and historical replay remain supported. Legacy SQLite fixture
-mode does not implement the new batch endpoints.
 
 ## Search and subscriptions
 

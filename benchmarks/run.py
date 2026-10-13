@@ -217,19 +217,19 @@ def edit_suite(stack, docs):
         reservations=[]
         for i in range(10):
             start=SMALL.index(f'TOKEN{i}')
-            body={'target':{'version':1,'start':start,'end':start+6}}
+            body={'targets':[{'version':1,'start':start,'end':start+6}]}
             r=c.post('/documents/trace-api/edit-reservations',json=body,headers={'X-Client-ID':f'api-{i}'})
-            r.raise_for_status(); reservations.append(r.json()['reservation_id'])
+            r.raise_for_status(); reservations.append(r.json()['reservations'][0]['reservation_id'])
             if i==0:
                 duplicate=c.post('/documents/trace-api/edit-reservations',json=body,headers={'X-Client-ID':'api-0'})
-                assert duplicate.json()['reservation_id']==reservations[0]
+                assert duplicate.json()['reservations'][0]['reservation_id']==reservations[0]
                 assert c.post('/documents/trace-api/edit-reservations',json=body,headers={'X-Client-ID':'intruder'}).status_code==409
                 checks.extend(['same-client selection returns existing reservation','overlapping client gets 409'])
         barrier=threading.Barrier(10)
         def replace(i):
             with httpx.Client(base_url=stack.url,timeout=60) as client:
                 barrier.wait(timeout=30); started=time.perf_counter_ns()
-                r=client.post('/replacements',json={'reservation_id':reservations[i],'replacement':f'approved-{i}-long'})
+                r=client.post('/documents/trace-api/replacements',json={'replacements':[{'reservation_id':reservations[i],'replacement':f'approved-{i}-long'}]})
                 r.raise_for_status(); result=r.json()
                 assert result['text']==store.get_document('trace-api',result['version']).text
                 return {'client':i,'submitted_ns':started,'ms':(time.perf_counter_ns()-started)/1e6,'version':result['version'],'reservation_id':reservations[i]}
@@ -240,10 +240,10 @@ def edit_suite(stack, docs):
         for i in range(10): expected=expected.replace(f'TOKEN{i}',f'approved-{i}-long')
         assert final['version']==11 and final['text']==expected
         assert sorted(r['version'] for r in trace)==list(range(2,12))
-        replay=c.post('/replacements',json={'reservation_id':reservations[0],'replacement':'approved-0-long'}).json()
+        replay=c.post('/documents/trace-api/replacements',json={'replacements':[{'reservation_id':reservations[0],'replacement':'approved-0-long'}]}).json()
         assert replay['version']==trace[0]['version']
-        assert c.post('/replacements',json={'reservation_id':reservations[0],'replacement':'different'}).status_code==409
-        assert c.post('/documents/trace-api/edit-reservations',json={'target':{'version':1,'start':0,'end':2}},headers={'X-Client-ID':'stale'}).status_code==409
+        assert c.post('/documents/trace-api/replacements',json={'replacements':[{'reservation_id':reservations[0],'replacement':'different'}]}).status_code==409
+        assert c.post('/documents/trace-api/edit-reservations',json={'targets':[{'version':1,'start':0,'end':2}]},headers={'X-Client-ID':'stale'}).status_code==409
         checks.extend(['10 disjoint replacements exactly once, eagerly shifted anchors','replay returns original committed revision','changed payload rejected 409','stale reservation rejected 409'])
         large='\n'.join(t for _,t,_ in docs)
         store.create_document('stress-composite',large,'Synthetic CUAD concatenation')
@@ -251,8 +251,8 @@ def edit_suite(stack, docs):
         for i in range(3):
             doc=c.get('/documents/stress-composite').json(); start=len(doc['text'])//2
             began=time.perf_counter()
-            r=c.post('/documents/stress-composite/edit-reservations',headers={'X-Client-ID':'large'},json={'target':{'version':doc['version'],'start':start,'end':start+10}});r.raise_for_status()
-            result=c.post('/replacements',json={'reservation_id':r.json()['reservation_id'],'replacement':'BENCHMARK_REPLACEMENT'});result.raise_for_status()
+            r=c.post('/documents/stress-composite/edit-reservations',headers={'X-Client-ID':'large'},json={'targets':[{'version':doc['version'],'start':start,'end':start+10}]});r.raise_for_status()
+            result=c.post('/documents/stress-composite/replacements',json={'replacements':[{'reservation_id':r.json()['reservations'][0]['reservation_id'],'replacement':'BENCHMARK_REPLACEMENT'}]});result.raise_for_status()
             assert result.json()['text']==doc['text'][:start]+'BENCHMARK_REPLACEMENT'+doc['text'][start+10:]
             large_rows.append((time.perf_counter()-began)*1000)
         begun=time.perf_counter()

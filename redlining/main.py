@@ -111,6 +111,9 @@ def build_app(db_path=None, redis_url=None, database_url=None):
             while True:
                 signal.clear()
                 state = await asyncio.to_thread(store.live_state, document_id, version, socket.query_params.get('retain_history') == '1')
+                for update in state.get('updates', []):
+                    if 'patch' in update:
+                        update['patches'] = [update.pop('patch')]
                 await asyncio.wait_for(socket.send_json(state), 10)
                 version = state['reservations']['document_version']
                 wake = asyncio.create_task(signal.wait())

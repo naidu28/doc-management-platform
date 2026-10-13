@@ -270,12 +270,12 @@ function Workbench({ id, documentPicker, hit }) {
       await clearLease();
       return store.perform(`/documents/${pathId(id)}/edit-reservations`, {
         method: "POST",
-        body: JSON.stringify({ target: { version: doc.version, start, end } }),
+        body: JSON.stringify({ targets: [{ version: doc.version, start, end }] }),
       });
     })();
     acquisition.current = acquiring;
     try {
-      const r = await acquiring;
+      const r = (await acquiring).reservations[0];
       if (epoch !== selectionEpoch.current || !alive.current) {
         if (r.expires_at)
           await store.perform(
@@ -398,8 +398,8 @@ function Workbench({ id, documentPicker, hit }) {
       }));
       if (replacements.length) {
         const result = await store.perform(
-          replacements.length === 1 ? "/replacements" : `/documents/${pathId(id)}/replacement-batches`,
-          { method: "POST", body: JSON.stringify(replacements.length === 1 ? replacements[0] : { replacements }) },
+          `/documents/${pathId(id)}/replacements`,
+          { method: "POST", body: JSON.stringify({ replacements }) },
         );
         for (const r of mine) delete bufferRef.current[r.reservation_id];
         setBuffers({ ...bufferRef.current });

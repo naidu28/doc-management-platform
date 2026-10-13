@@ -55,7 +55,7 @@ def test_notification_wakes_request_and_detaches(storage):
         hub.signal.set()
         result=await asyncio.wait_for(task,1)
         assert result.text=='60 days' and result.version==2
-        assert result.reservation_id==command.reservation_id
+        assert result.reservation_ids==[command.reservation_id]
         assert hub.detached
     asyncio.run(run())
 

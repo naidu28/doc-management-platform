@@ -35,7 +35,7 @@ The API and an in-memory SQLite FTS5/BM25 baseline receive identical AND-token q
 
 1. `GET /documents/{id}` gives text and version. Offsets are half-open Unicode code points, **not UTF-8 bytes or JavaScript UTF-16 units**.
 2. `POST /documents/{id}/edit-reservations`, with `X-Client-ID`, reserves the range for 30 seconds. The server rejects a stale version or another client's overlap with 409. An identical selection by the same client returns its existing reservation without extending the lease.
-3. `POST /replacements` supplies only the reservation ID and replacement text. Admission binds the operation to the reservation and protects the range until execution finishes. The durable worker commits the new revision and eagerly moves other protected anchors.
+3. `POST /documents/{id}/replacements` supplies a replacements array containing reservation IDs and replacement texts. Admission binds the operation to the reservation and protects the range until execution finishes. The durable worker commits the new revision and eagerly moves other protected anchors.
 4. HTTP 200 returns the **exact revision produced by this operation**, including full updated text. No WebSocket is required for an API caller. A changed payload for an already-bound reservation is rejected. Replaying the same payload returns the same revision, even if the document has advanced.
 5. The completion wait is 30 seconds after admission (`DocumentService` in `redlining/runtime.py`). A 202 supplies a status URL and means work remains durably accepted. GET that URL for pending/completed/failed, or repeat the same submission to retrieve its result; do not create a new operation blindly. The wait can be shortened with REPLACEMENT_WAIT_SECONDS. The browser independently subscribes to `/documents/{id}/updates`.
 
@@ -45,11 +45,11 @@ Example, after fetching the current version and locating a real range:
 curl -s http://localhost:8000/documents/example
 curl -s -X POST http://localhost:8000/documents/example/edit-reservations \
   -H 'Content-Type: application/json' -H 'X-Client-ID: example-client' \
-  -d '{"target":{"version":1,"start":0,"end":5}}'
-# Use reservation_id from that response:
-curl -s -X POST http://localhost:8000/replacements \
+  -d '{"targets":[{"version":1,"start":0,"end":5}]}'
+# Use reservations[0].reservation_id from that response:
+curl -s -X POST http://localhost:8000/documents/example/replacements \
   -H 'Content-Type: application/json' \
-  -d '{"reservation_id":"<returned-id>","replacement":"Updated text"}'
+  -d '{"replacements":[{"reservation_id":"<returned-id>","replacement":"Updated text"}]}'
 ```
 
 The executable suite creates its own small document (no manual ID needed), reserves ten disjoint ranges, submits ten concurrent replacements, verifies immutable responses and v1→v11, then tests replay, changed payload, overlap and stale-version rejection. It also checks three sequential replacements and eventual indexing on a >10 MB synthetic concatenation of the contracts. This large text is **not represented as a real individual contract**.

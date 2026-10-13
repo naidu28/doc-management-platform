@@ -247,13 +247,13 @@ def test_socket_and_http_reservation_admission(store):
     with TestClient(build_app(database_url=store.dsn,redis_url='redis://127.0.0.1:1')) as client:
         with client.websocket_connect('/documents/X/updates') as ws:
             assert ws.receive_json()['document']['version']==1
-            granted_response=client.post('/documents/X/edit-reservations',headers={'X-Client-ID':'a'},json={'target':{'version':1,'start':0,'end':2}})
+            granted_response=client.post('/documents/X/edit-reservations',headers={'X-Client-ID':'a'},json={'targets':[{'version':1,'start':0,'end':2}]})
             assert granted_response.status_code==200
-            rid=granted_response.json()['reservation_id']
-            assert client.post('/documents/X/edit-reservations',headers={'X-Client-ID':'b'},json={'target':{'version':1,'start':0,'end':2}}).status_code==409
+            rid=granted_response.json()['reservations'][0]['reservation_id']
+            assert client.post('/documents/X/edit-reservations',headers={'X-Client-ID':'b'},json={'targets':[{'version':1,'start':0,'end':2}]}).status_code==409
             import time
             with ThreadPoolExecutor() as pool:
-                pending=pool.submit(client.post,'/replacements',json={'reservation_id':rid,'replacement':'60'})
+                pending=pool.submit(client.post,'/documents/X/replacements',json={'replacements': [{'reservation_id':rid,'replacement':'60'}]})
                 for _ in range(100):
                     if store.reservation(rid).status=='submitted':break
                     time.sleep(.01)
@@ -266,11 +266,11 @@ def test_socket_and_http_reservation_admission(store):
             for _ in range(5):
                 state=ws.receive_json()
                 if state['reservations']['document_version']==2:break
-            assert state['updates'][0]['patch']['replacement']=='60'
+            assert state['updates'][0]['patches'][0]['replacement']=='60'
             assert state['operations'][0]['status']=='completed'
         with client.websocket_connect('/documents/X/updates') as ws:
             state=ws.receive_json()
-            assert state['operations'][0]['reservation_id']==response.json()['reservation_id']
+            assert state['operations'][0]['reservation_id']==response.json()['reservation_ids'][0]
             assert 'commands' not in state
 
 
@@ -411,8 +411,8 @@ def test_ranking_backfills_existing_rows_and_reindexes_new_revision(store):
 
 
 def batch_request(*ranges):
-    from redlining.models import CreateEditReservationBatchRequest
-    return CreateEditReservationBatchRequest(targets=[DocumentAnchor(version=1,start=a,end=b) for a,b in ranges])
+    from redlining.models import CreateEditReservationsRequest
+    return CreateEditReservationsRequest(targets=[DocumentAnchor(version=1,start=a,end=b) for a,b in ranges])
 
 
 def test_reservation_batch_atomicity_duplicates_and_shared_deadline(store):
@@ -501,12 +501,12 @@ def test_batch_http_completion_and_socket_patch_list(store):
     with TestClient(build_app(database_url=store.dsn,redis_url='redis://127.0.0.1:1')) as client:
         with client.websocket_connect('/documents/X/updates') as ws:
             ws.receive_json()
-            r=client.post('/documents/X/edit-reservation-batches',headers={'X-Client-ID':'a'},
+            r=client.post('/documents/X/edit-reservations',headers={'X-Client-ID':'a'},
                 json={'targets':[{'version':1,'start':0,'end':2},{'version':1,'start':9,'end':14}]})
             assert r.status_code==200
             body={'replacements':[{'reservation_id':item['reservation_id'],'replacement':'new'} for item in r.json()['reservations']]}
             with ThreadPoolExecutor(1) as pool:
-                pending=pool.submit(client.post,'/documents/X/replacement-batches',json=body)
+                pending=pool.submit(client.post,'/documents/X/replacements',json=body)
                 import time
                 deadline=time.monotonic()+5
                 while not store.process_next():
@@ -520,8 +520,8 @@ def test_batch_http_completion_and_socket_patch_list(store):
             state=ws.receive_json()
             while not state.get('updates'):state=ws.receive_json()
             assert len(state['updates'])==1 and len(state['updates'][0]['patches'])==2
-            assert client.post('/documents/X/replacement-batches',json=body).json()==response.json()
-            bad=client.post('/documents/X/replacement-batches',json={'replacements':body['replacements']*2})
+            assert client.post('/documents/X/replacements',json=body).json()==response.json()
+            bad=client.post('/documents/X/replacements',json={'replacements':body['replacements']*2})
             assert bad.status_code==422
 
 
@@ -548,11 +548,11 @@ def test_batch_crash_before_commit_recovers_after_restart(store, monkeypatch):
 def test_large_batch_inserts_deletes_unicode_and_reindexes(store):
     text='a'*5_300_000+'😀 middle '+'z'*5_300_000
     store.create_document('large-batch',text)
-    from redlining.models import CreateEditReservationBatchRequest
+    from redlining.models import CreateEditReservationsRequest
     targets=[DocumentAnchor(version=1,start=0,end=0),
              DocumentAnchor(version=1,start=5_300_000,end=5_300_002),
              DocumentAnchor(version=1,start=len(text),end=len(text))]
-    rows=store.reserve_batch('a','large-batch',CreateEditReservationBatchRequest(targets=targets)).reservations
+    rows=store.reserve_batch('a','large-batch',CreateEditReservationsRequest(targets=targets)).reservations
     commands=[ReplaceCommand(rows[0].reservation_id,'START '),ReplaceCommand(rows[1].reservation_id,''),
               ReplaceCommand(rows[2].reservation_id,' UNIQUEBATCHEND')]
     oid=store.admit_batch('large-batch',list(reversed(commands)))
@@ -565,8 +565,8 @@ def test_large_batch_inserts_deletes_unicode_and_reindexes(store):
 
 
 def one_shot_body():
-    from redlining.models import ReserveAndReplaceRequest
-    return ReserveAndReplaceRequest(replacements=[
+    from redlining.models import TargetedReplacementsRequest
+    return TargetedReplacementsRequest(replacements=[
         {'target':{'version':1,'start':0,'end':2},'replacement':'60'},
         {'target':{'version':1,'start':9,'end':14},'replacement':'new'}])
 
@@ -681,9 +681,9 @@ def test_http_pending_status_resource_and_original_result(store,kind):
         path='/documents/X/replacements';body=one_shot_body().model_dump()
     elif kind=='batch':
         rows=store.reserve_batch('a','X',batch_request((0,2),(9,14))).reservations
-        path='/documents/X/replacement-batches';body={'replacements':[{'reservation_id':r.reservation_id,'replacement':'new'} for r in rows]}
+        path='/documents/X/replacements';body={'replacements':[{'reservation_id':r.reservation_id,'replacement':'new'} for r in rows]}
     else:
-        path='/replacements';body={'reservation_id':granted(store),'replacement':'60'}
+        path='/documents/X/replacements';body={'replacements':[{'reservation_id':granted(store),'replacement':'60'}]}
     with TestClient(app) as client:
         headers={'X-Client-ID':'a','Idempotency-Key':'pending-request'}
         response=client.post(path,json=body,headers=headers)
@@ -719,3 +719,19 @@ def test_operation_resource_reports_failed_outcome_without_false_success(store):
         assert response.status_code==200 and response.json()['status']=='failed'
         assert response.json()['error']['reason']=='QUEUE_INVARIANT'
         assert 'result' not in response.json()
+
+
+def test_historical_single_operation_and_patch_normalize_to_arrays(store):
+    rid=granted(store);oid=store.admit(ReplaceCommand(rid,'60'));finish(store,oid)
+    # Simulate the shape stored before the uniform patch-list contract.
+    with store.connection(True) as db:
+        db.execute("UPDATE revisions SET patch=%s::jsonb WHERE document_id='X' AND version=2",
+                   (json.dumps({'start':0,'end':2,'replacement':'60'}),))
+        db.execute('DELETE FROM replacement_items WHERE operation_id=%s',(oid,))
+    upgraded=PostgresStore(store.dsn,initialize=True)
+    assert upgraded.admit_batch('X',[ReplaceCommand(rid,'60')])==oid
+    result=upgraded.replacement_result(oid)
+    assert result.reservation_ids==[rid] and result.version==2
+    update=upgraded.live_state('X',1)['updates'][0]
+    assert update['patches']==[{'start':0,'end':2,'replacement':'60'}]
+    assert 'patch' not in update

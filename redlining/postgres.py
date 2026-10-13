@@ -14,7 +14,7 @@ from uuid import uuid4
 import psycopg
 from psycopg.rows import dict_row
 
-from .models import ReplacementAccepted, ReplacementCompleted, ReplacementFailed, Error, CreateEditReservationBatchRequest, EditReservationBatchResult, ReplacementBatchResult, ChangeResult, Document, DocumentAnchor, Reservation, ReservationSnapshot, SearchHit, SearchResponse
+from .models import ReplacementAccepted, ReplacementCompleted, ReplacementFailed, Error, CreateEditReservationsRequest, EditReservationsResult, ReplacementResult, ChangeResult, Document, DocumentAnchor, Reservation, ReservationSnapshot, SearchHit, SearchResponse
 from .services import ReplaceCommand, ServiceError
 from .storage import overlap
 from .ranking import ranking_sections
@@ -33,7 +33,6 @@ CREATE INDEX IF NOT EXISTS reservation_document ON reservations(document_id,stat
 CREATE TABLE IF NOT EXISTS replacements(id text PRIMARY KEY, document_id text NOT NULL REFERENCES documents(id),
  reservation_id text UNIQUE NOT NULL REFERENCES reservations(id), replacement text NOT NULL,
  status text NOT NULL DEFAULT 'queued', result_version bigint, failure jsonb);
-ALTER TABLE replacements ADD COLUMN IF NOT EXISTS is_batch boolean NOT NULL DEFAULT false;
 CREATE TABLE IF NOT EXISTS one_shot_requests(document_id text NOT NULL REFERENCES documents(id),
  client_id text NOT NULL, request_key text NOT NULL, payload jsonb NOT NULL,
  operation_id text NOT NULL REFERENCES replacements(id), PRIMARY KEY(document_id,client_id,request_key));
@@ -155,7 +154,7 @@ class PostgresStore:
         return self.row(db,rid)
 
     def reserve(self, client_id, document_id, request):
-        batch = CreateEditReservationBatchRequest(targets=[request.target])
+        batch = CreateEditReservationsRequest(targets=[request.target])
         return self.reserve_batch(client_id, document_id, batch).reservations[0]
 
     def reserve_batch(self, client_id, document_id, request):
@@ -190,7 +189,7 @@ class PostgresStore:
                 raise
         if changed:
             self.emit(db,document_id,request.targets[0].version)
-        return EditReservationBatchResult(reservations=results)
+        return EditReservationsResult(reservations=results)
 
     def eligible(self, db, row, now, context=None):
         if row['status'] not in ('active','expired'):
@@ -219,7 +218,7 @@ class PostgresStore:
     def admit(self, command):
         with self.connection(True) as db:
             row = self.lock_reservation(db,command.reservation_id)
-            return self.admit_items(db,row['document_id'],[command],False)
+            return self.admit_items(db,row['document_id'],[command])
 
     def admit_one_shot(self, client_id, document_id, request_key, request):
         # The caller can replay after losing the response without knowing any
@@ -235,10 +234,10 @@ class PostgresStore:
                     raise ServiceError(409,'IDEMPOTENCY_MISMATCH','This Idempotency-Key already identifies a different request')
                 return previous['operation_id']
             reservations = self.reserve_targets(db,client_id,document_id,
-                CreateEditReservationBatchRequest(targets=[item.target for item in request.replacements])).reservations
+                CreateEditReservationsRequest(targets=[item.target for item in request.replacements])).reservations
             commands = [ReplaceCommand(reservation.reservation_id,item.replacement)
                         for reservation,item in zip(reservations,request.replacements)]
-            oid = self.admit_items(db,document_id,commands,True)
+            oid = self.admit_items(db,document_id,commands)
             db.execute('INSERT INTO one_shot_requests VALUES(%s,%s,%s,%s::jsonb,%s)',
                        (document_id,client_id,request_key,json.dumps(payload),oid))
             return oid
@@ -246,9 +245,9 @@ class PostgresStore:
     def admit_batch(self, document_id, commands):
         with self.connection(True) as db:
             self.lock_document(db,document_id)
-            return self.admit_items(db,document_id,commands,True)
+            return self.admit_items(db,document_id,commands)
 
-    def admit_items(self, db, document_id, commands, is_batch):
+    def admit_items(self, db, document_id, commands):
         requested = {c.reservation_id:c.replacement for c in commands}
         if not commands or len(commands)>100 or len(requested)!=len(commands):
             raise ServiceError(422,'INVALID_BATCH','Use 1–100 distinct reservations')
@@ -269,7 +268,7 @@ class PostgresStore:
                 oid = next(iter(ids))
                 operation = db.execute('SELECT * FROM replacements WHERE id=%s',(oid,)).fetchone()
                 bound = {r['reservation_id']:r['replacement'] for r in self.operation_items(db,operation)}
-                if bound==requested and operation['is_batch']==is_batch:
+                if bound==requested:
                     return oid
             raise ServiceError(409,'REPLACEMENT_MISMATCH','Reservations are already bound to a different replacement or batch')
         now = self.now(db)
@@ -286,8 +285,8 @@ class PostgresStore:
         # Keep the original leading-item columns for durable pre-batch operations.
         # The child table is authoritative for membership of all new operations.
         first = commands[0]
-        db.execute('INSERT INTO replacements(id,document_id,reservation_id,replacement,is_batch) VALUES(%s,%s,%s,%s,%s)',
-                   (oid,document_id,first.reservation_id,first.replacement,is_batch))
+        db.execute('INSERT INTO replacements(id,document_id,reservation_id,replacement) VALUES(%s,%s,%s,%s)',
+                   (oid,document_id,first.reservation_id,first.replacement))
         for command in commands:
             db.execute('INSERT INTO replacement_items VALUES(%s,%s,%s)',(oid,command.reservation_id,command.replacement))
             db.execute("UPDATE reservations SET status='submitted',expires=NULL,operation_id=%s WHERE id=%s",(oid,command.reservation_id))
@@ -404,7 +403,7 @@ class PostgresStore:
         pieces.append(text[position:])
         updated = ''.join(pieces)
         version = head['version']+1
-        patch = {'patches':patches} if operation['is_batch'] else patches[0]
+        patch = {'patches':patches}
         db.execute('INSERT INTO revisions VALUES(%s,%s,%s,%s::jsonb)',(document_id,version,updated,json.dumps(patch)))
         db.execute('UPDATE documents SET version=%s WHERE id=%s',(version,document_id))
         for other in others:
@@ -493,11 +492,8 @@ class PostgresStore:
             if operation['status']=='failed':
                 return ReplacementFailed(operation_id=operation_id,error=Error(**operation['failure']))
             document = self.document_in(db,operation['document_id'],operation['result_version'])
-            if operation['is_batch']:
-                result = ReplacementBatchResult(**document.model_dump(),
-                    reservation_ids=[item['reservation_id'] for item in self.operation_items(db,operation)])
-            else:
-                result = ChangeResult(**document.model_dump(),reservation_id=operation['reservation_id'])
+            result = ReplacementResult(**document.model_dump(),
+                reservation_ids=[item['reservation_id'] for item in self.operation_items(db,operation)])
             return ReplacementCompleted(operation_id=operation_id,result=result)
 
     def replacement_result(self, operation_id):
@@ -517,7 +513,7 @@ class PostgresStore:
                 content = {'document':self.document_in(db,document_id).model_dump()}
             else:
                 updates = db.execute("SELECT r.version,r.patch,o.event_id FROM revisions r JOIN outbox o ON o.document_id=r.document_id AND o.version=r.version AND o.kind='document_updated' WHERE r.document_id=%s AND r.version>%s ORDER BY r.version",(document_id,after_version)).fetchall()
-                content = {'updates':[dict(event_id=r['event_id'],document_id=document_id,previous_version=r['version']-1,version=r['version'],**(r['patch'] if 'patches' in r['patch'] else {'patch':r['patch']})) for r in updates]}
+                content = {'updates':[dict(event_id=r['event_id'],document_id=document_id,previous_version=r['version']-1,version=r['version'],patches=(r['patch']['patches'] if 'patches' in r['patch'] else [r['patch']])) for r in updates]}
             operations = db.execute('SELECT p.id AS operation_id,i.reservation_id,p.status,p.result_version,p.failure FROM replacements p JOIN replacement_items i ON i.operation_id=p.id WHERE p.document_id=%s',(document_id,)).fetchall()
             drafts = db.execute("SELECT d.* FROM drafts d JOIN reservations r ON r.id=d.reservation_id WHERE r.document_id=%s AND r.status IN ('active','submitted')",(document_id,)).fetchall()
             return dict(type='document_state',reservations=snapshot.model_dump(mode='json'),operations=operations,drafts=drafts,**content)

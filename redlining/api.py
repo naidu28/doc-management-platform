@@ -6,12 +6,12 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException
 
 from .models import (
-    ApplyDocumentChangeRequest, ChangeResult, Document, ReserveAndReplaceRequest,
+    Document, TargetedReplacementsRequest,
     ReplacementAccepted, ReplacementOperation,
-    CreateEditReservationBatchRequest, EditReservationBatchResult, ApplyReplacementBatchRequest, ReplacementBatchResult, Error,
-    Reservation, ReservationSnapshot, CreateEditReservationRequest, SearchRequest, SearchResponse,
+    CreateEditReservationsRequest, EditReservationsResult, ReservedReplacementsRequest, ReplacementResult, Error,
+    Reservation, ReservationSnapshot, SearchRequest, SearchResponse,
 )
-from .services import RedliningService, RetrievalService, ServiceError, ReplaceCommand
+from .services import RedliningService, RetrievalService, ServiceError
 
 
 def redlining_service(request: Request) -> RedliningService:
@@ -55,28 +55,28 @@ async def replacement_operation(operation_id: str, response: Response, service: 
     return result
 
 
-@writes.post("/documents/{document_id}/edit-reservations", response_model=Reservation)
-async def reserve(document_id: str, body: CreateEditReservationRequest, response: Response, client_id: Client, service: Writer):
-    result = await service.reserve(client_id, document_id, body)
-    return result
-
-
-@writes.post("/documents/{document_id}/edit-reservation-batches", response_model=EditReservationBatchResult)
-async def reserve_batch(document_id: str, body: CreateEditReservationBatchRequest, client_id: Client, service: Writer):
+@writes.post("/documents/{document_id}/edit-reservations", response_model=EditReservationsResult)
+async def reserve(document_id: str, body: CreateEditReservationsRequest, client_id: Client, service: Writer):
     return await service.reserve_batch(client_id, document_id, body)
 
 
-@writes.post("/documents/{document_id}/replacements", response_model=ReplacementBatchResult, responses=PENDING_RESPONSE)
-async def reserve_and_replace(document_id: str, body: ReserveAndReplaceRequest, client_id: Client,
-                              request_key: Annotated[str, Header(alias="Idempotency-Key", min_length=1, max_length=200)],
-                              service: Writer):
-    """Reserve and admit 1–100 replacements atomically; return their committed revision."""
-    return replacement_response(await service.reserve_and_replace(client_id, document_id, request_key, body))
+@writes.post("/documents/{document_id}/replacements", response_model=ReplacementResult, responses=PENDING_RESPONSE)
+async def replace(document_id: str, body: ReservedReplacementsRequest | TargetedReplacementsRequest,
+                  service: Writer,
+                  client_id: Annotated[str | None, Header(alias="X-Client-ID", min_length=1, max_length=200)] = None,
+                  request_key: Annotated[str | None, Header(alias="Idempotency-Key", min_length=1, max_length=200)] = None):
+    """Apply 1–100 edits atomically. Use reservation IDs OR versioned targets, never both.
 
-
-@writes.post("/documents/{document_id}/replacement-batches", response_model=ReplacementBatchResult, responses=PENDING_RESPONSE)
-async def replace_batch(document_id: str, body: ApplyReplacementBatchRequest, service: Writer):
-    return replacement_response(await service.change_batch(document_id, body))
+    Target-based requests require X-Client-ID and Idempotency-Key. Reservation-based
+    requests derive identity from the reservations and deduplicate by their set.
+    """
+    if isinstance(body, TargetedReplacementsRequest):
+        if client_id is None or request_key is None:
+            raise ServiceError(422,"MISSING_HEADERS","Target-based replacements require X-Client-ID and Idempotency-Key")
+        result = await service.reserve_and_replace(client_id, document_id, request_key, body)
+    else:
+        result = await service.change_batch(document_id, body)
+    return replacement_response(result)
 
 
 @writes.get("/documents/{document_id}/edit-reservations", response_model=ReservationSnapshot)
@@ -98,11 +98,6 @@ async def renew(reservation_id: str, service: Writer):
 async def release(reservation_id: str, service: Writer):
     await service.release(reservation_id)
     return Response(status_code=204)
-
-
-@writes.post("/replacements", response_model=ChangeResult, responses=PENDING_RESPONSE)
-async def change(body: ApplyDocumentChangeRequest, service: Writer):
-    return replacement_response(await service.change(ReplaceCommand(**body.model_dump())))
 
 
 @reads.get("/documents/{document_id}", response_model=Document)

@@ -20,13 +20,13 @@ test('replacement returns HTTP document without rolling back newer subscribed st
   const stop = store.start();
   send();
   let calls = 0;
-  const result = { document_id: 'X', reservation_id: 'r', version: 2, text: 'first edit' };
+  const result = { document_id: 'X', reservation_ids: ['r'], version: 2, text: 'first edit' };
   globalThis.fetch = async () => {
     calls++;
     send(3, 'later edit');
     return { ok: true, status: 200, json: async () => result };
   };
-  assert.deepEqual(await store.perform('/replacements', { method: 'POST' }), result);
+  assert.deepEqual(await store.perform('/documents/X/replacements', { method: 'POST' }), result);
   assert.equal(store.getSnapshot().document.version, 3);
   assert.equal(calls, 1);
   stop();
@@ -41,7 +41,7 @@ test('proxy timeout surfaces uncertainty without automatically resubmitting', as
     calls++;
     return { ok: false, status: 504, json: async () => ({ error: 'Gateway timeout; outcome unknown' }) };
   };
-  await assert.rejects(store.perform('/replacements', { method: 'POST' }), /outcome unknown/);
+  await assert.rejects(store.perform('/documents/X/replacements', { method: 'POST' }), /outcome unknown/);
   assert.equal(calls, 1);
   stop();
 });
@@ -81,7 +81,7 @@ test('202 remains pending until the subscription reports completion', async () =
     calls++;
     return { ok: true, status: 202, json: async () => ({status:'pending', operation_id:'op', status_url:'/replacement-operations/op'}) };
   };
-  const result = await store.perform('/replacements', { method:'POST', body:JSON.stringify({reservation_id:'r',replacement:'new'}) });
+  const result = await store.perform('/documents/X/replacements', { method:'POST', body:JSON.stringify({replacements:[{reservation_id:'r',replacement:'new'}]}) });
   assert.equal(result.status, 'pending');
   assert.match(store.getSnapshot().operationNotice, /Waiting/);
   assert.equal(store.getSnapshot().document.version, 1);
@@ -97,7 +97,7 @@ test('batch 202 surfaces a later failure through the subscription', async () => 
   const stop = store.start();
   send();
   globalThis.fetch = async () => ({ok:true,status:202,json:async()=>({status:'pending',operation_id:'op',status_url:'/replacement-operations/op'})});
-  await store.perform('/documents/X/replacement-batches',{method:'POST',body:JSON.stringify({replacements:[
+  await store.perform('/documents/X/replacements',{method:'POST',body:JSON.stringify({replacements:[
     {reservation_id:'a',replacement:'A'}, {reservation_id:'b',replacement:'B'}]})});
   socket.onmessage({data:JSON.stringify({type:'document_state',document:{document_id:'X',version:1,text:'abc'},
     reservations:{document_version:1,reservations:[]},operations:['a','b'].map(reservation_id=>({
