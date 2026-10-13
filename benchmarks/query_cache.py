@@ -10,12 +10,12 @@ import time
 
 from fastapi.testclient import TestClient
 from benchmarks.run import Stack, corpus, latency, SHA
-from redlining.api import create_app
-from redlining.models import CreateEditReservationRequest, DocumentAnchor
-from redlining.postgres import PostgresStore
-from redlining.query_cache import QueryResultCache
-from redlining.runtime import DocumentService
-from redlining.services import ReplaceCommand
+from src.api import create_app
+from src.models import CreateEditReservationRequest, DocumentAnchor
+from src.postgres import PostgresStore
+from src.query_cache import QueryResultCache
+from src.runtime import DocumentService
+from src.services import ReplaceCommand
 
 
 def run(output, repeats, dsn):
@@ -106,7 +106,7 @@ def run(output, repeats, dsn):
     result=dict(timestamp=datetime.now(timezone.utc).isoformat(),environment=platform.platform(),python=platform.python_version(),
         corpus_sha256=SHA,contracts=len(docs),source_bytes=sum(len(t.encode()) for _,t,_ in docs),repeats=repeats,
         max_queries=64,max_bytes=8*1024*1024,idle_seconds=300,exact_response_equality=True,
-        source_hashes={f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in ['redlining/query_cache.py','redlining/postgres.py']},
+        source_hashes={f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in ['src/query_cache.py','src/postgres.py']},
         summaries=summaries,trials=trials)
     (output/'results.json').write_text(json.dumps(result,indent=2)+'\n')
     rows=['# Corpus query-result cache benchmark','',f"Run: {result['timestamp']}; Python {result['python']}; {result['environment']}.",'',

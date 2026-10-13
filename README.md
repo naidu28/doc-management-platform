@@ -21,8 +21,8 @@ Run each command in a separate terminal with those environment variables:
 
 ```sh
 redis-server --appendonly yes
-.venv/bin/python -m redlining.runtime
-.venv/bin/python -m uvicorn redlining.main:build_app --factory --reload
+.venv/bin/python -m src.runtime
+.venv/bin/python -m uvicorn src.main:build_app --factory --reload
 ```
 
 Keep the worker running: it completes replacements and updates search results.
@@ -41,8 +41,8 @@ Import a UTF-8 text file through the CLI. This example supplies the document use
 
 ```sh
 printf '30 days; other clause.' > /tmp/sandstone-example.txt
-.venv/bin/python -m redlining.cli load /tmp/sandstone-example.txt --id contract-1
-.venv/bin/python -m redlining.cli reindex
+.venv/bin/python -m src.cli load /tmp/sandstone-example.txt --id contract-1
+.venv/bin/python -m src.cli reindex
 
 curl -s localhost:8000/documents
 curl -s localhost:8000/documents/contract-1

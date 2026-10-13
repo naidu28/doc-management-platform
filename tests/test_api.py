@@ -3,12 +3,12 @@ from unittest.mock import AsyncMock
 import pytest
 from fastapi.testclient import TestClient
 
-from redlining.api import create_app
-from redlining.models import (
+from src.api import create_app
+from src.models import (
     DocumentAnchor, ReplacementResult, Document, EditReservationsResult,
     Reservation, SearchHit, SearchResponse,
 )
-from redlining.services import RedliningService, RetrievalService, ServiceError
+from src.services import RedliningService, RetrievalService, ServiceError
 
 CLIENT_ID = "client-1"
 TARGET = {"version": 1, "start": 0, "end": 2}
@@ -174,7 +174,7 @@ def test_reserved_change_conflict_mapping(api, reason):
 
 
 def test_reserved_change_looks_up_identity_from_reservation(api):
-    from redlining.services import ReplaceCommand
+    from src.services import ReplaceCommand
     client, writer, _ = api
     client.headers.pop("X-Client-ID")
     writer.change_batch.return_value = RESULT
@@ -202,7 +202,7 @@ def test_reacquisition_blocked_by_active_reservation(api):
 
 def test_socket_payload_versions_and_range():
     from pydantic import ValidationError
-    from redlining.models import DocumentUpdated
+    from src.models import DocumentUpdated
     body = dict(event_id="e-1", document_id="X", previous_version=1, version=2,
                 patches=[{"start": 0, "end": 2, "replacement": "60"}])
     assert DocumentUpdated(**body).version == 2
@@ -212,14 +212,14 @@ def test_socket_payload_versions_and_range():
 
 def test_design_uses_actual_contracts():
     import design
-    from redlining.services import ReplaceCommand
+    from src.services import ReplaceCommand
     assert design.DocumentAnchor is DocumentAnchor
     assert design.ReplaceCommand is ReplaceCommand
 
 
 def test_reservation_snapshot_route_and_alignment(api):
     from pydantic import ValidationError
-    from redlining.models import ReservationSnapshot
+    from src.models import ReservationSnapshot
     reservation = Reservation(reservation_id="r-1", document_id="X", client_id=CLIENT_ID,
         target=DocumentAnchor(**TARGET),
         status="active", created_at="2026-10-12T18:00:00Z")

@@ -20,7 +20,7 @@ In a second terminal:
 API_URL=http://127.0.0.1:8010 npm --prefix frontend run dev
 ```
 
-Open the printed Vite URL. The demo uses the PostgreSQL database named by `DATABASE_URL` and all 510 CUAD contracts from the checksum-verified local corpus (`data/manifest.json`). Existing documents and edits are preserved. It runs real PostgreSQL writes and search indexing in a local background loop; WebSockets reconcile every two seconds, so Redis is optional for this demonstration. Production uses `redlining.main:build_app --factory`, `redlining.runtime`, and Redis as described in the root README. For that service, omit `API_URL` (defaults to port 8000).
+Open the printed Vite URL. The demo uses the PostgreSQL database named by `DATABASE_URL` and all 510 CUAD contracts from the checksum-verified local corpus (`data/manifest.json`). Existing documents and edits are preserved. It runs real PostgreSQL writes and search indexing in a local background loop; WebSockets reconcile every two seconds, so Redis is optional for this demonstration. Production uses `src.main:build_app --factory`, `src.runtime`, and Redis as described in the root README. For that service, omit `API_URL` (defaults to port 8000).
 
 Open a separate browser tab for another reviewer. The session ID persists through reloads via sessionStorage. To guarantee distinct sessions, open the URL manually in a new tab rather than duplicating an existing tab.
 

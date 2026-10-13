@@ -3,9 +3,9 @@ import asyncio
 
 import pytest
 
-from redlining.models import CreateEditReservationRequest, DocumentAnchor
-from redlining.runtime import DocumentService
-from redlining.services import ReplaceCommand, ServiceError
+from src.models import CreateEditReservationRequest, DocumentAnchor
+from src.runtime import DocumentService
+from src.services import ReplaceCommand, ServiceError
 
 
 class Hub:

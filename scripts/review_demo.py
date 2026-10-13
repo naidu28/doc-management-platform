@@ -1,7 +1,7 @@
 """Local CUAD demo using DATABASE_URL (not a disposable database); real PostgreSQL API and WebSockets, in-process write/index loop.
 
 Run from the repository root: .venv/bin/python -m scripts.review_demo
-Production continues to use redlining.main plus redlining.runtime workers.
+Production continues to use src.main plus src.runtime workers.
 """
 import asyncio
 import hashlib
@@ -9,8 +9,8 @@ import json
 from contextlib import asynccontextmanager
 from pathlib import Path
 import uvicorn
-from redlining.main import build_app
-from redlining.postgres import PostgresStore
+from src.main import build_app
+from src.postgres import PostgresStore
 
 store = PostgresStore(initialize=True)
 # CUAD v1, The Atticus Project et al. (2021), CC BY 4.0; see data/README.md.

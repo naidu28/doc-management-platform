@@ -13,7 +13,7 @@ def pg_store():
     import psycopg
     from psycopg import sql
     from psycopg.conninfo import make_conninfo
-    from redlining.postgres import PostgresStore
+    from src.postgres import PostgresStore
     dsn = os.environ.get('REDLINING_TEST_DATABASE_URL')
     if not dsn:
         pytest.skip('Set REDLINING_TEST_DATABASE_URL for PostgreSQL integration tests')

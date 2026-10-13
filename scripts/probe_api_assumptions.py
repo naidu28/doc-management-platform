@@ -13,11 +13,11 @@ import psycopg
 from psycopg import sql
 from psycopg.conninfo import make_conninfo
 from fastapi.testclient import TestClient
-from redlining.postgres import PostgresStore
-from redlining.api import create_app
-from redlining.runtime import DocumentService
-from redlining.ui import attach_ui
-from redlining.services import ReplaceCommand
+from src.postgres import PostgresStore
+from src.api import create_app
+from src.runtime import DocumentService
+from src.ui import attach_ui
+from src.services import ReplaceCommand
 
 
 def main():
@@ -112,7 +112,7 @@ def main():
             renew=client.post(f'/edit-reservations/{rid}/renew')
             record('accepted_work_cannot_release_or_renew',release.status_code==renew.status_code==409,release_status=release.status_code,renew_status=renew.status_code)
             store.process_next()
-        from redlining.main import build_app
+        from src.main import build_app
         with TestClient(build_app(database_url=store.dsn,redis_url='redis://127.0.0.1:1'),raise_server_exceptions=False) as socket_client:
             try:
                 with socket_client.websocket_connect('/documents/validation/updates?after_version=%C2%B2') as ws:

@@ -111,8 +111,8 @@ overlap checking costs O(k*a); these costs are separate from text assembly.
 SCHEMA
 Initialization creates the current schema only; no migrations or backfills.
 """
-from redlining.models import ReplacementResult, DocumentAnchor, DocumentUpdated, ReservationSnapshot, SearchRequest
-from redlining.services import ReplaceCommand
+from src.models import ReplacementResult, DocumentAnchor, DocumentUpdated, ReservationSnapshot, SearchRequest
+from src.services import ReplaceCommand
 
 
 # Per-document batching extension

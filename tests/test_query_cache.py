@@ -1,5 +1,5 @@
-from redlining.models import SearchRequest, SearchResponse, SearchHit, DocumentAnchor
-from redlining.query_cache import QueryResultCache
+from src.models import SearchRequest, SearchResponse, SearchHit, DocumentAnchor
+from src.query_cache import QueryResultCache
 
 
 def hit(did,score=1,version=1):

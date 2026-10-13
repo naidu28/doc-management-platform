@@ -1,6 +1,6 @@
 import pytest
-from redlining.models import CreateEditReservationRequest, DocumentAnchor
-from redlining.services import ServiceError, ReplaceCommand
+from src.models import CreateEditReservationRequest, DocumentAnchor
+from src.services import ServiceError, ReplaceCommand
 
 
 def reserve(store, client, start, end, version=1):
@@ -21,8 +21,8 @@ def test_reconnect_retains_long_history_for_visual_selection(pg_store):
 
 def test_workbench_has_no_server_drafts(pg_store):
     from fastapi.testclient import TestClient
-    from redlining.api import create_app
-    from redlining.ui import attach_ui
+    from src.api import create_app
+    from src.ui import attach_ui
     store=pg_store
     store.create_document('doc','hello')
     app=create_app();attach_ui(app,store)

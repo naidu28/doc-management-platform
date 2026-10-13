@@ -23,7 +23,7 @@ from uuid import uuid4
 import httpx
 import psycopg
 from psycopg.conninfo import make_conninfo
-from redlining.postgres import PostgresStore
+from src.postgres import PostgresStore
 
 ROOT = Path(__file__).resolve().parents[1]
 SHA = 'ed0b77d85bdf4014d7495800e8e4a70565b48ee6f8a2e5dca9cf8655dbf10eae'
@@ -133,7 +133,7 @@ class Stack:
         rp, ap, vp = port(), port(), port()
         env = {**os.environ, 'DATABASE_URL': self.dsn, 'REDIS_URL': f'redis://127.0.0.1:{rp}/0', 'API_URL': f'http://127.0.0.1:{ap}'}
         self.start(['redis-server', '--bind', '127.0.0.1', '--port', str(rp), '--dir', str(self.directory), '--appendonly', 'yes'], name='redis')
-        self.start([sys.executable, '-m', 'uvicorn', 'redlining.main:build_app', '--factory', '--host', '127.0.0.1', '--port', str(ap)], env, 'api')
+        self.start([sys.executable, '-m', 'uvicorn', 'src.main:build_app', '--factory', '--host', '127.0.0.1', '--port', str(ap)], env, 'api')
         self.env = env
         self.url, self.ui = env['API_URL'], f'http://127.0.0.1:{vp}'
         self.start(['npm', '--prefix', 'frontend', 'run', 'dev', '--', '--host', '127.0.0.1', '--port', str(vp), '--strictPort'], env, 'vite')
@@ -142,7 +142,7 @@ class Stack:
         return self
 
     def workers(self):
-        self.start([sys.executable, '-m', 'redlining.runtime'], self.env, 'worker')
+        self.start([sys.executable, '-m', 'src.runtime'], self.env, 'worker')
 
     def __exit__(self, *exc):
         for p in reversed(self.processes):

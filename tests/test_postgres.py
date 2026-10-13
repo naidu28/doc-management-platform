@@ -12,9 +12,9 @@ from psycopg.conninfo import make_conninfo
 import pytest
 from fastapi.testclient import TestClient
 
-from redlining.postgres import PostgresStore
-from redlining.models import CreateEditReservationRequest, DocumentAnchor, SearchRequest
-from redlining.services import ReplaceCommand, ServiceError
+from src.postgres import PostgresStore
+from src.models import CreateEditReservationRequest, DocumentAnchor, SearchRequest
+from src.services import ReplaceCommand, ServiceError
 
 
 @pytest.fixture
@@ -150,7 +150,7 @@ def test_process_crash_rolls_back_and_recovers(store):
     rid = granted(store)
     oid = store.admit(ReplaceCommand(rid,'60'))
     code = """import os,sys
-from redlining.postgres import PostgresStore
+from src.postgres import PostgresStore
 class Crash(PostgresStore):
     def execute(self,*args):
         super().execute(*args)
@@ -169,9 +169,9 @@ Crash(sys.argv[1]).process_next()
 
 def test_multiple_processes_race_for_one_reservation(store):
     code = """import sys
-from redlining.postgres import PostgresStore
-from redlining.models import CreateEditReservationRequest,DocumentAnchor
-from redlining.services import ServiceError
+from src.postgres import PostgresStore
+from src.models import CreateEditReservationRequest,DocumentAnchor
+from src.services import ServiceError
 s=PostgresStore(sys.argv[1])
 try:
     s.reserve(sys.argv[2],'X',CreateEditReservationRequest(target=DocumentAnchor(version=1,start=0,end=2)))
@@ -189,7 +189,7 @@ def test_workers_execute_each_replacement_once(store):
     for i in range(5):
         rid=granted(store,client=str(i),start=i*3,end=i*3+1)
         ids.append(store.admit(ReplaceCommand(rid,str(i))))
-    code='import sys; from redlining.postgres import PostgresStore; s=PostgresStore(sys.argv[1]);\nwhile s.process_next(): pass'
+    code='import sys; from src.postgres import PostgresStore; s=PostgresStore(sys.argv[1]);\nwhile s.process_next(): pass'
     workers=[subprocess.Popen([sys.executable,'-c',code,store.dsn]) for _ in range(3)]
     assert all(p.wait(timeout=15)==0 for p in workers)
     assert store.get_document('X').version==6
@@ -281,7 +281,7 @@ def test_search_revision_offsets_and_large_document(store):
 
 
 def test_socket_and_http_reservation_admission(store):
-    from redlining.main import build_app
+    from src.main import build_app
     with TestClient(build_app(database_url=store.dsn,redis_url='redis://127.0.0.1:1')) as client:
         with client.websocket_connect('/documents/X/updates') as ws:
             assert ws.receive_json()['document']['version']==1
@@ -315,7 +315,7 @@ def test_socket_and_http_reservation_admission(store):
 def test_postgres_outbox_stream_and_index_delivery(store,redis_url):
     import asyncio
     from redis.asyncio import Redis
-    from redlining.runtime import Workers
+    from src.runtime import Workers
     async def scenario():
         redis=Redis.from_url(redis_url,decode_responses=True);worker=Workers(store,redis)
         try:
@@ -362,8 +362,8 @@ def test_http_result_uses_recorded_revision_not_latest_head(store):
 def test_http_wait_uses_real_redis_completion_notification(store,redis_url):
     import asyncio
     from redis.asyncio import Redis
-    from redlining.main import LiveHub
-    from redlining.runtime import DocumentService, Workers
+    from src.main import LiveHub
+    from src.runtime import DocumentService, Workers
     rid=granted(store)
     async def scenario():
         redis=Redis.from_url(redis_url,decode_responses=True)
@@ -420,7 +420,7 @@ def test_ranking_reindexes_new_revision(store):
 
 
 def batch_request(*ranges):
-    from redlining.models import CreateEditReservationsRequest
+    from src.models import CreateEditReservationsRequest
     return CreateEditReservationsRequest(targets=[DocumentAnchor(version=1,start=a,end=b) for a,b in ranges])
 
 
@@ -507,7 +507,7 @@ def test_competing_batches_share_reservation_exactly_once(store):
 
 
 def test_batch_http_completion_and_socket_patch_list(store):
-    from redlining.main import build_app
+    from src.main import build_app
     with TestClient(build_app(database_url=store.dsn,redis_url='redis://127.0.0.1:1')) as client:
         with client.websocket_connect('/documents/X/updates') as ws:
             ws.receive_json()
@@ -558,7 +558,7 @@ def test_batch_crash_before_commit_recovers_after_restart(store, monkeypatch):
 def test_large_batch_inserts_deletes_unicode_and_reindexes(store):
     text='a'*5_300_000+'😀 middle '+'z'*5_300_000
     store.create_document('large-batch',text)
-    from redlining.models import CreateEditReservationsRequest
+    from src.models import CreateEditReservationsRequest
     targets=[DocumentAnchor(version=1,start=0,end=0),
              DocumentAnchor(version=1,start=5_300_000,end=5_300_002),
              DocumentAnchor(version=1,start=len(text),end=len(text))]
@@ -575,7 +575,7 @@ def test_large_batch_inserts_deletes_unicode_and_reindexes(store):
 
 
 def one_shot_body():
-    from redlining.models import TargetedReplacementsRequest
+    from src.models import TargetedReplacementsRequest
     return TargetedReplacementsRequest(replacements=[
         {'target':{'version':1,'start':0,'end':2},'replacement':'60'},
         {'target':{'version':1,'start':9,'end':14},'replacement':'new'}])
@@ -614,7 +614,7 @@ def test_one_shot_failure_rolls_back_reservations_and_request_key(store):
 
 
 def test_one_shot_http_returns_document_and_validates_key(store):
-    from redlining.main import build_app
+    from src.main import build_app
     with TestClient(build_app(database_url=store.dsn,redis_url='redis://localhost:1')) as client:
         body=one_shot_body().model_dump()
         assert client.post('/documents/X/replacements',json=body,headers={'X-Client-ID':'a'}).status_code==422
@@ -667,7 +667,7 @@ def test_browser_reconnect_and_crash_cleanup_across_process_instances(store):
 
 
 def test_browser_socket_registers_heartbeats_and_explicit_leave(store):
-    from redlining.main import build_app
+    from src.main import build_app
     import time
     with TestClient(build_app(database_url=store.dsn,redis_url='redis://localhost:1')) as client:
         with client.websocket_connect('/documents/X/updates?client_id=a') as ws:
@@ -684,7 +684,7 @@ def test_browser_socket_registers_heartbeats_and_explicit_leave(store):
 
 @pytest.mark.parametrize('kind',['single','batch','one-shot'])
 def test_http_pending_status_resource_and_original_result(store,kind):
-    from redlining.main import build_app
+    from src.main import build_app
     app=build_app(database_url=store.dsn,redis_url='redis://localhost:1')
     app.state.redlining.wait_seconds=0
     if kind=='one-shot':
@@ -720,7 +720,7 @@ def test_http_pending_status_resource_and_original_result(store,kind):
 
 
 def test_operation_resource_reports_failed_outcome_without_false_success(store):
-    from redlining.main import build_app
+    from src.main import build_app
     rid=granted(store);oid=store.admit(ReplaceCommand(rid,'60'))
     with store.connection(True) as db:db.execute('UPDATE reservations SET version=99 WHERE id=%s',(rid,))
     finish(store,oid)
@@ -763,7 +763,7 @@ def test_scoped_search_bypasses_query_cache_and_tracks_revision(store):
 
 
 def test_corpus_query_cache_tracks_cross_process_projection_changes(store):
-    from redlining.query_cache import QueryResultCache
+    from src.query_cache import QueryResultCache
     store.query_cache=QueryResultCache()
     other=PostgresStore(store.dsn)
     store.create_document('cache-a','cacheunique '*10)
@@ -798,7 +798,7 @@ def test_corpus_query_cache_tracks_cross_process_projection_changes(store):
 
 
 def test_query_cache_ignores_rolled_back_index_updates(store):
-    from redlining.query_cache import QueryResultCache
+    from src.query_cache import QueryResultCache
     store.query_cache=QueryResultCache()
     store.index_revision('X',1)
     request=SearchRequest(text='contract')
