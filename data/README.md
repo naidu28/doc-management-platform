@@ -31,8 +31,7 @@ Reproduce (download step requires network):
 .venv/bin/python scripts/prepare_large_legal_text.py
 ```
 
-Inspect `manifest.json`, `experiment-results.json`, and `legal/manifest.json` for
-actual sizes and local smoke timings. Downloads use the release URLs; the CUAD
+Inspect `manifest.json` and `legal/manifest.json` for fixture sizes and provenance. Downloads use the release URLs; the CUAD
 main URL can change, so compare recorded checksums when reproducing. The scripts
 rebuild ONLY their named experiment databases. Production service adapters are
 not connected to these experiment databases. The live `scripts.review_demo`
@@ -52,5 +51,4 @@ to standalone retrieval experiments and benchmark comparisons.
 These experiments measure one local run. They do not establish p95/p99 latency,
 queue behavior, durable revision performance, index freshness, or concurrent writes.
 
-Historical local service measurements remain in service-benchmark.json.
 Current end-to-end benchmarks are documented in benchmarks/README.md.

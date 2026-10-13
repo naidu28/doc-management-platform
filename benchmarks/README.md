@@ -23,13 +23,15 @@ Alternatively use a dedicated development database whose user can create schemas
 
 The extension may remain in the external database; the benchmark schema is removed. Service logs, `results.json`, `report.md`, and final UI screenshot are saved to the output directory. A failed run raises an error and writes partial measurements to `failure.json`, plus browser screenshots where possible; it never generates a passing report. Use a fresh output directory for each run. Termination with SIGKILL cannot run cleanup; use a disposable database for interrupted experiments.
 
+Recorded current run: [end-to-end report](../reports/current-2026-10-12/report.md).
+
 ## Dataset and retrieval evaluation
 
 [CUAD](https://www.atticusprojectai.org/cuad/) contains 510 real commercial contracts with annotations for 41 clause categories. The download is pinned to a Hugging Face dataset revision and SHA-256 in `benchmarks/run.py`. Attribution: The Atticus Project; Hendrycks, Burns, Chen, Ball (2021), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Only the pinned JSON is required, not the unrelated US Code corpus.
 
 We derive diagnostic document-retrieval queries from category names and binary relevance judgments from nonempty annotated answers. This is **not an official CUAD ranking benchmark**: CUAD primarily evaluates clause extraction, and category words are imperfect search queries. No model generates queries or judgments. The full corpus is indexed before measurements; query results include only these contracts during the search phase.
 
-The API and an in-memory SQLite FTS5/BM25 baseline receive identical AND-token queries. Terms-mode API results contain one anchor per document, ranked by native PostgreSQL cover density (best bounded section); the benchmark takes the first 10 document IDs. FTS5 returns 10 BM25-ranked document IDs. Literal searches remain unscored. Record that product-level distinction when interpreting nDCG@10, Recall@10, and MRR@10. We use familiar [BEIR metrics](https://github.com/beir-cellar/beir), not BEIR datasets or leaderboard comparisons. HTTP vs in-process latency is not an apples-to-apples engine benchmark. One warmup is discarded per query; default three timed repetitions across all 41 queries. Also check 30 literal source slices and an absent query. The current harness inherits query-cache settings: with defaults, the warmup records first use, the first timed request admits the result, and later requests may hit the cache. Set `QUERY_CACHE_MAX_QUERIES=0` for an uncached engine comparison; use the separate query-cache suite below to isolate cold/admission/warm timings. Historical reports predate this cache.
+The API and an in-memory SQLite FTS5/BM25 baseline receive identical AND-token queries. Terms-mode API results contain one anchor per document, ranked by native PostgreSQL cover density (best bounded section); the benchmark takes the first 10 document IDs. FTS5 returns 10 BM25-ranked document IDs. Literal searches remain unscored. Record that product-level distinction when interpreting nDCG@10, Recall@10, and MRR@10. We use familiar [BEIR metrics](https://github.com/beir-cellar/beir), not BEIR datasets or leaderboard comparisons. HTTP vs in-process latency is not an apples-to-apples engine benchmark. One warmup is discarded per query; default three timed repetitions across all 41 queries. Also check 30 literal source slices and an absent query. The current harness inherits query-cache settings: with defaults, the warmup records first use, the first timed request admits the result, and later requests may hit the cache. Set `QUERY_CACHE_MAX_QUERIES=0` for an uncached engine comparison; use the separate query-cache suite below to isolate cold/admission/warm timings.
 
 ## Reservation → replacement over HTTP
 
@@ -60,15 +62,15 @@ Ten independent headless Chrome sessions select the same small document, each se
 
 This smoke run uses normal UI lease behavior, including renewal while a page is focused and visible. The harness does not bypass protection. A slow or unfocused browser can lose its lease and fail the run; this is not a controlled lease-expiry test. Ten concurrent disjoint edits test anchor movement and convergence. They do not measure sustained throughput, ten conflicting edits, or crash recovery. Existing integration suites cover additional database/worker failure paths.
 
-Use `--compare reports/run-2026-10-12/results.json` to include a before/after table from a previous compatible run. Compare only runs with the same corpus and query definitions.
+Use `--compare <previous-results.json>` to compare compatible runs with the same corpus and query definitions.
 
 ## Atomic batch verification
 
 `tests/test_postgres.py` additionally covers batch rollback, duplicate selection,
 combined anchor displacement, complete replay, competing batches, crash recovery,
 HTTP/WebSocket batch completion and a >10 MB insertion/deletion batch with reindexing.
-The older benchmark reports predate batches; their ten independent writes remain
-a separate workload from ten edits inside one transaction.
+The end-to-end benchmark measures ten independent writes; the integration suite
+separately verifies multiple edits inside one transaction.
 
 An opt-in two-browser test selects two passages, types locally, verifies lease renewal beyond 30 seconds, submits one batch,
 and verifies that both browsers observe exactly one new revision:
@@ -79,12 +81,6 @@ REDLINING_BROWSER_TESTS=1 .venv/bin/pytest -q tests/test_browser_batches.py
 
 It provisions the same disposable stack as the benchmark harness and requires
 PostgreSQL binaries, Redis, Chrome and the benchmark dependencies.
-
-## Historical document-index experiment
-
-The per-document postings cache and its benchmark runner were removed after
-measurements showed modest warm gains and expensive cold builds. The historical
-[report and raw measurements](../reports/cache-2026-10-12/report.md) remain available.
 
 ## Corpus query-result cache comparison
 
@@ -100,4 +96,4 @@ changes, and removal of a cached winner. Every measured response is checked agai
 the uncached result. This uses in-process ASGI requests with real PostgreSQL;
 network latency, concurrent traffic, and mutation/indexing time are excluded.
 
-Recorded run: [corpus query-cache comparison](../reports/query-cache-2026-10-12/report.md).
+Recorded run: [corpus query-cache comparison](../reports/query-cache-current-2026-10-12/report.md).
