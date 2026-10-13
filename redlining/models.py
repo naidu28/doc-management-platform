@@ -1,8 +1,15 @@
 from typing import Annotated, Literal
 
-from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, model_validator
+from pydantic import AfterValidator, AwareDatetime, BaseModel, ConfigDict, Field, model_validator
 
-Identifier = Annotated[str, Field(min_length=1, max_length=200)]
+def valid_text(value: str) -> str:
+    if "\x00" in value or any(0xD800 <= ord(char) <= 0xDFFF for char in value):
+        raise ValueError("Text must contain Unicode scalar values without NUL")
+    return value
+
+
+Text = Annotated[str, AfterValidator(valid_text)]
+Identifier = Annotated[Text, Field(min_length=1, max_length=200)]
 Version = Annotated[int, Field(strict=True, ge=1)]
 
 
@@ -30,7 +37,7 @@ class CreateEditReservationRequest(Model):
 
 class ReservedReplacement(Model):
     reservation_id: Identifier
-    replacement: str
+    replacement: Text
 
 
 class Reservation(Model):
@@ -41,7 +48,6 @@ class Reservation(Model):
     status: Literal["active", "submitted", "expired", "released", "consumed", "conflicted", "failed"]
     created_at: AwareDatetime
     expires_at: AwareDatetime | None = None
-    blocker_client_ids: list[Identifier] = Field(default_factory=list)
     operation_id: Identifier | None = None
 
 
@@ -64,7 +70,7 @@ class ReservationSnapshot(Model):
 class Document(Model):
     document_id: Identifier
     version: Version
-    text: str
+    text: Text
 
 
 class Error(Model):
@@ -109,14 +115,8 @@ class FailedOperation(Model):
     failure: Error
 
 
-Operation = Annotated[
-    PendingOperation | CompletedOperation | FailedOperation,
-    Field(discriminator="status"),
-]
-
-
 class SearchRequest(Model):
-    text: str = Field(min_length=1, max_length=4096)
+    text: Text = Field(min_length=1, max_length=4096)
     mode: Literal["literal", "phrase", "terms"] = "terms"
     document_ids: list[Identifier] | None = Field(default=None, max_length=100)
     limit: int = Field(default=20, strict=True, ge=1, le=100)
@@ -131,7 +131,7 @@ class SearchRequest(Model):
 class SearchHit(Model):
     document_id: Identifier
     target: DocumentAnchor  # Version is the indexed version, not necessarily latest.
-    context: str
+    context: Text
     score: float | None = Field(default=None, description=(
         "PostgreSQL terms/phrase relevance: higher is better, normalized to [0,1). "
         "Document-level best-section score, not confidence. Literal searches return null."
@@ -147,7 +147,7 @@ class DocumentPatch(Model):
     """Offsets refer to the event's previous_version."""
     start: int = Field(strict=True, ge=0)
     end: int = Field(strict=True, ge=0)
-    replacement: str
+    replacement: Text
 
     @model_validator(mode="after")
     def valid_range(self):
@@ -176,6 +176,8 @@ class CreateEditReservationsRequest(Model):
 
     @model_validator(mode='after')
     def same_version(self):
+        if len({(target.version, target.start, target.end) for target in self.targets}) != len(self.targets):
+            raise ValueError('Each target must appear only once')
         if len({target.version for target in self.targets}) != 1:
             raise ValueError('All targets must reference the same document version')
         return self
@@ -221,7 +223,7 @@ class DocumentUpdated(Model):
 
 class TargetedReplacement(Model):
     target: DocumentAnchor
-    replacement: str
+    replacement: Text
 
 
 class TargetedReplacementsRequest(Model):

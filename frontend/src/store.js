@@ -21,7 +21,6 @@ export async function api(path, options = {}) {
 const initial = {
   document: null,
   reservations: [],
-  drafts: [],
   operations: [],
   operationNotice: "",
   connection: "connecting",
@@ -142,6 +141,14 @@ export function createDocumentStore(id) {
     },
     select(reservation) {
       set({ selection: reservation, selectionNotice: "" });
+    },
+    renewSelection(reservation) {
+      // HTTP can arrive after a new selection or a subscribed document patch.
+      // A renewal must never resurrect or move an obsolete highlight.
+      if (state.selection?.reservation_id === reservation.reservation_id &&
+          state.document?.version === reservation.target.version) {
+        set({ selection: reservation });
+      }
     },
     clearSelection() {
       set({ selection: null });

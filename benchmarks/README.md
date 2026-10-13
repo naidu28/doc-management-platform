@@ -29,12 +29,12 @@ The extension may remain in the external database; the benchmark schema is remov
 
 We derive diagnostic document-retrieval queries from category names and binary relevance judgments from nonempty annotated answers. This is **not an official CUAD ranking benchmark**: CUAD primarily evaluates clause extraction, and category words are imperfect search queries. No model generates queries or judgments. The full corpus is indexed before measurements; query results include only these contracts during the search phase.
 
-The API and an in-memory SQLite FTS5/BM25 baseline receive identical AND-token queries. Terms-mode API results contain one anchor per document, ranked by native PostgreSQL cover density (best bounded section); the benchmark takes the first 10 document IDs. FTS5 returns 10 BM25-ranked document IDs. Literal searches remain unscored. Record that product-level distinction when interpreting nDCG@10, Recall@10, and MRR@10. We use familiar [BEIR metrics](https://github.com/beir-cellar/beir), not BEIR datasets or leaderboard comparisons. HTTP vs in-process latency is not an apples-to-apples engine benchmark. One warmup is discarded per query; default three timed repetitions across all 41 queries. Also check 30 literal source slices and an absent query.
+The API and an in-memory SQLite FTS5/BM25 baseline receive identical AND-token queries. Terms-mode API results contain one anchor per document, ranked by native PostgreSQL cover density (best bounded section); the benchmark takes the first 10 document IDs. FTS5 returns 10 BM25-ranked document IDs. Literal searches remain unscored. Record that product-level distinction when interpreting nDCG@10, Recall@10, and MRR@10. We use familiar [BEIR metrics](https://github.com/beir-cellar/beir), not BEIR datasets or leaderboard comparisons. HTTP vs in-process latency is not an apples-to-apples engine benchmark. One warmup is discarded per query; default three timed repetitions across all 41 queries. Also check 30 literal source slices and an absent query. The current harness inherits query-cache settings: with defaults, the warmup records first use, the first timed request admits the result, and later requests may hit the cache. Set `QUERY_CACHE_MAX_QUERIES=0` for an uncached engine comparison; use the separate query-cache suite below to isolate cold/admission/warm timings. Historical reports predate this cache.
 
 ## Reservation → replacement over HTTP
 
 1. `GET /documents/{id}` gives text and version. Offsets are half-open Unicode code points, **not UTF-8 bytes or JavaScript UTF-16 units**.
-2. `POST /documents/{id}/edit-reservations`, with `X-Client-ID`, reserves the range for 30 seconds. The server rejects a stale version or another client's overlap with 409. An identical selection by the same client returns its existing reservation without extending the lease.
+2. `POST /documents/{id}/edit-reservations`, with `X-Client-ID`, reserves the range for 30 seconds. The server rejects a stale version or a protected overlap with 409 (including a different overlapping selection by the same client). Duplicate targets within one array return 422. An identical selection by the same client returns its existing reservation without extending the lease.
 3. `POST /documents/{id}/replacements` supplies a replacements array containing reservation IDs and replacement texts. Admission binds the operation to the reservation and protects the range until execution finishes. The durable worker commits the new revision and eagerly moves other protected anchors.
 4. HTTP 200 returns the **exact revision produced by this operation**, including full updated text. No WebSocket is required for an API caller. A changed payload for an already-bound reservation is rejected. Replaying the same payload returns the same revision, even if the document has advanced.
 5. The completion wait is 30 seconds after admission (`DocumentService` in `redlining/runtime.py`). A 202 supplies a status URL and means work remains durably accepted. GET that URL for pending/completed/failed, or repeat the same submission to retrieve its result; do not create a new operation blindly. The wait can be shortened with REPLACEMENT_WAIT_SECONDS. The browser independently subscribes to `/documents/{id}/updates`.
@@ -56,9 +56,9 @@ The executable suite creates its own small document (no manual ID needed), reser
 
 ## Selenium protocol
 
-Ten independent headless Chrome sessions select the same small document, each select a different token with a DOM Range and dispatch the mouseup handled by the UI. They type through Selenium into the actual editable suggestion and wait for save. A barrier releases ten real Submit clicks. No browser edit is injected through a test-only HTTP API. Each client must observe v11 and exactly the expected text through normal UI subscriptions. The report records client click-start order and database commit version order, not inferred FIFO.
+Ten independent headless Chrome sessions select the same small document, each select a different token with a DOM Range and dispatch the mouseup handled by the UI. They type through Selenium into the actual editable suggestion, keeping replacement text in browser memory until submission. A barrier releases ten real Submit clicks. No browser edit is injected through a test-only HTTP API. Each client must observe v11 and exactly the expected text through normal UI subscriptions. The report records client click-start order and database commit version order, not inferred FIFO.
 
-For this smoke run all ten selections and submissions must complete within the normal 30-second leases; a slow test host can expose expiry and fail the run rather than silently renewing or bypassing protection. Ten concurrent disjoint edits test anchor movement and convergence. They do not measure sustained throughput, ten conflicting edits, or crash recovery. Existing integration suites cover additional database/worker failure paths.
+This smoke run uses normal UI lease behavior, including renewal while a page is focused and visible. The harness does not bypass protection. A slow or unfocused browser can lose its lease and fail the run; this is not a controlled lease-expiry test. Ten concurrent disjoint edits test anchor movement and convergence. They do not measure sustained throughput, ten conflicting edits, or crash recovery. Existing integration suites cover additional database/worker failure paths.
 
 Use `--compare reports/run-2026-10-12/results.json` to include a before/after table from a previous compatible run. Compare only runs with the same corpus and query definitions.
 
@@ -70,7 +70,7 @@ HTTP/WebSocket batch completion and a >10 MB insertion/deletion batch with reind
 The older benchmark reports predate batches; their ten independent writes remain
 a separate workload from ten edits inside one transaction.
 
-An opt-in two-browser test selects two passages, saves two drafts, submits one batch,
+An opt-in two-browser test selects two passages, types locally, verifies lease renewal beyond 30 seconds, submits one batch,
 and verifies that both browsers observe exactly one new revision:
 
 ```bash
@@ -79,3 +79,25 @@ REDLINING_BROWSER_TESTS=1 .venv/bin/pytest -q tests/test_browser_batches.py
 
 It provisions the same disposable stack as the benchmark harness and requires
 PostgreSQL binaries, Redis, Chrome and the benchmark dependencies.
+
+## Historical document-index experiment
+
+The per-document postings cache and its benchmark runner were removed after
+measurements showed modest warm gains and expensive cold builds. The historical
+[report and raw measurements](../reports/cache-2026-10-12/report.md) remain available.
+
+## Corpus query-result cache comparison
+
+```sh
+.venv/bin/python -m benchmarks.query_cache --output reports/query-cache-new-run --repetitions 3
+```
+
+Indexes all 510 CUAD contracts and compares the same 41 corpus-wide category
+queries with result caching disabled, on first use, on admission (second use),
+and warm. Document-scoped searches are uncached. It then measures
+reconciliation after unrelated additions, new matching documents, same-score anchor
+changes, and removal of a cached winner. Every measured response is checked against
+the uncached result. This uses in-process ASGI requests with real PostgreSQL;
+network latency, concurrent traffic, and mutation/indexing time are excluded.
+
+Recorded run: [corpus query-cache comparison](../reports/query-cache-2026-10-12/report.md).

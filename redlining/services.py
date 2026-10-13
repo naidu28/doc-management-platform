@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from typing import Protocol
 
 from .models import (
-    ChangeResult, Document, CreateEditReservationsRequest, EditReservationsResult,
+    Document, CreateEditReservationsRequest, EditReservationsResult,
     ReservedReplacementsRequest, ReplacementResult, TargetedReplacementsRequest, ReplacementAccepted, ReplacementOperation,
     Reservation, ReservationSnapshot, CreateEditReservationRequest, SearchRequest, SearchResponse,
 )
@@ -48,7 +48,7 @@ class RedliningService(Protocol):
         """Logical release only; never deletes dedupe history. Pending work conflicts."""
         ...
     async def change(self, command: ReplaceCommand) -> ReplacementResult | ReplacementAccepted:
-        """Await execution and return the exact committed document revision."""
+        """Await the exact committed revision; return pending at the wait deadline."""
         ...
 
 

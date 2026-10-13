@@ -132,7 +132,6 @@ class Stack:
         self.store = PostgresStore(self.dsn, initialize=True)
         rp, ap, vp = port(), port(), port()
         env = {**os.environ, 'DATABASE_URL': self.dsn, 'REDIS_URL': f'redis://127.0.0.1:{rp}/0', 'API_URL': f'http://127.0.0.1:{ap}'}
-        env.pop('REDLINING_DB', None)
         self.start(['redis-server', '--bind', '127.0.0.1', '--port', str(rp), '--dir', str(self.directory), '--appendonly', 'yes'], name='redis')
         self.start([sys.executable, '-m', 'uvicorn', 'redlining.main:build_app', '--factory', '--host', '127.0.0.1', '--port', str(ap)], env, 'api')
         self.env = env
@@ -199,7 +198,7 @@ def search_suite(stack, docs, qrels, repetitions):
         # Deterministic literal source-location cases, one from each of 30 contracts.
         for did, source, _ in docs[:30]:
             needle = source[len(source)//2:len(source)//2+40]
-            r = client.get(f'/documents/{did}/search', params={'q':needle})
+            r = client.post('/search', json={'text':needle,'mode':'literal','document_ids':[did]})
             r.raise_for_status(); hits = r.json()['hits']; assert hits
             assert all(source[h['target']['start']:h['target']['end']]==needle for h in hits)
         assert client.post('/search', json={'text':'ZZZ_NONEXISTENT_87daef'}).json()['hits']==[]
@@ -257,7 +256,7 @@ def edit_suite(stack, docs):
             large_rows.append((time.perf_counter()-began)*1000)
         begun=time.perf_counter()
         def indexed():
-            r=c.get('/documents/stress-composite/search',params={'q':'BENCHMARK_REPLACEMENT'})
+            r=c.post('/search',json={'text':'BENCHMARK_REPLACEMENT','mode':'literal','document_ids':['stress-composite']})
             return r.status_code==200 and any(h['target']['version']==4 for h in r.json()['hits'])
         wait_for(indexed,120)
     return {'checks':checks,'trace':sorted(trace,key=lambda x:x['submitted_ns']),'initial':SMALL,'final':final,
@@ -312,7 +311,7 @@ def ui_suite(stack, output):
             for j in range(10): expected=expected.replace(f'TOKEN{j}',f'approved-{j}-long')
             assert source==expected
             with stack.store.connection() as db:
-                op=db.execute('SELECT result_version FROM replacements WHERE reservation_id=%s',(rid,)).fetchone()
+                op=db.execute('SELECT p.result_version FROM replacements p JOIN replacement_items i ON i.operation_id=p.id WHERE i.reservation_id=%s',(rid,)).fetchone()
             return {'client':i,'submitted_ns':started,'version':op['result_version'],'reservation_id':rid,'ms':(time.perf_counter_ns()-started)/1e6}
         with futures.ThreadPoolExecutor(10) as pool:
             trace=list(pool.map(user,range(10)))
@@ -340,6 +339,7 @@ def report(data, output):
            f'Both engines receive the same category words with AND semantics and the same unmodified 510 contracts. PostgreSQL ranking: {ranking}. Terms mode returns one anchor per matching document; we take the top 10 documents from up to 100 hits. FTS5 returns 10 documents ordered by BM25. The comparison measures these product-level retrieval choices.', '',
            f"Latency: one warm-up then {data['repetitions']} measured passes per query; sequential requests, nearest-rank p95. HTTP includes transport, source resolution and snippets; FTS5 is in-process, memory-resident SQL without HTTP/snippets. Their latency is NOT a controlled database speed comparison. Seed/index construction is excluded. PostgreSQL seed plus initial indexing: {data['seed_seconds']:.2f}s; FTS5 build: {search['fts5_build_seconds']:.2f}s.", '',
            '[BEIR](https://github.com/beir-cellar/beir) uses relevance metrics including nDCG and Recall; we use those metric definitions but do not compare scores across different datasets. [FTS5 BM25](https://www.sqlite.org/fts5.html#the_bm25_function) is the local classical retrieval baseline. This run is not evidence of production capacity or semantic search quality.', '',
+           'Cache policy: this harness inherits QUERY_CACHE_* settings. With defaults, one warmup precedes admission on the first measured use and possible cache hits on later uses. Set QUERY_CACHE_MAX_QUERIES=0 for uncached search, or use benchmarks.query_cache to measure each arm separately.', '',
            '## Search results', '', '| Engine | nDCG@10 | Recall@10 | MRR@10 | p50 ms | p95 ms | Samples |','|---|---:|---:|---:|---:|---:|---:|']
     for engine,label in [('http','Current PostgreSQL API'),('fts5','SQLite FTS5 BM25 baseline')]:
         m=search['mean'][engine]; l=search['latency'][engine]
@@ -348,7 +348,7 @@ def report(data, output):
               '## API editing behavior', '', *['- '+c for c in edits['checks']], '',
               f"10 concurrent replacements: p50 {edits['latency']['p50_ms']:.2f}ms, p95 {edits['latency']['p95_ms']:.2f}ms, measured from HTTP submission through full response and revision validation. Three sequential reserve+replace requests on a {edits['large_bytes']:,}-byte synthetic concatenation: p50 {edits['large_reserve_replace']['p50_ms']:.2f}ms, p95 {edits['large_reserve_replace']['p95_ms']:.2f}ms. Three samples are a smoke measurement, not a reliable tail estimate. Exact full text was verified each time.", '',
               f"Final large-document index observed current {edits['index_observed_after_response_ms']:.2f}ms after the response (HTTP observation upper bound, not exact indexing latency).", '',
-              '## Browser concurrency', '', f"Selenium drove {ui['clients']} independent Chrome {ui['browser_version']} sessions. Each selected text, typed a replacement, waited for draft save, then clicked Submit at a shared barrier. All ten observed the exact final text at v11 through their UI subscriptions. Click-to-all-updates-observed p50 {ui['latency']['p50_ms']:.2f}ms, p95 {ui['latency']['p95_ms']:.2f}ms; this includes Selenium scheduling and wait overhead, not pure server latency.", '',
+              '## Browser concurrency', '', f"Selenium drove {ui['clients']} independent Chrome {ui['browser_version']} sessions. Each selected text, typed a replacement locally, then clicked Submit at a shared barrier. All ten observed the exact final text at v11 through their UI subscriptions. Click-to-all-updates-observed p50 {ui['latency']['p50_ms']:.2f}ms, p95 {ui['latency']['p95_ms']:.2f}ms; this includes Selenium scheduling and wait overhead, not pure server latency.", '',
               '![Final UI](ui-final.png)', '', '## Small-document traces', '', 'Submission order below is the test-client timestamp immediately before POST/click, not server arrival order. Processing order is the committed revision number: v2 is first. No FIFO is promised or required for disjoint reserved ranges. Length-changing edits verify eager anchor movement.']
     for label,suite in [('HTTP',edits),('Selenium',ui)]:
         lines += ['',f'### {label}', '', '| Submission rank | Client | Processing rank | Revision | Elapsed ms |','|---:|---:|---:|---:|---:|']

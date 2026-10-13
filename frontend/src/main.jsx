@@ -155,7 +155,7 @@ function App() {
 function Workbench({ id, documentPicker, hit }) {
   const store = useMemo(() => createDocumentStore(id), [id]);
   const state = useDocument(store);
-  const { document: doc, drafts, connection } = state;
+  const { document: doc, connection } = state;
   const reservations =
     state.selection &&
     !state.reservations.some(
@@ -166,11 +166,8 @@ function Workbench({ id, documentPicker, hit }) {
   const [active, setActive] = useState(null),
     [buffers, setBuffers] = useState({}),
     [notice, setNotice] = useState(""),
-    [busy, setBusy] = useState(false),
-    [saving, setSaving] = useState(0);
+    [busy, setBusy] = useState(false);
   const bufferRef = useRef({}),
-    queues = useRef(new Map()),
-    failures = useRef(new Map()),
     editors = useRef(new Map()),
     selectionEpoch = useRef(0),
     acquisition = useRef(null),
@@ -186,11 +183,8 @@ function Workbench({ id, documentPicker, hit }) {
       stop();
     };
   }, [store]);
-  const draftMap = Object.fromEntries(
-    drafts.map((d) => [d.reservation_id, d.replacement]),
-  );
   const edits = reservations.filter(
-    (r) => r.status === "active" && r.reservation_id in draftMap,
+    (r) => r.status === "active" && r.reservation_id in buffers,
   );
   const mine = edits.filter(
     (r) => r.client_id === clientId && r.status === "active",
@@ -199,16 +193,33 @@ function Workbench({ id, documentPicker, hit }) {
   const activeReservation = reservations.find(
     (r) => r.reservation_id === active,
   );
+  // Renew local work while this document is actively open and focused. The
+  // server still revalidates every renewal; a lost lease never implies ownership.
   useEffect(() => {
-    let changed = false;
-    for (const d of drafts) {
-      if (bufferRef.current[d.reservation_id] === d.replacement) {
-        delete bufferRef.current[d.reservation_id];
-        changed = true;
-      }
-    }
-    if (changed) setBuffers({ ...bufferRef.current });
-  }, [drafts]);
+    if (connection !== "live") return;
+    let stopped = false;
+    let running = false;
+    const timer = setInterval(async () => {
+      if (running || !document.hasFocus() || document.hidden) return;
+      running = true;
+      try {
+        const current = store.getSnapshot();
+        const ids = new Set([...Object.keys(bufferRef.current), active].filter(Boolean));
+        for (const rid of ids) {
+          const r = current.reservations.find((r) => r.reservation_id === rid)
+            || (current.selection?.reservation_id === rid ? current.selection : null);
+          if (!r || r.status !== "active" || r.client_id !== clientId) continue;
+          try {
+            const renewed = await store.perform(`/edit-reservations/${pathId(rid)}/renew`, { method: "POST" });
+            if (!stopped) store.renewSelection(renewed);
+          } catch (error) {
+            if (!stopped) message(error);
+          }
+        }
+      } finally { running = false; }
+    }, 10000);
+    return () => { stopped = true; clearInterval(timer); };
+  }, [store, active, connection]);
   function message(e) {
     if (alive.current) setNotice(e.message || String(e));
   }
@@ -234,13 +245,12 @@ function Workbench({ id, documentPicker, hit }) {
         ?.scrollIntoView({ behavior: "smooth", block: "center" }),
     );
   }, [hit, doc?.version]);
-  // Release transient selection when switching focus. Durable edits survive navigation.
+  // Keep local edits when switching selections; release empty selections.
   async function clearLease() {
     if (
       activeReservation?.expires_at &&
       activeReservation.status === "active" &&
-      !(active in bufferRef.current) &&
-      !(active in draftMap)
+      !(active in bufferRef.current)
     )
       await store.perform(`/edit-reservations/${pathId(active)}`, {
         method: "DELETE",
@@ -342,38 +352,15 @@ function Workbench({ id, documentPicker, hit }) {
     const rid = r.reservation_id;
     bufferRef.current = { ...bufferRef.current, [rid]: text };
     setBuffers(bufferRef.current);
-    setSaving((n) => n + 1);
-    failures.current.delete(rid);
-    const work = (queues.current.get(rid) || Promise.resolve())
-      .catch(() => {})
-      .then(() =>
-        store.perform(`/edit-reservations/${pathId(rid)}/draft`, {
-          method: "PUT",
-          body: JSON.stringify({ replacement: text }),
-        }),
-      )
-      .then(() => {
-        failures.current.delete(rid);
-      })
-      .catch((e) => {
-        failures.current.set(rid, e);
-        message(e);
-      })
-      .finally(() => {
-        if (alive.current) setSaving((n) => n - 1);
-      });
-    queues.current.set(rid, work);
   }
   async function discard(r) {
     setBusy(true);
     try {
-      await queues.current.get(r.reservation_id);
       await store.perform(`/edit-reservations/${pathId(r.reservation_id)}`, {
         method: "DELETE",
       });
       delete bufferRef.current[r.reservation_id];
       setBuffers({ ...bufferRef.current });
-      failures.current.delete(r.reservation_id);
       store.clearSelection();
       setActive(null);
       setNotice("Edit discarded.");
@@ -387,14 +374,9 @@ function Workbench({ id, documentPicker, hit }) {
     setBusy(true);
     setNotice("");
     try {
-      await Promise.all(queues.current.values());
-      if (failures.current.size)
-        throw new Error(
-          "Some typing could not be saved. Retry saving the affected edit before submitting.",
-        );
       const replacements = mine.map((r) => ({
         reservation_id: r.reservation_id,
-        replacement: bufferRef.current[r.reservation_id] ?? draftMap[r.reservation_id],
+        replacement: bufferRef.current[r.reservation_id],
       }));
       if (replacements.length) {
         const result = await store.perform(
@@ -424,8 +406,8 @@ function Workbench({ id, documentPicker, hit }) {
   const points = [...boundaries].sort((a, b) => a - b);
   function editor(r) {
     const rid = r.reservation_id,
-      value = buffers[rid] ?? draftMap[rid] ?? "";
-    const hasDraft = rid in draftMap;
+      value = buffers[rid] ?? "";
+    const hasDraft = rid in buffers;
     return (
       <InlineSuggestion
         key={rid}
@@ -461,13 +443,11 @@ function Workbench({ id, documentPicker, hit }) {
         <button
           className="submit"
           onClick={submit}
-          disabled={!mine.length || busy || saving > 0 || connection !== "live"}
+          disabled={!mine.length || busy || connection !== "live"}
         >
           {busy
             ? "Working…"
-            : saving
-              ? "Saving…"
-              : `Submit edits${mine.length ? ` (${mine.length})` : ""}`}
+            : `Submit edits${mine.length ? ` (${mine.length})` : ""}`}
         </button>
       </header>
       {(notice ||
@@ -536,7 +516,6 @@ function Workbench({ id, documentPicker, hit }) {
                       .filter(
                         (r) =>
                           active === r.reservation_id ||
-                          r.reservation_id in draftMap ||
                           r.reservation_id in buffers,
                       )
                       .map(editor),
@@ -548,16 +527,11 @@ function Workbench({ id, documentPicker, hit }) {
                         className={
                           (covering
                             ? "protected " +
-                              (covering.reservation_id in draftMap ||
-                              covering.reservation_id in buffers
+                              (covering.reservation_id in buffers
                                 ? "suggested-source " +
-                                  (covering.reservation_id in draftMap
-                                    ? ""
-                                    : "pending ") +
                                   editKind(
                                     covering.target,
-                                    buffers[covering.reservation_id] ??
-                                      draftMap[covering.reservation_id],
+                                    buffers[covering.reservation_id],
                                   )
                                 : covering.client_id === clientId
                                   ? "owned"
@@ -586,7 +560,7 @@ function Workbench({ id, documentPicker, hit }) {
           <div className="rail-track">
             {edits.map((r) => {
               const value =
-                buffers[r.reservation_id] ?? draftMap[r.reservation_id];
+                buffers[r.reservation_id];
               return (
                 <button
                   key={r.reservation_id}

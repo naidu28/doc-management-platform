@@ -100,7 +100,6 @@ def test_reservation_lifecycle_routes(api, state, code):
     writer.release.return_value = None
     response = client.post("/documents/X/edit-reservations", json={'targets': [TARGET]}, headers=HEADERS)
     assert response.status_code == code
-    assert client.get("/edit-reservations/r-1").json()["status"] == state
     assert client.post("/edit-reservations/r-1/renew", headers=HEADERS).status_code == 200
     assert client.delete("/edit-reservations/r-1").status_code == 204
     writer.release.assert_awaited_once_with("r-1")
@@ -221,12 +220,6 @@ def test_design_uses_actual_contracts():
 def test_reservation_snapshot_route_and_alignment(api):
     from pydantic import ValidationError
     from redlining.models import ReservationSnapshot
-    client, writer, _ = api
-    writer.reservation_snapshot.return_value = ReservationSnapshot(
-        document_id="X", document_version=2, reservations=[])
-    response = client.get("/documents/X/edit-reservations")
-    assert response.json() == {"document_id": "X", "document_version": 2, "reservations": []}
-    writer.reservation_snapshot.assert_awaited_once_with("X")
     reservation = Reservation(reservation_id="r-1", document_id="X", client_id=CLIENT_ID,
         target=DocumentAnchor(**TARGET),
         status="active", created_at="2026-10-12T18:00:00Z")
@@ -276,3 +269,39 @@ def test_target_headers_are_conditional_and_unary_result_is_array(api):
     response=client.post('/documents/X/replacements',json=body,headers={'Idempotency-Key':'key'})
     assert response.status_code==200 and response.json()['reservation_ids']==['r-1']
     writer.reserve_and_replace.assert_awaited_once()
+
+
+def test_retired_read_routes(api):
+    client, _, _ = api
+    assert client.get('/documents/X/edit-reservations').status_code == 405
+    assert client.get('/edit-reservations/r-1').status_code == 405
+    assert client.get('/documents/X/search?q=contract').status_code == 404
+    assert client.put('/edit-reservations/r-1/draft', json={'replacement':'local'}).status_code == 404
+
+
+@pytest.mark.parametrize('body', [
+    {'replacements':[{'reservation_id':'r-1','replacement':'bad\x00text'}]},
+    {'replacements':[{'reservation_id':'bad\x00id','replacement':'valid'}]},
+    {'replacements':[{'reservation_id':'r-1','replacement':'\ud800'}]},
+])
+def test_invalid_unicode_rejected_before_writer(api, body):
+    import json
+    client, writer, _ = api
+    response = client.post('/documents/X/replacements',content=json.dumps(body),headers={'Content-Type':'application/json'})
+    assert response.status_code == 422
+    writer.change_batch.assert_not_awaited()
+
+
+def test_duplicate_reservation_targets_rejected_before_writer(api):
+    client, writer, _ = api
+    response = client.post('/documents/X/edit-reservations',json={'targets':[TARGET,TARGET]})
+    assert response.status_code == 422
+    writer.reserve_batch.assert_not_awaited()
+
+
+@pytest.mark.parametrize('body', [{'text':'bad\x00text'}, {'text':'valid','document_ids':['bad\x00id']}])
+def test_invalid_search_unicode_rejected_before_reader(api, body):
+    client, _, reader = api
+    response = client.post('/search',json=body)
+    assert response.status_code == 422
+    reader.search.assert_not_awaited()

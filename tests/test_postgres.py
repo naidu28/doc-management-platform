@@ -77,15 +77,14 @@ def test_duplicate_selection_and_immutable_replacement(store):
     assert store.get_document('X').version==2
 
 
-def test_pending_replacement_cannot_expire_release_renew_or_change_draft(store):
+def test_pending_replacement_cannot_expire_release_renew_(store):
     rid = granted(store)
-    store.save_draft(rid,'a','60')
     oid = store.admit(ReplaceCommand(rid,'60'))
     # A deadline cannot make submitted protection lapse, even if present erroneously.
     with store.connection(True) as db:
         db.execute('UPDATE reservations SET expires=0 WHERE id=%s',(rid,))
     for action in [lambda: store.release(rid), lambda: store.renew(rid),
-                   lambda: store.save_draft(rid,'a','90'),lambda: acquire(store,client='b')]:
+                   lambda: acquire(store,client='b')]:
         with pytest.raises(ServiceError): action()
     assert store.reservation_snapshot('X').reservations[0].status=='submitted'
     assert finish(store,oid)['status']=='completed'
@@ -140,7 +139,7 @@ def test_expired_competing_reservations_admit_at_most_one(store):
         except ServiceError as e: return e.reason
     with ThreadPoolExecutor(2) as pool:
         results = list(pool.map(submit,[first,second]))
-    assert results.count('RANGE_RESERVED')==1
+    assert results.count('DUPLICATE_REPLACEMENT')==1
     with store.connection() as db:
         assert db.execute('SELECT count(*) AS n FROM replacements').fetchone()['n']==1
     assert store.process_next()
@@ -209,13 +208,12 @@ def test_busy_document_does_not_block_other_documents(store):
     assert store.process_next()
 
 
-def test_draft_lease_expiry_and_renewal(store):
+def test_lease_expiry_and_renewal(store):
     rid=granted(store);expiry=store.reservation(rid).expires_at
-    store.save_draft(rid,'a','60')
     assert store.reservation(rid).expires_at==expiry
     assert store.renew(rid).expires_at>=expiry
     with store.connection(True) as db: db.execute('UPDATE reservations SET expires=0 WHERE id=%s',(rid,))
-    with pytest.raises(ServiceError,match='Renew'):store.save_draft(rid,'a','90')
+    assert store.renew(rid).expires_at > expiry
     assert finish(store,store.admit(ReplaceCommand(rid,'60')))['status']=='completed'
 
 
@@ -227,6 +225,46 @@ def test_worker_invariant_failure_releases_protection_without_editing(store):
     assert store.get_document('X').version==1
     assert store.reservation_snapshot('X').reservations==[]
     assert store.live_state('X',1)['operations'][0]['status']=='failed'
+
+
+def test_content_dedupe_survives_failed_operation_and_new_reservation(store):
+    rid = granted(store)
+    oid = store.admit(ReplaceCommand(rid,'60'))
+    assert store.admit(ReplaceCommand(rid,'60')) == oid
+    with store.connection(True) as db:
+        db.execute('UPDATE reservations SET version=99 WHERE id=%s',(rid,))
+    assert finish(store,oid)['status'] == 'failed'
+    fresh = granted(store,client='b')
+    with pytest.raises(ServiceError) as error:
+        store.admit(ReplaceCommand(fresh,'60'))
+    assert error.value.reason == 'DUPLICATE_REPLACEMENT'
+    with store.connection() as db:
+        assert db.execute('SELECT count(*) AS n FROM replacements').fetchone()['n'] == 1
+    assert store.get_document('X').version == 1
+    # Different replacement content remains a distinct edit.
+    finish(store,store.admit(ReplaceCommand(fresh,'90')))
+    # The same range/content on a newer source version is also distinct.
+    newer = granted(store,version=2)
+    finish(store,store.admit(ReplaceCommand(newer,'60')))
+    assert store.get_document('X').version == 3
+
+
+def test_duplicate_item_rejects_entire_batch_before_queue_insert(store):
+    rid = granted(store)
+    oid = store.admit(ReplaceCommand(rid,'60'))
+    with store.connection(True) as db:
+        db.execute('UPDATE reservations SET version=99 WHERE id=%s',(rid,))
+    finish(store,oid)
+    fresh = granted(store,client='b')
+    other = granted(store,client='b',start=9,end=14)
+    with pytest.raises(ServiceError) as error:
+        store.admit_batch('X',[ReplaceCommand(other,'changed'),ReplaceCommand(fresh,'60')])
+    assert error.value.reason == 'DUPLICATE_REPLACEMENT'
+    assert error.value.item_index == 1
+    with store.connection() as db:
+        assert db.execute('SELECT count(*) AS n FROM replacements').fetchone()['n'] == 1
+        assert db.execute('SELECT count(*) AS n FROM replacement_admissions').fetchone()['n'] == 1
+    assert store.reservation(other).status == 'active'
 
 
 def test_search_revision_offsets_and_large_document(store):
@@ -293,36 +331,10 @@ def test_postgres_outbox_stream_and_index_delivery(store,redis_url):
     asyncio.run(scenario())
 
 
-def make_legacy_queue(store, rid, status):
-    with store.connection(True) as db:
-        db.execute('CREATE TABLE document_sequences(document_id text PRIMARY KEY, next_sequence bigint)')
-        db.execute('CREATE TABLE commands(id text PRIMARY KEY, document_id text, reservation_id text, kind text, payload jsonb, status text, result jsonb, failure jsonb)')
-        db.execute("INSERT INTO commands VALUES('old-operation','X',%s,'replace',%s::jsonb,%s,%s::jsonb,NULL)",
-                   (rid,json.dumps({'replacement':'60'}),status,json.dumps({'version':2})))
 
 
-def test_upgrade_refuses_pending_work_without_changing_old_schema(store):
-    rid=granted(store)
-    make_legacy_queue(store,rid,'queued')
-    with pytest.raises(RuntimeError,match='Drain'):
-        PostgresStore(store.dsn,initialize=True)
-    with store.connection() as db:
-        assert db.execute('SELECT status FROM commands').fetchone()['status']=='queued'
-        assert db.execute("SELECT to_regclass(current_schema() || '.legacy_commands') AS t").fetchone()['t'] is None
 
 
-def test_upgrade_archives_history_and_preserves_replacement_deduplication(store):
-    rid=granted(store)
-    make_legacy_queue(store,rid,'completed')
-    upgraded=PostgresStore(store.dsn,initialize=True)
-    assert upgraded.admit(ReplaceCommand(rid,'60'))=='old-operation'
-    assert upgraded.operation('old-operation')['result_version']==2
-    with upgraded.connection() as db:
-        assert db.execute("SELECT to_regclass(current_schema() || '.commands') AS t").fetchone()['t'] is None
-        assert db.execute("SELECT to_regclass(current_schema() || '.document_sequences') AS t").fetchone()['t'] is None
-        assert db.execute('SELECT count(*) AS n FROM legacy_commands').fetchone()['n']==1
-    # Repeated initialization is safe and preserves the same identity.
-    assert PostgresStore(store.dsn,initialize=True).admit(ReplaceCommand(rid,'60'))=='old-operation'
 
 
 def test_admission_failure_rolls_back_queue_and_protection(store):
@@ -395,12 +407,9 @@ def test_native_relevance_ranks_before_document_id_and_keeps_exact_anchors(store
     assert all(h.score is None for h in literal)
 
 
-def test_ranking_backfills_existing_rows_and_reindexes_new_revision(store):
+def test_ranking_reindexes_new_revision(store):
     store.create_document('rank','alpha beta '*4);store.index_revision('rank',1)
-    with store.connection(True) as db:
-        db.execute("UPDATE search_documents SET ranking_sections=NULL WHERE document_id='rank'")
-    upgraded=PostgresStore(store.dsn,initialize=True)
-    assert upgraded.search(SearchRequest(text='alpha beta')).hits[0].score > 0
+    assert store.search(SearchRequest(text='alpha beta')).hits[0].score > 0
     with store.connection(True) as db:
         db.execute("INSERT INTO revisions VALUES ('rank',2,'gamma delta',NULL)")
         db.execute("UPDATE documents SET version=2 WHERE id='rank'")
@@ -420,8 +429,9 @@ def test_reservation_batch_atomicity_duplicates_and_shared_deadline(store):
         store.reserve_batch('a','X',batch_request((0,2),(1,4)))
     assert error.value.item_index==1
     assert store.reservation_snapshot('X').reservations==[]
-    results=store.reserve_batch('a','X',batch_request((0,2),(9,14),(0,2))).reservations
-    assert results[0].reservation_id==results[2].reservation_id
+    with pytest.raises(ValueError):
+        batch_request((0,2),(9,14),(0,2))
+    results=store.reserve_batch('a','X',batch_request((0,2),(9,14))).reservations
     assert results[0].expires_at==results[1].expires_at
     assert len(store.reservation_snapshot('X').reservations)==2
     original=results[0].expires_at
@@ -721,17 +731,80 @@ def test_operation_resource_reports_failed_outcome_without_false_success(store):
         assert 'result' not in response.json()
 
 
-def test_historical_single_operation_and_patch_normalize_to_arrays(store):
-    rid=granted(store);oid=store.admit(ReplaceCommand(rid,'60'));finish(store,oid)
-    # Simulate the shape stored before the uniform patch-list contract.
-    with store.connection(True) as db:
-        db.execute("UPDATE revisions SET patch=%s::jsonb WHERE document_id='X' AND version=2",
-                   (json.dumps({'start':0,'end':2,'replacement':'60'}),))
-        db.execute('DELETE FROM replacement_items WHERE operation_id=%s',(oid,))
-    upgraded=PostgresStore(store.dsn,initialize=True)
-    assert upgraded.admit_batch('X',[ReplaceCommand(rid,'60')])==oid
-    result=upgraded.replacement_result(oid)
-    assert result.reservation_ids==[rid] and result.version==2
-    update=upgraded.live_state('X',1)['updates'][0]
-    assert update['patches']==[{'start':0,'end':2,'replacement':'60'}]
-    assert 'patch' not in update
+
+
+
+
+def test_scoped_search_bypasses_query_cache_and_tracks_revision(store):
+    store.create_document('cache','😀 Contract, NOTICE; contract notice')
+    store.create_document('outside','contract notice')
+    for did in ['cache','outside']: store.index_revision(did,1)
+    for mode in ['terms','phrase','literal']:
+        request=SearchRequest(text='contract notice' if mode!='literal' else 'contract',mode=mode,document_ids=['cache'])
+        expected=store.search(request)
+        assert store.search(request)==expected
+        assert store.search(request)==expected
+        assert all(hit.document_id=='cache' for hit in expected.hits)
+        assert not store.query_cache.entries and not store.query_cache.probation
+        assert expected.hits[0].target.start==(20 if mode=='literal' else 2)
+    request=SearchRequest(text='notice',mode='terms',document_ids=['cache'])
+    store.search(request)
+    r=store.reserve('editor','cache',CreateEditReservationRequest(target=DocumentAnchor(version=1,start=0,end=1)))
+    finish(store,store.admit(ReplaceCommand(r.reservation_id,'Long prefix')))
+    store.index_revision('cache',2)
+    response=store.search(request)
+    assert response.hits[0].target.version==2
+    assert response.hits[0].target.start==22
+    store.index_revision('cache',1)
+    assert store.search(request)==response
+    # Scoped search does not restrict corpus coverage.
+    assert {h.document_id for h in store.search(SearchRequest(text='notice')).hits}=={'cache','outside'}
+    assert store.search(request)==response
+
+
+def test_corpus_query_cache_tracks_cross_process_projection_changes(store):
+    from redlining.query_cache import QueryResultCache
+    store.query_cache=QueryResultCache()
+    other=PostgresStore(store.dsn)
+    store.create_document('cache-a','cacheunique '*10)
+    store.create_document('cache-b','cacheunique')
+    other.index_revision('cache-a',1);other.index_revision('cache-b',1)
+    request=SearchRequest(text='cacheunique',mode='terms',limit=1)
+    first=store.search(request)
+    assert first.hits[0].document_id=='cache-a'
+    assert store.search(request)==first
+    assert store.search(request)==first and store.query_cache.hits==1
+    # A previously uncached document can enter the top K after projection commit.
+    store.create_document('cache-c','cacheunique '*30)
+    assert store.search(request)==first  # Source creation alone changes no search results.
+    other.index_revision('cache-c',1)
+    assert store.search(request).hits[0].document_id=='cache-c'
+    assert store.query_cache.refreshes==1
+    # Deleting a winner from the projection refills from uncached candidates.
+    with other.connection(True) as db:db.execute("DELETE FROM search_documents WHERE document_id='cache-c'")
+    assert store.search(request)==first
+    assert store.query_cache.refills==1
+    # Same-version forced indexing also generates a change.
+    with store.connection() as db:before=db.execute('SELECT generation FROM search_index_state').fetchone()['generation']
+    other.index_revision('cache-a',1,force=True)
+    with store.connection() as db:assert db.execute('SELECT generation FROM search_index_state').fetchone()['generation']==before+1
+    assert store.search(request)==first and store.query_cache.refreshes==3
+    # Churn is bounded in persistent history too. A lagging cache must rebuild.
+    with other.connection(True) as db:
+        for _ in range(1001):db.execute("UPDATE search_documents SET title=title WHERE document_id='cache-a'")
+    with store.connection() as db:
+        assert db.execute('SELECT count(*) AS n FROM search_index_changes').fetchone()['n']==1000
+    assert store.search(request)==first and store.query_cache.refills==2
+
+
+def test_query_cache_ignores_rolled_back_index_updates(store):
+    from redlining.query_cache import QueryResultCache
+    store.query_cache=QueryResultCache()
+    store.index_revision('X',1)
+    request=SearchRequest(text='contract')
+    before=store.search(request);store.search(request)
+    with pytest.raises(RuntimeError):
+        with store.connection(True) as db:
+            db.execute("DELETE FROM search_documents WHERE document_id='X'")
+            raise RuntimeError('abort')
+    assert store.search(request)==before and store.query_cache.hits==1

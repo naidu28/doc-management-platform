@@ -6,6 +6,28 @@ import pytest
 from redis import Redis as SyncRedis
 
 @pytest.fixture
+def pg_store():
+    """Real application adapter in a unique schema, with no preloaded documents."""
+    import os
+    from uuid import uuid4
+    import psycopg
+    from psycopg import sql
+    from psycopg.conninfo import make_conninfo
+    from redlining.postgres import PostgresStore
+    dsn = os.environ.get('REDLINING_TEST_DATABASE_URL')
+    if not dsn:
+        pytest.skip('Set REDLINING_TEST_DATABASE_URL for PostgreSQL integration tests')
+    name = 'app_' + uuid4().hex
+    with psycopg.connect(dsn, autocommit=True) as db:
+        db.execute('CREATE EXTENSION IF NOT EXISTS pg_trgm')
+        db.execute(sql.SQL('CREATE SCHEMA {}').format(sql.Identifier(name)))
+    try:
+        yield PostgresStore(make_conninfo(dsn, options=f'-c search_path={name},public'),initialize=True)
+    finally:
+        with psycopg.connect(dsn, autocommit=True) as db:
+            db.execute(sql.SQL('DROP SCHEMA {} CASCADE').format(sql.Identifier(name)))
+
+@pytest.fixture
 def redis_url(tmp_path):
     executable=shutil.which('redis-server')
     if not executable:
@@ -31,4 +53,3 @@ def redis_url(tmp_path):
         client.close()
         process.terminate()
         process.wait(timeout=5)
-

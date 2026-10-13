@@ -50,7 +50,7 @@ test('reservation responses remain immediate', async () => {
   const store = createDocumentStore('X');
   const stop = store.start();
   send();
-  const reservation = { reservation_id: 'r', operation_id: 'pending', status: 'submitted', target: { version: 1, start: 0, end: 2 } };
+  const reservation = { reservations: [{ reservation_id: 'r', status: 'active', expires_at: 100, target: { version: 1, start: 0, end: 2 } }] };
   globalThis.fetch = async () => ({ ok: true, status: 200, json: async () => reservation });
   assert.deepEqual(await store.perform('/documents/X/edit-reservations', { method: 'POST' }), reservation);
   stop();
@@ -104,5 +104,28 @@ test('batch 202 surfaces a later failure through the subscription', async () => 
       operation_id:'op',reservation_id,status:'failed',failure:{error:'Batch could not be applied'}}))})});
   assert.equal(store.getSnapshot().operationNotice,'Batch could not be applied');
   assert.equal(store.getSnapshot().document.version,1);
+  stop();
+});
+
+
+test('late renewal cannot restore a cleared, switched, or rebased selection', () => {
+  const store = createDocumentStore('X');
+  const stop = store.start();
+  send();
+  const r = {reservation_id:'r', expires_at:100, target:{version:1,start:0,end:1}};
+  store.select(r);
+  store.renewSelection({...r, expires_at:200});
+  assert.equal(store.getSnapshot().selection.expires_at,200);
+  store.clearSelection();
+  store.renewSelection(r);
+  assert.equal(store.getSnapshot().selection,null);
+  store.select({...r,reservation_id:'other'});
+  store.renewSelection(r);
+  assert.equal(store.getSnapshot().selection.reservation_id,'other');
+  send(2);
+  const rebased = {...r,target:{version:2,start:1,end:2}};
+  store.select(rebased);
+  store.renewSelection(r);
+  assert.deepEqual(store.getSnapshot().selection,rebased);
   stop();
 });

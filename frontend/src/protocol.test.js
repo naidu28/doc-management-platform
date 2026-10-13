@@ -10,7 +10,7 @@ test("patches use Unicode code points and install aligned reservations", () => {
         {
           previous_version: 1,
           version: 2,
-          patch: { start: 2, end: 3, replacement: "new" },
+          patches: [{ start: 2, end: 3, replacement: "new" }],
         },
       ],
       reservations: { document_version: 2, reservations: [] },
@@ -30,7 +30,7 @@ test("revision gaps require a fresh subscription", () =>
             {
               previous_version: 2,
               version: 3,
-              patch: { start: 0, end: 1, replacement: "" },
+              patches: [{ start: 0, end: 1, replacement: "" }],
             },
           ],
           reservations: { document_version: 3, reservations: [] },
@@ -49,7 +49,7 @@ test("a retained selection shifts for a non-overlapping replacement", () => {
   assert.deepEqual(
     rebaseSelection(s, {
       version: 2,
-      patch: { start: 0, end: 5, replacement: "hi" },
+      patches: [{ start: 0, end: 5, replacement: "hi" }],
     }).target,
     { version: 2, start: 3, end: 8 },
   );
@@ -58,7 +58,7 @@ test("a conflicting committed replacement clears the highlight", () =>
   assert.equal(
     rebaseSelection(
       { target: { version: 1, start: 6, end: 11 } },
-      { version: 2, patch: { start: 7, end: 9, replacement: "x" } },
+      { version: 2, patches: [{ start: 7, end: 9, replacement: "x" }] },
     ),
     null,
   ));

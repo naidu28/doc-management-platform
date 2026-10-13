@@ -1,5 +1,7 @@
 # Contract search and redlining benchmark
 
+> Historical benchmark: this run predates removal of server-side drafts and API consolidation. Its lifecycle description and measurements describe that earlier implementation, not the current API.
+
 Run: 2026-10-12T20:58:41Z. Environment: macOS-26.6.2-arm64-arm-64bit-Mach-O; Python 3.13.6.
 
 Corpus: 510 CUAD contracts, 26,820,468 UTF-8 bytes. SHA-256 `ed0b77d85bdf4014d7495800e8e4a70565b48ee6f8a2e5dca9cf8655dbf10eae`. No LLMs.

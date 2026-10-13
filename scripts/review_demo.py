@@ -1,9 +1,11 @@
-"""Isolated local demo; real PostgreSQL API and WebSockets, in-process write/index loop.
+"""Local CUAD demo using DATABASE_URL (not a disposable database); real PostgreSQL API and WebSockets, in-process write/index loop.
 
 Run from the repository root: .venv/bin/python -m scripts.review_demo
 Production continues to use redlining.main plus redlining.runtime workers.
 """
 import asyncio
+import hashlib
+import json
 from contextlib import asynccontextmanager
 from pathlib import Path
 import uvicorn
@@ -11,89 +13,39 @@ from redlining.main import build_app
 from redlining.postgres import PostgresStore
 
 store = PostgresStore(initialize=True)
-fixtures = {
- 'services-agreement': ('Master Services Agreement', '''MASTER SERVICES AGREEMENT
-
-This Master Services Agreement (the “Agreement”) is entered into as of October 12, 2026, by and between Alder Technologies, Inc. (“Client”) and Northstar Advisory, LLC (“Provider”).
-
-01  SERVICES & SCOPE
-
-Provider will perform the professional services described in each statement of work executed by the parties. Each statement of work will identify the deliverables, schedule, fees, and designated representatives responsible for the engagement.
-
-Any material change to the scope of services requires the prior written agreement of both parties. Provider will promptly notify Client of any circumstances that may affect the delivery schedule.
-
-02  PAYMENT TERMS
-
-Client shall pay all undisputed invoices within thirty (30) days of receipt. Each invoice must include a description of the services performed and any expenses approved in advance by Client.
-
-Reasonable travel expenses will be reimbursed at cost, provided that Provider obtains written approval before incurring them. The parties will cooperate in good faith to resolve disputed charges.
-
-03  CONFIDENTIALITY
-
-Each party agrees to protect the other party’s confidential information using reasonable care and to use that information solely to fulfill its obligations under this Agreement. These obligations survive termination for a period of three (3) years.
-
-Confidential information does not include information that is publicly available, independently developed, or lawfully received from a third party without a duty of confidentiality.
-
-04  TERM & TERMINATION
-
-This Agreement will remain in effect for an initial term of twelve (12) months. Either party may terminate this Agreement for convenience upon thirty (30) days’ prior written notice to the other party.
-
-Upon termination, Provider will deliver all completed work and reasonably assist with the transition of services. Client will pay for services properly performed through the effective termination date.
-
-05  LIMITATION OF LIABILITY
-
-Except for a party’s confidentiality obligations or willful misconduct, neither party will be liable for indirect, incidental, or consequential damages. Each party’s aggregate liability will not exceed the fees paid under this Agreement during the preceding twelve (12) months.
-
-06  GENERAL PROVISIONS
-
-This Agreement constitutes the entire agreement between the parties concerning its subject matter. Amendments must be in writing and signed by authorized representatives of both parties.
-
-All notices must be delivered in writing to the designated representative of each party. Electronic notices are effective upon acknowledgment of receipt.
-
-AGREED AND ACCEPTED
-
-Alder Technologies, Inc.                         Northstar Advisory, LLC
-Authorized representative                       Authorized representative
-'''),
- 'mutual-nda': ('Mutual Non-Disclosure Agreement', '''MUTUAL NON-DISCLOSURE AGREEMENT
-
-01  PURPOSE
-
-The parties wish to evaluate a potential business relationship and may exchange confidential business, financial, and technical information for that purpose.
-
-02  PERMITTED USE
-
-The receiving party will use confidential information solely to evaluate the proposed relationship and will restrict disclosure to representatives who need to know and are subject to equivalent confidentiality obligations.
-
-03  RETURN OF MATERIALS
-
-Upon written request, the receiving party will return or destroy confidential materials within thirty (30) days, except copies required by law or maintained in routine backup systems.
-
-04  TERM
-
-This Agreement remains effective for two (2) years. The duty to protect disclosed information survives for three (3) years following termination.
-'''),
- 'consulting-addendum': ('Consulting Addendum · Statement of Work', '''STATEMENT OF WORK — CONSULTING ADDENDUM
-
-01  DELIVERABLES
-
-Provider will assess the existing document review workflow and deliver a written implementation plan, an interactive prototype, and a final handover session.
-
-02  SCHEDULE
-
-The engagement begins on October 12, 2026. The prototype will be delivered within thirty (30) days, subject to timely access to materials and stakeholder feedback.
-
-03  ACCEPTANCE
-
-Client will review deliverables within ten (10) business days and identify any material deficiencies in writing. Provider will address agreed deficiencies without additional charge.
-''')}
+# CUAD v1, The Atticus Project et al. (2021), CC BY 4.0; see data/README.md.
+# Validate the complete local corpus before importing anything. Never overwrite
+# an existing document: it may contain edits made in the live example.
+data = Path(__file__).resolve().parents[1] / 'data'
+manifest = json.loads((data / 'manifest.json').read_text())
+fixtures = []
+for entry in manifest['documents']:
+    path = data / entry['path']
+    if not path.exists():
+        raise RuntimeError('Prepare CUAD first: run scripts/download_corpus.py and scripts/prepare_corpus.py')
+    raw = path.read_bytes()
+    if hashlib.sha256(raw).hexdigest() != entry['sha256']:
+        raise RuntimeError(f"Corpus checksum mismatch: {entry['id']}")
+    fixtures.append((entry['id'], raw.decode('utf-8'), entry['title']))
 with store.connection() as db:
-    existing={row['id'] for row in db.execute('SELECT id FROM documents')}
-for id,(title,text) in fixtures.items():
-    if id not in existing:store.create_document(id,text,title)
-    store.index_revision(id,store.get_document(id).version)
+    existing = {row['id'] for row in db.execute('SELECT id FROM documents')}
+for id, text, title in fixtures:
+    if id not in existing:
+        store.create_document(id, text, title)
+
+
+def unindexed_heads():
+    with store.connection() as db:
+        return [(r['id'], r['version']) for r in db.execute(
+            'SELECT d.id,d.version FROM documents d LEFT JOIN search_documents s '
+            'ON s.document_id=d.id WHERE s.version IS NULL OR s.version<d.version')]
+
+
+for id, version in unindexed_heads():
+    store.index_revision(id, version)
+print(f"Demo ready: {len(fixtures)} CUAD contracts loaded and indexed; existing documents preserved.", flush=True)
 app=build_app(database_url=store.dsn)
-# Submission returns as soon as PostgreSQL has durably accepted it.
+# Submission waits for committed completion, or returns 202 when still pending.
 
 original_lifespan=app.router.lifespan_context
 @asynccontextmanager
@@ -102,8 +54,7 @@ async def lifespan(app):
         while True:
             await asyncio.to_thread(store.expire)
             await asyncio.to_thread(store.process_next)
-            with store.connection() as db:
-                heads=[(r['id'],r['version']) for r in db.execute('SELECT id,version FROM documents')]
+            heads = await asyncio.to_thread(unindexed_heads)
             for id,version in heads:await asyncio.to_thread(store.index_revision,id,version)
             await asyncio.sleep(.1)
     task=asyncio.create_task(process())

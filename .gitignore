@@ -10,3 +10,6 @@ data/*.sqlite3*
 
 frontend/node_modules/
 frontend/dist/
+
+# Local service logs from benchmark runs
+reports/**/*.log

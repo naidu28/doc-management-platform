@@ -6,10 +6,10 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException
 
 from .models import (
-    Document, TargetedReplacementsRequest,
+    Document, Identifier, TargetedReplacementsRequest,
     ReplacementAccepted, ReplacementOperation,
     CreateEditReservationsRequest, EditReservationsResult, ReservedReplacementsRequest, ReplacementResult, Error,
-    Reservation, ReservationSnapshot, SearchRequest, SearchResponse,
+    Reservation, SearchRequest, SearchResponse,
 )
 from .services import RedliningService, RetrievalService, ServiceError
 
@@ -28,7 +28,7 @@ def retrieval_service(request: Request) -> RetrievalService:
     return service
 
 
-Client = Annotated[str, Header(alias="X-Client-ID", min_length=1, max_length=200)]
+Client = Annotated[Identifier, Header(alias="X-Client-ID", min_length=1, max_length=200)]
 Writer = Annotated[RedliningService, Depends(redlining_service)]
 Reader = Annotated[RetrievalService, Depends(retrieval_service)]
 writes = APIRouter(tags=["redlining"])
@@ -47,7 +47,7 @@ def replacement_response(result):
 
 
 @reads.get("/replacement-operations/{operation_id}", response_model=ReplacementOperation)
-async def replacement_operation(operation_id: str, response: Response, service: Writer):
+async def replacement_operation(operation_id: Identifier, response: Response, service: Writer):
     result = await service.replacement_operation(operation_id)
     response.headers["Cache-Control"] = "no-store"
     if isinstance(result, ReplacementAccepted):
@@ -56,15 +56,15 @@ async def replacement_operation(operation_id: str, response: Response, service: 
 
 
 @writes.post("/documents/{document_id}/edit-reservations", response_model=EditReservationsResult)
-async def reserve(document_id: str, body: CreateEditReservationsRequest, client_id: Client, service: Writer):
+async def reserve(document_id: Identifier, body: CreateEditReservationsRequest, client_id: Client, service: Writer):
     return await service.reserve_batch(client_id, document_id, body)
 
 
 @writes.post("/documents/{document_id}/replacements", response_model=ReplacementResult, responses=PENDING_RESPONSE)
-async def replace(document_id: str, body: ReservedReplacementsRequest | TargetedReplacementsRequest,
+async def replace(document_id: Identifier, body: ReservedReplacementsRequest | TargetedReplacementsRequest,
                   service: Writer,
-                  client_id: Annotated[str | None, Header(alias="X-Client-ID", min_length=1, max_length=200)] = None,
-                  request_key: Annotated[str | None, Header(alias="Idempotency-Key", min_length=1, max_length=200)] = None):
+                  client_id: Annotated[Identifier | None, Header(alias="X-Client-ID", min_length=1, max_length=200)] = None,
+                  request_key: Annotated[Identifier | None, Header(alias="Idempotency-Key", min_length=1, max_length=200)] = None):
     """Apply 1–100 edits atomically. Use reservation IDs OR versioned targets, never both.
 
     Target-based requests require X-Client-ID and Idempotency-Key. Reservation-based
@@ -79,40 +79,21 @@ async def replace(document_id: str, body: ReservedReplacementsRequest | Targeted
     return replacement_response(result)
 
 
-@writes.get("/documents/{document_id}/edit-reservations", response_model=ReservationSnapshot)
-async def reservation_snapshot(document_id: str, service: Writer):
-    return await service.reservation_snapshot(document_id)
-
-
-@writes.get("/edit-reservations/{reservation_id}", response_model=Reservation)
-async def reservation(reservation_id: str, service: Writer):
-    return await service.reservation(reservation_id)
-
-
 @writes.post("/edit-reservations/{reservation_id}/renew", response_model=Reservation)
-async def renew(reservation_id: str, service: Writer):
+async def renew(reservation_id: Identifier, service: Writer):
     return await service.renew(reservation_id)
 
 
 @writes.delete("/edit-reservations/{reservation_id}", status_code=204)
-async def release(reservation_id: str, service: Writer):
+async def release(reservation_id: Identifier, service: Writer):
     await service.release(reservation_id)
     return Response(status_code=204)
 
 
 @reads.get("/documents/{document_id}", response_model=Document)
-async def document(document_id: str, service: Reader,
+async def document(document_id: Identifier, service: Reader,
                    version: Annotated[int | None, Query(ge=1)] = None):
     return await service.get_document(document_id, version)
-
-
-@reads.get("/documents/{document_id}/search", response_model=SearchResponse)
-async def search_document(document_id: str, service: Reader,
-                          q: Annotated[str, Query(min_length=1, max_length=4096)],
-                          limit: Annotated[int, Query(ge=1, le=100)] = 20):
-    if not q.strip():
-        raise ServiceError(422, "INVALID_REQUEST", "Query must contain text")
-    return await service.search(SearchRequest(text=q, mode="literal", document_ids=[document_id], limit=limit))
 
 
 @reads.post("/search", response_model=SearchResponse)

@@ -4,6 +4,7 @@ Every range mutation locks its document. Admission validates and freezes protect
 atomically with queue insertion. Workers may execute replacements in any order.
 """
 from bisect import bisect_right
+import hashlib
 import json
 import os
 import re
@@ -14,10 +15,11 @@ from uuid import uuid4
 import psycopg
 from psycopg.rows import dict_row
 
-from .models import ReplacementAccepted, ReplacementCompleted, ReplacementFailed, Error, CreateEditReservationsRequest, EditReservationsResult, ReplacementResult, ChangeResult, Document, DocumentAnchor, Reservation, ReservationSnapshot, SearchHit, SearchResponse
+from .models import ReplacementAccepted, ReplacementCompleted, ReplacementFailed, Error, CreateEditReservationsRequest, EditReservationsResult, ReplacementResult, Document, DocumentAnchor, Reservation, ReservationSnapshot, SearchHit, SearchResponse
 from .services import ReplaceCommand, ServiceError
-from .storage import overlap
+from .ranges import overlap
 from .ranking import ranking_sections
+from .query_cache import QueryResultCache
 
 DEFAULT_DSN = 'postgresql://localhost/sandstone'
 SCHEMA = '''
@@ -27,11 +29,8 @@ CREATE TABLE IF NOT EXISTS revisions(document_id text REFERENCES documents(id), 
 CREATE TABLE IF NOT EXISTS reservations(id text PRIMARY KEY, document_id text REFERENCES documents(id), client_id text NOT NULL,
  version bigint NOT NULL, start_pos bigint NOT NULL, end_pos bigint NOT NULL, status text NOT NULL,
  created double precision NOT NULL, expires double precision, operation_id text);
-ALTER TABLE reservations ALTER COLUMN expires DROP NOT NULL;
-ALTER TABLE reservations ADD COLUMN IF NOT EXISTS operation_id text;
 CREATE INDEX IF NOT EXISTS reservation_document ON reservations(document_id,status);
 CREATE TABLE IF NOT EXISTS replacements(id text PRIMARY KEY, document_id text NOT NULL REFERENCES documents(id),
- reservation_id text UNIQUE NOT NULL REFERENCES reservations(id), replacement text NOT NULL,
  status text NOT NULL DEFAULT 'queued', result_version bigint, failure jsonb);
 CREATE TABLE IF NOT EXISTS one_shot_requests(document_id text NOT NULL REFERENCES documents(id),
  client_id text NOT NULL, request_key text NOT NULL, payload jsonb NOT NULL,
@@ -40,16 +39,35 @@ CREATE TABLE IF NOT EXISTS replacement_items(operation_id text NOT NULL REFERENC
  reservation_id text PRIMARY KEY REFERENCES reservations(id), replacement text NOT NULL);
 CREATE INDEX IF NOT EXISTS replacement_items_operation ON replacement_items(operation_id);
 CREATE INDEX IF NOT EXISTS replacements_pending ON replacements(document_id) WHERE status='queued';
+CREATE TABLE IF NOT EXISTS replacement_admissions(
+ document_id text NOT NULL REFERENCES documents(id), source_version bigint NOT NULL,
+ start_pos bigint NOT NULL, end_pos bigint NOT NULL, replacement_hash text NOT NULL,
+ operation_id text NOT NULL REFERENCES replacements(id),
+ PRIMARY KEY(document_id,source_version,start_pos,end_pos,replacement_hash));
+CREATE INDEX IF NOT EXISTS replacement_admissions_operation ON replacement_admissions(operation_id);
 CREATE TABLE IF NOT EXISTS browser_connections(id text PRIMARY KEY, document_id text NOT NULL REFERENCES documents(id),
  client_id text NOT NULL, expires double precision NOT NULL);
 CREATE INDEX IF NOT EXISTS browser_connections_expiry ON browser_connections(expires);
 CREATE INDEX IF NOT EXISTS browser_connections_owner ON browser_connections(document_id,client_id);
-CREATE TABLE IF NOT EXISTS drafts(reservation_id text PRIMARY KEY REFERENCES reservations(id), replacement text NOT NULL);
 CREATE TABLE IF NOT EXISTS outbox(sequence bigserial PRIMARY KEY, event_id text UNIQUE NOT NULL, document_id text NOT NULL,
  kind text NOT NULL, version bigint NOT NULL, payload text NOT NULL, published integer NOT NULL DEFAULT 0);
-CREATE TABLE IF NOT EXISTS search_documents(document_id text PRIMARY KEY REFERENCES documents(id), version bigint NOT NULL, title text NOT NULL, body text NOT NULL);
-ALTER TABLE search_documents ADD COLUMN IF NOT EXISTS ranking_sections tsvector[];
+CREATE TABLE IF NOT EXISTS search_documents(document_id text PRIMARY KEY REFERENCES documents(id), version bigint NOT NULL, title text NOT NULL, body text NOT NULL, ranking_sections tsvector[] NOT NULL);
 CREATE INDEX IF NOT EXISTS search_body_trigram ON search_documents USING gin(body gin_trgm_ops);
+CREATE TABLE IF NOT EXISTS search_index_state(id integer PRIMARY KEY CHECK(id=1), generation bigint NOT NULL);
+INSERT INTO search_index_state VALUES(1,0) ON CONFLICT DO NOTHING;
+CREATE TABLE IF NOT EXISTS search_index_changes(generation bigint PRIMARY KEY, document_id text NOT NULL);
+CREATE OR REPLACE FUNCTION track_search_projection() RETURNS trigger LANGUAGE plpgsql AS $$
+DECLARE next_generation bigint;
+BEGIN
+ UPDATE search_index_state SET generation=generation+1 WHERE id=1 RETURNING generation INTO next_generation;
+ INSERT INTO search_index_changes VALUES(next_generation, CASE WHEN TG_OP='DELETE' THEN OLD.document_id ELSE NEW.document_id END);
+ DELETE FROM search_index_changes WHERE generation<=next_generation-1000;
+ RETURN NULL;
+END $$;
+DROP TRIGGER IF EXISTS search_projection_changed ON search_documents;
+CREATE TRIGGER search_projection_changed AFTER INSERT OR UPDATE OR DELETE ON search_documents
+ FOR EACH ROW EXECUTE FUNCTION track_search_projection();
+
 '''
 
 
@@ -60,27 +78,15 @@ def stamp(value):
 class PostgresStore:
     def __init__(self, dsn=None, *, initialize=False):
         self.dsn = dsn or os.environ.get('DATABASE_URL', DEFAULT_DSN)
+        self.query_cache = QueryResultCache(
+            max_queries=int(os.environ.get('QUERY_CACHE_MAX_QUERIES',64)),
+            max_bytes=int(os.environ.get('QUERY_CACHE_BYTES',8*1024*1024)),
+            idle_seconds=float(os.environ.get('QUERY_CACHE_IDLE_SECONDS',300)))
         if initialize:
             with self.connection(True) as db:
                 # Serialize schema setup across starting processes.
                 db.execute("SELECT pg_advisory_xact_lock(72581901)")
-                self.migrate_legacy_queue(db)
                 db.execute(SCHEMA)
-                self.copy_legacy_outcomes(db)
-                db.execute("""INSERT INTO replacement_items SELECT id,reservation_id,replacement
-                    FROM replacements ON CONFLICT DO NOTHING""")
-                self.backfill_ranking(db)
-
-    @staticmethod
-    def backfill_ranking(db):
-        # One-time upgrade, serialized by the existing schema initialization lock.
-        # Named cursor avoids materializing the complete corpus in Python.
-        with db.cursor(name='ranking_backfill') as cursor:
-            cursor.execute('SELECT document_id,body FROM search_documents WHERE ranking_sections IS NULL')
-            for row in cursor:
-                db.execute("""UPDATE search_documents SET ranking_sections=
-                    ARRAY(SELECT to_tsvector('simple', section) FROM unnest(%s::text[]) AS section)
-                    WHERE document_id=%s""", (list(ranking_sections(row['body'])),row['document_id']))
 
     @contextmanager
     def connection(self, write=False):
@@ -120,26 +126,6 @@ class PostgresStore:
             db.execute('INSERT INTO revisions VALUES(%s,1,%s,NULL)', (document_id,text))
             self.emit(db, document_id, 1, 'document_created')
         return Document(document_id=document_id,version=1,text=text)
-
-    @staticmethod
-    def migrate_legacy_queue(db):
-        # Upgrade only drained queues. Never discard already acknowledged work.
-        old = db.execute("SELECT to_regclass(current_schema() || '.commands') AS name").fetchone()['name']
-        if old:
-            if db.execute("SELECT 1 FROM commands WHERE status='queued' LIMIT 1").fetchone():
-                raise RuntimeError('Drain the old shared command queue with the previous worker before upgrading')
-            db.execute('ALTER TABLE commands RENAME TO legacy_commands')
-            db.execute('ALTER TABLE document_sequences RENAME TO legacy_document_sequences')
-
-    @staticmethod
-    def copy_legacy_outcomes(db):
-        old = db.execute("SELECT to_regclass(current_schema() || '.legacy_commands') AS name").fetchone()['name']
-        if old:
-            db.execute("""INSERT INTO replacements(id,document_id,reservation_id,replacement,status,result_version,failure)
-                SELECT id,document_id,reservation_id,payload->>'replacement',status,(result->>'version')::bigint,failure
-                FROM legacy_commands WHERE kind='replace' ON CONFLICT DO NOTHING""")
-            db.execute("""UPDATE reservations r SET operation_id=p.id FROM replacements p
-                WHERE p.reservation_id=r.id AND r.operation_id IS NULL""")
 
     def lock_document(self, db, document_id):
         row = db.execute('SELECT * FROM documents WHERE id=%s FOR NO KEY UPDATE', (document_id,)).fetchone()
@@ -271,6 +257,20 @@ class PostgresStore:
                 if bound==requested:
                     return oid
             raise ServiceError(409,'REPLACEMENT_MISMATCH','Reservations are already bound to a different replacement or batch')
+        # Original edit identity is immutable even when protected anchors move.
+        # All callers hold the document lock; the primary key is a second guard.
+        identities = []
+        for index, (row, command) in enumerate(zip(rows,commands)):
+            identity = (document_id,row['version'],row['start'],row['end'],
+                        hashlib.sha256(command.replacement.encode('utf-8')).hexdigest())
+            previous = db.execute('''SELECT operation_id FROM replacement_admissions
+                WHERE document_id=%s AND source_version=%s AND start_pos=%s
+                AND end_pos=%s AND replacement_hash=%s''',identity).fetchone()
+            if previous:
+                raise ServiceError(409,'DUPLICATE_REPLACEMENT',
+                    'This source-version range and replacement were already admitted; retrieve the original operation: '
+                    + previous['operation_id'],item_index=index)
+            identities.append(identity)
         now = self.now(db)
         context = self.validation_context(db,document_id)
         for index, row in enumerate(rows):
@@ -282,11 +282,9 @@ class PostgresStore:
                 exc.item_index = index
                 raise
         oid = str(uuid4())
-        # Keep the original leading-item columns for durable pre-batch operations.
-        # The child table is authoritative for membership of all new operations.
-        first = commands[0]
-        db.execute('INSERT INTO replacements(id,document_id,reservation_id,replacement) VALUES(%s,%s,%s,%s)',
-                   (oid,document_id,first.reservation_id,first.replacement))
+        db.execute('INSERT INTO replacements(id,document_id) VALUES(%s,%s)',(oid,document_id))
+        for identity in identities:
+            db.execute('INSERT INTO replacement_admissions VALUES(%s,%s,%s,%s,%s,%s)',(*identity,oid))
         for command in commands:
             db.execute('INSERT INTO replacement_items VALUES(%s,%s,%s)',(oid,command.reservation_id,command.replacement))
             db.execute("UPDATE reservations SET status='submitted',expires=NULL,operation_id=%s WHERE id=%s",(oid,command.reservation_id))
@@ -297,19 +295,6 @@ class PostgresStore:
     def operation_items(db, operation):
         return db.execute('SELECT * FROM replacement_items WHERE operation_id=%s ORDER BY reservation_id',
                           (operation['id'],)).fetchall()
-
-    def save_draft(self, rid, client_id, replacement):
-        with self.connection(True) as db:
-            row = self.lock_reservation(db,rid)
-            now = self.now(db)
-            if row['client_id']!=client_id:
-                raise ServiceError(409,'OTHER_SESSION','This edit belongs to another session')
-            self.eligible(db,row,now)
-            if row['expires']<=now:
-                raise ServiceError(409,'LEASE_EXPIRED','Renew the reservation before typing')
-            db.execute('INSERT INTO drafts VALUES(%s,%s) ON CONFLICT(reservation_id) DO UPDATE SET replacement=excluded.replacement',(rid,replacement))
-            self.emit(db,row['document_id'],row['version'])
-            return {'reservation_id':rid,'replacement':replacement}
 
     def protected(self, db, document_id, now):
         return db.execute("SELECT *,start_pos AS start,end_pos AS end FROM reservations WHERE document_id=%s AND (status='submitted' OR (status='active' AND expires>%s))", (document_id,now)).fetchall()
@@ -513,10 +498,9 @@ class PostgresStore:
                 content = {'document':self.document_in(db,document_id).model_dump()}
             else:
                 updates = db.execute("SELECT r.version,r.patch,o.event_id FROM revisions r JOIN outbox o ON o.document_id=r.document_id AND o.version=r.version AND o.kind='document_updated' WHERE r.document_id=%s AND r.version>%s ORDER BY r.version",(document_id,after_version)).fetchall()
-                content = {'updates':[dict(event_id=r['event_id'],document_id=document_id,previous_version=r['version']-1,version=r['version'],patches=(r['patch']['patches'] if 'patches' in r['patch'] else [r['patch']])) for r in updates]}
+                content = {'updates':[dict(event_id=r['event_id'],document_id=document_id,previous_version=r['version']-1,version=r['version'],patches=r['patch']['patches']) for r in updates]}
             operations = db.execute('SELECT p.id AS operation_id,i.reservation_id,p.status,p.result_version,p.failure FROM replacements p JOIN replacement_items i ON i.operation_id=p.id WHERE p.document_id=%s',(document_id,)).fetchall()
-            drafts = db.execute("SELECT d.* FROM drafts d JOIN reservations r ON r.id=d.reservation_id WHERE r.document_id=%s AND r.status IN ('active','submitted')",(document_id,)).fetchall()
-            return dict(type='document_state',reservations=snapshot.model_dump(mode='json'),operations=operations,drafts=drafts,**content)
+            return dict(type='document_state',reservations=snapshot.model_dump(mode='json'),operations=operations,**content)
 
     def index_revision(self, document_id, version, force=False):
         with self.connection(True) as db:
@@ -529,9 +513,28 @@ class PostgresStore:
             return result is not None
 
     def search(self, request):
-        """Trigram candidates, native cover-density ranking, exact source anchors."""
         if request.document_ids == []:
             return SearchResponse(hits=[])
+        with self.connection() as db:
+            if request.document_ids is None and request.mode in ('terms','phrase'):
+                def generation():
+                    return db.execute('SELECT generation FROM search_index_state WHERE id=1').fetchone()['generation']
+
+                def changes(previous):
+                    if generation()-previous > 1000:
+                        return None
+                    rows = db.execute('SELECT DISTINCT document_id FROM search_index_changes WHERE generation>%s LIMIT 101', (previous,)).fetchall()
+                    return [r['document_id'] for r in rows] if len(rows)<=100 else None
+
+                def execute(ids):
+                    scoped = request if ids is None else request.model_copy(update={'document_ids':ids,'limit':100})
+                    return self.search_in(db,scoped)
+
+                return self.query_cache.search(request,generation,changes,execute)
+            return self.search_in(db,request)
+
+    def search_in(self, db, request):
+        """Trigram candidates, native ranking and exact anchors in one snapshot."""
         params, filters = [], []
         if request.document_ids is not None:
             filters.append('document_id=ANY(%s)'); params.append(request.document_ids)
@@ -554,29 +557,28 @@ class PostgresStore:
             params.insert(0, ' '.join(needles))
             order = 'score DESC, document_id'
         hits = []
-        with self.connection() as db:
-            # Named cursor bounds memory to one candidate document at a time.
-            with db.cursor(name='search_candidates') as cursor:
-                cursor.execute('SELECT document_id,version,body,'+score_sql+' AS score FROM search_documents WHERE '+' AND '.join(filters)+' ORDER BY '+order,params)
-                for row in cursor:
-                    body = row['body']
-                    if request.mode=='literal':
-                        pos = 0
-                        while len(hits)<request.limit:
-                            start = body.find(request.text,pos)
-                            if start<0: break
-                            pos = start+len(request.text)
-                            hits.append(self.hit(row,start,pos))
+        # Named cursor bounds memory to one candidate document at a time.
+        with db.cursor(name='search_candidates') as cursor:
+            cursor.execute('SELECT document_id,version,body,'+score_sql+' AS score FROM search_documents WHERE '+' AND '.join(filters)+' ORDER BY '+order,params)
+            for row in cursor:
+                body = row['body']
+                if request.mode=='literal':
+                    pos = 0
+                    while len(hits)<request.limit:
+                        start = body.find(request.text,pos)
+                        if start<0: break
+                        pos = start+len(request.text)
+                        hits.append(self.hit(row,start,pos))
+                else:
+                    words = [re.escape(w) for w in needles]
+                    if request.mode=='phrase':
+                        match = re.search(r'(?<![^\W_])'+r'[\W_]+'.join(words)+r'(?![^\W_])',body,re.I)
                     else:
-                        words = [re.escape(w) for w in needles]
-                        if request.mode=='phrase':
-                            match = re.search(r'(?<![^\W_])'+r'[\W_]+'.join(words)+r'(?![^\W_])',body,re.I)
-                        else:
-                            matches = [re.search(r'(?<![^\W_])'+word+r'(?![^\W_])',body,re.I) for word in words]
-                            match = min(matches,key=lambda m:m.start()) if all(matches) else None
-                        if match:
-                            hits.append(self.hit(row,match.start(),match.end()))
-                    if len(hits)>=request.limit: break
+                        matches = [re.search(r'(?<![^\W_])'+word+r'(?![^\W_])',body,re.I) for word in words]
+                        match = min(matches,key=lambda m:m.start()) if all(matches) else None
+                    if match:
+                        hits.append(self.hit(row,match.start(),match.end()))
+                if len(hits)>=request.limit: break
         return SearchResponse(hits=hits)
 
     @staticmethod

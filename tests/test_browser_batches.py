@@ -4,7 +4,7 @@ import pytest
 
 
 @pytest.mark.skipif(os.environ.get('REDLINING_BROWSER_TESTS')!='1', reason='Opt-in Selenium/PostgreSQL stack')
-def test_two_drafts_commit_atomically_and_other_browser_converges(tmp_path):
+def test_local_edits_renew_and_commit_atomically(tmp_path):
     from benchmarks.run import Stack
     from selenium import webdriver
     from selenium.webdriver.chrome.service import Service
@@ -35,6 +35,19 @@ def test_two_drafts_commit_atomically_and_other_browser_converges(tmp_path):
                 editor.send_keys(new)
                 wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR,'button.submit')))
             assert first.find_element(By.CSS_SELECTOR,'button.submit').text=='Submit edits (2)'
+            # No keystroke persistence or replacement execution before Submit.
+            with stack.store.connection() as db:
+                assert db.execute('SELECT count(*) AS n FROM replacements').fetchone()['n']==0
+            initial = stack.store.reservation_snapshot('batch-ui').reservations
+            assert len(initial)==2
+            first.execute_script('window.focus()')
+            # Stay beyond the original 30-second lease and verify both edits renew.
+            import time
+            time.sleep(31)
+            current = stack.store.reservation_snapshot('batch-ui').reservations
+            assert len(current)==2
+            assert all(r.expires_at > initial[0].expires_at for r in current)
+            assert 'drafts' not in stack.store.live_state('batch-ui')
             first.find_element(By.CSS_SELECTOR,'button.submit').click()
             expected='First longer first; second short; final unchanged.'
             for driver in (first,second):

@@ -25,7 +25,7 @@ export function applyState(previous, message) {
       selection = next;
     }
     const source = chars(document.text);
-    const patches = update.patches || [update.patch];
+    const patches = update.patches;
     const pieces = [];
     let position = 0;
     for (const patch of patches) {
@@ -48,7 +48,6 @@ export function applyState(previous, message) {
   return {
     document,
     reservations: message.reservations.reservations,
-    drafts: message.drafts || [],
     operations: message.operations || [],
     selection,
     selectionNotice,
@@ -73,7 +72,7 @@ export function sourceOffset(node, offset) {
 export function rebaseSelection(selection, update) {
   const a = selection.target;
   let delta = 0;
-  for (const p of update.patches || [update.patch]) {
+  for (const p of update.patches) {
     const overlaps =
       a.start === a.end
         ? p.start <= a.start && a.start <= p.end

@@ -10,7 +10,6 @@ from redis.asyncio import Redis
 from .api import create_app
 from .runtime import DocumentService
 from .services import ServiceError
-from .storage import Store
 from .postgres import PostgresStore
 
 
@@ -69,9 +68,8 @@ class LiveHub:
                 await asyncio.sleep(1)
 
 
-def build_app(db_path=None, redis_url=None, database_url=None):
-    db_path = db_path or os.environ.get("REDLINING_DB")
-    store = Store(db_path) if db_path else PostgresStore(database_url, initialize=True)
+def build_app(redis_url=None, database_url=None):
+    store = PostgresStore(database_url, initialize=True)
     wait_seconds = float(os.environ.get('REPLACEMENT_WAIT_SECONDS', '30'))
     if not 0 <= wait_seconds <= 30:
         raise ValueError('REPLACEMENT_WAIT_SECONDS must be between 0 and 30')
@@ -101,8 +99,12 @@ def build_app(db_path=None, redis_url=None, database_url=None):
         connection_id = None
         leaving = False
         raw_version = socket.query_params.get('after_version', '')
-        version = int(raw_version) if raw_version.isdigit() else None
         try:
+            if raw_version and (not raw_version.isascii() or not raw_version.isdecimal() or len(raw_version) > 19):
+                raise ServiceError(422, 'INVALID_VERSION', 'Invalid subscription revision')
+            version = int(raw_version) if raw_version else None
+            if version is not None and not 1 <= version <= 9223372036854775807:
+                raise ServiceError(422, 'INVALID_VERSION', 'Invalid subscription revision')
             client_id = socket.query_params.get('client_id')
             if client_id is not None and isinstance(store, PostgresStore):
                 if not 1 <= len(client_id) <= 200:
@@ -111,9 +113,6 @@ def build_app(db_path=None, redis_url=None, database_url=None):
             while True:
                 signal.clear()
                 state = await asyncio.to_thread(store.live_state, document_id, version, socket.query_params.get('retain_history') == '1')
-                for update in state.get('updates', []):
-                    if 'patch' in update:
-                        update['patches'] = [update.pop('patch')]
                 await asyncio.wait_for(socket.send_json(state), 10)
                 version = state['reservations']['document_version']
                 wake = asyncio.create_task(signal.wait())

@@ -5,6 +5,8 @@ for live document notifications. Reservations are acquired synchronously; only v
 enter the durable queue. No first-arrival fairness or FIFO is required. Replacements commit directly; reviewer
 accept/reject workflows are outside this version.
 
+Part II: [Production strategy](PRODUCTION_STRATEGY.md).
+
 ## Run locally
 
 Install PostgreSQL 16+ and Redis, then create a dedicated database:
@@ -27,22 +29,22 @@ redis-server --appendonly yes
 
 The database role needs permission to create the schema and trusted `pg_trgm`
 extension. Initialization is serialized across starting processes. For production,
-provision the schema separately and apply normal database permissions and backups.
+separate schema provisioning from application startup before using a restricted
+runtime role; the supplied API and worker entrypoints currently run initialization.
 Multiple API and replacement-worker processes can share PostgreSQL. Use a dedicated
-Redis instance/database: stream/group names are project-global. Redis durability
-also depends on its persistence configuration; PostgreSQL retains the outbox.
+Redis instance: stream/group and Pub/Sub channel names are project-global.
+Separate Redis database numbers do not isolate Pub/Sub channels. Redis durability
+also depends on persistence configuration. PostgreSQL retains the outbox, but
+already-published events are not automatically replayed after Redis data loss;
+`python -m redlining.cli republish` schedules retained events for republication.
 
-Import exact UTF-8 text; this does not normalize whitespace:
+Prepare the fixtures using [the corpus instructions](data/README.md), or substitute
+your own text file below. Import exact UTF-8 text without whitespace normalization:
 
 ```sh
 .venv/bin/python -m redlining.cli load data/contracts/cuad-0444.txt --id contract-1
 .venv/bin/python -m redlining.cli reindex
 ```
-
-Existing SQLite files are left untouched. They are not automatically migrated.
-`redlining/storage.py`, its tests, and `REDLINING_DB` remain an explicit legacy
-fixture mode; do not set `REDLINING_DB` when using the PostgreSQL application.
-Historical data and benchmarks are described in [data/README.md](data/README.md).
 
 ## Request lifecycle
 
@@ -58,27 +60,32 @@ Historical data and benchmarks are described in [data/README.md](data/README.md)
    the result plus outbox. No FIFO guarantee is needed for these disjoint edits.
 5. HTTP returns 200 with the exact committed revision and full text, or 202 with
    a status URL if still pending at the wait deadline. Subscriptions
-   independently deliver outcomes and patches to clients. No client polling.
+   independently deliver outcomes and patches to clients. The UI does not poll;
+   API-only callers can use the operation status URL.
 
-Reserve, renew, release, draft-save, admission and execution all take the same
+Reserve, renew, release, admission and execution all take the same
 per-document database lock. This closes the race between overlap validation and
 queue insertion. Pending replacements cannot expire or be released/edited.
 Infrastructure failures leave their durable work and protection intact; invariant
 violations fail safely without applying text. A crash before commit rolls back;
 committed outcomes prevent duplicate application. Different documents can proceed
-in parallel, and there is no shared command queue or sequence-counter table.
+in parallel. Reservations are synchronous; only replacements enter the durable
+queue. There is no counter assigning FIFO positions to writes.
 
 Unsubmitted leases last 30 seconds; only explicit renewal extends them. An expired
 reservation may renew or submit if current and free. Duplicate exact selection by
 the same client reuses its protected reservation without renewal. Replacement text
-is immutable per reservation: identical submissions return the original committed document result;
+is immutable per reservation: identical submissions reuse the original operation
+and return its pending, committed, or failed outcome;
 different text returns REPLACEMENT_MISMATCH, including after completion or failure.
 
-When upgrading from the shared-FIFO version: drain that queue with the previous
-worker, then stop old processes before starting this version. Initialization refuses
-pending old commands. Drained commands/counters are archived as legacy_commands and
-legacy_document_sequences; replacement outcomes are copied to preserve deduplication.
-These archives do not participate in runtime ordering. Existing SQLite data is not migrated.
+Admission also stores an immutable content identity: document ID, source version,
+start/end code-point offsets and SHA-256 of the exact UTF-8 replacement. A duplicate
+under a different reservation returns 409 `DUPLICATE_REPLACEMENT` before another
+operation enters the queue; one duplicate rejects the entire batch. Original
+reservation/request-key retries still retrieve their existing operation. These
+identities remain after terminal failure; use the original operation to inspect
+the outcome. The same edit on a newer source revision is a distinct operation.
 
 ## API
 
@@ -92,14 +99,25 @@ all edits in a request belong to one document and commit atomically.
 | GET | `/replacement-operations/{id}` | Pending, completed with exact result, or failed with error |
 | POST | `/edit-reservations/{id}/renew` | Explicitly renew one reservation |
 | DELETE | `/edit-reservations/{id}` | Release; 409 while submitted |
-| PUT | `/edit-reservations/{id}/draft` | Save draft; owning `X-Client-ID` required |
-| GET | `/documents/{id}/edit-reservations` | Complete protected reservation snapshot |
-| GET | `/edit-reservations/{id}` | Reservation state |
 | GET | `/documents/{id}?version=1` | Current or immutable revision |
-| GET | `/documents/{id}/search?q=contract` | Literal search within indexed document |
 | POST | `/search` | Literal, phrase or terms search, optional document IDs |
 | GET | `/documents` | Document discovery |
-| WS | `/documents/{id}/updates` | Patches, protected reservations, drafts and outcomes |
+| WS | `/documents/{id}/updates` | Patches, protected reservations and outcomes |
+
+V0 has no authentication or RBAC. `X-Client-ID` labels reservation ownership; it
+is not an authenticated identity. Reserved writes, renewal and release rely on
+knowing the reservation ID. Production authorization is proposed in Part II.
+
+Typing is local: select → reserve → type → submit → commit. There is no draft-save
+request or typing recovery. While the document is focused, the browser renews its
+selected and locally edited reservations every 10 seconds. Renewal revalidates
+range protection; failures are shown and submission still validates the reservation.
+Hidden/unfocused pages stop renewing; submitted replacements remain protected until
+completion. Browser presence heartbeats are separate from lease renewal.
+
+Reservation state comes from the initial WebSocket snapshot and subsequent complete
+protected sets. For document-scoped literal search use
+`POST /search` with `{"text":"contract","mode":"literal","document_ids":["contract-1"]}`.
 
 ### Reserve, then replace
 
@@ -121,9 +139,10 @@ Add items to either array for multiple edits; there is no separate batch route.
 Acquisition checks all ranges against the current version, existing protection and
 each other in one transaction. If any fail, none are acquired. Item-specific errors
 include zero-based `item_index`. All newly created leases share a deadline; reused
-reservations retain their previous deadlines. Duplicate exact targets return the
-same reservation ID in the corresponding response positions. Replacements must use
-distinct reservation IDs, so deduplicate such IDs before submitting.
+reservations retain their previous deadlines. Duplicate targets within one request
+are rejected with 422; repeating a separate request for the same protected target
+with the same client reuses its reservation. Replacement arrays also require
+distinct reservation IDs.
 
 Reserved replacements derive client/document/anchor identity from the reservations;
 no client header or new idempotency key is needed. The document path is validated.
@@ -132,7 +151,8 @@ Changed payloads, partial replays and combining already-bound operations return 
 
 ### Reserve and replace in one call
 
-Use the same replacement endpoint with targets instead of reservation IDs:
+Use the same replacement endpoint with targets instead of reservation IDs.
+This is an alternative to the preceding example, starting from the original v1:
 
 ```sh
 curl -X POST localhost:8000/documents/contract-1/replacements \
@@ -180,8 +200,8 @@ The default completion wait is 30 seconds after admission; set
 unless already completed. Idempotency is still needed for infrastructure timeouts.
 
 Every new WebSocket revision uses `patches: [...]`, including a single edit. All
-patches are sorted and refer to the same previous version. The gateway normalizes
-historical single patches on read. The UI assembles text once, shifts selections
+patches are sorted and refer to the same previous version. Stored revisions must
+use this current format. The UI assembles text once, shifts selections
 by cumulative deltas and waits for subscription outcomes after 202; it never polls
 or overwrites a newer subscribed version with an older HTTP response.
 
@@ -191,17 +211,6 @@ assembly costs O(n + total replacement length), plus O(k log k) sorting for k ed
 Overlap checks cost O(k*a + k²) for a other protected reservations; cumulative
 anchor shifts use prefix sums and binary search. Document length is read once per
 request. Cross-document atomic operations and partial success are unsupported.
-
-### Contract upgrade
-
-The old root replacement route and separate batch routes are removed, not aliases.
-Update API callers and deploy backend workers/UI together. Existing reservation IDs,
-operation IDs and one-shot keys remain valid. Old singleton operations replay through
-the new array contract with the same outcome; legacy revision patches are normalized.
-PostgreSQL uses one operation/items execution path regardless of item count. Retained
-leading-item database columns support historical migration, not a unary execution mode.
-The explicit SQLite fixture adapter supports only single-item arrays; PostgreSQL is
-the application backend for full operation sets.
 
 ## Browser departure
 
@@ -219,8 +228,8 @@ Browser suspension can also lose presence; reconnect and reselect if protection
 was released. Undelivered close messages fall back to heartbeat/lease expiry.
 An in-flight acquisition arriving after departure cleanup still has the ordinary
 30-second lease bound. API-only clients do not register browser presence and keep
-normal lease behavior. Draft text/history is retained, but released drafts no
-longer hold ranges or appear as active edits.
+normal lease behavior. Unsubmitted replacement text stays only in browser memory;
+leaving or reloading the page discards it.
 
 ## Search and subscriptions
 
@@ -241,9 +250,7 @@ Each projection stores an array of bounded `simple`-configuration vectors: 256
 words with 32-word overlap. This covers the whole document, including the tail
 of 10+ MB inputs, without exceeding PostgreSQL's vector/position limits. There
 are no passage IDs or new services. No stemming or stopword removal is applied.
-Existing rows are backfilled once during initialization under the schema lock;
-future indexing commits body, version and ranking vectors together. On a large
-existing corpus, allow time for that initial backfill before serving traffic.
+Indexing commits body, version and ranking vectors together.
 
 Ranking is local to each section: terms dispersed across sections can still match
 exactly but receive zero if no section contains all terms. Words of 2 KiB or more
@@ -253,18 +260,61 @@ still scan and rank many candidates; candidate bodies stream to Python one at a
 time. See [PostgreSQL ranking](https://www.postgresql.org/docs/16/textsearch-controls.html#TEXTSEARCH-RANKING)
 and [limits](https://www.postgresql.org/docs/16/textsearch-limitations.html).
 
+Corpus-wide terms/phrase queries have a separate bounded result cache. Defaults:
+
+| Setting | Default | Purpose |
+|---|---:|---|
+| `QUERY_CACHE_MAX_QUERIES` | 64 | Maximum resident query results; also caps first-use admission records |
+| `QUERY_CACHE_BYTES` | 8388608 (8 MiB) | Shared estimated retained-memory budget for results and admission records |
+| `QUERY_CACHE_IDLE_SECONDS` | 300 | Expire entries after five minutes without use |
+
+Any zero setting disables result caching. Queries enter after their second use
+within the idle window; least-recently-used results are evicted at capacity. Exact
+query text, mode, and result limit identify a query. Cached payloads include scores,
+contexts, and anchors, not document bodies. Literal and document-scoped searches
+bypass caching and use PostgreSQL plus exact source resolution directly.
+The per-document postings cache and `SEARCH_CACHE_BYTES` setting have been removed.
+
+A PostgreSQL trigger records inserts, updates (including forced same-version
+reindexing), and deletes of search projections in the same transaction. A singleton
+generation row orders committed updates; the change log retains only the latest
+1,000 changes. This introduces a short shared lock during projection writes, not
+source-document editing. Schema initialization installs the trigger; incompatible
+older schemas require a fresh schema or a separately implemented migration.
+
+On the next use of a cached query, one repeatable-read snapshot checks the generation
+and reconciles up to 100 distinct changed documents. Newly matching documents can
+enter the results; changed snippets/anchors refresh even when scores do not change.
+A disappearing or demoted top result triggers a full query to refill from uncached
+candidates. More than 100 changed documents, or falling behind retained history,
+also triggers a full query. Unchanged queries skip ranking and full-body transfer.
+Updates are applied lazily on reads, so idle cached queries create no per-write
+matching work. Cache and probation records expire lazily on cache access.
+
+Each API store/process owns its cache; all observe the shared committed generation.
+A missed Redis notification does not compromise result validity. Local cache work
+is serialized, and cold/refill queries can delay concurrent cache access. Byte
+budgets are estimates, excluding transient query results and allocator overhead.
+These defaults are initial bounds, not capacity claims. The recorded postings-cache
+benchmark predates this result cache and does not measure its performance.
+
 Committed outbox events feed Redis Streams. Independent consumer groups index
 revisions and publish document invalidations. Gateways fetch current database state
 on notification; snapshots never install old reservation lists. One Redis listener
 serves each open document per API process. Every socket sends serially and reconciles
-every two seconds to cover missed notifications. Initial/reconnect snapshots contain
-full text; normal updates contain patches and complete protected reservation lists.
+every two seconds to cover missed notifications. Initial snapshots contain full
+text. Reconnects with `after_version` receive missed patches; gaps over 100 revisions
+fall back to full text unless `retain_history=1`. A version ahead of the server also
+gets full text. Every state bundle includes the complete protected reservation list.
 
 Replacement history and full revisions are retained indefinitely. V0 sends compact
 replacement outcomes on each refresh, so bounded replay/retention is outstanding.
-There is no Stream trimming, poison-event quarantine, or automated legacy database
-migration. Flat replacement costs O(n+r); protected-anchor updates cost O(a).
-Previous SQLite benchmark results do not characterize the PostgreSQL adapter.
+There is no Stream trimming or poison-event quarantine. Flat text assembly costs
+O(n+r). For k edits and a other protected anchors, sorting costs O(k log k), anchor
+shift lookup costs O(a log(k+1)), and persistence performs a anchor updates.
+Execution also checks O(k*a) range pairs; near-linear text assembly is not a
+guarantee of near-linear total request latency.
+Historical SQLite experiments do not characterize the PostgreSQL application.
 
 ## Tests and UI
 
@@ -288,6 +338,26 @@ The exact policy is maintained in [design.py](design.py).
 
 See [the testing protocol](benchmarks/README.md) for automatic CUAD setup, HTTP search and reservation/replacement suites, ten concurrent Selenium clients, and report generation. The harness compares current search against a local FTS5/BM25 baseline without LLMs.
 
-Measured run: [contract search and redlining report](reports/run-2026-10-12/report.md), including request/commit order, before/after text and browser evidence.
+Historical run before API consolidation: [contract search and redlining report](reports/run-2026-10-12/report.md), including request/commit order, before/after text and browser evidence.
 
-With native relevance scoring: [updated measurements and before/after comparison](reports/ranked-2026-10-12/report.md).
+Historical run with native relevance scoring: [updated measurements and before/after comparison](reports/ranked-2026-10-12/report.md).
+
+Measured cache comparison: [disabled vs cold vs warm scoped search](reports/cache-2026-10-12/report.md).
+Warm contract searches showed modest gains (terms-tail p50 6.1%, phrase-tail 2.2%);
+cold construction more than doubled median latency. The 26.8 MB composite exceeded
+the 32 MiB postings budget and fell back. This experimental cache has been removed;
+the historical report is retained as evidence for that decision.
+
+Corpus-wide query-result cache: [disabled vs first-use vs warm benchmark](reports/query-cache-2026-10-12/report.md).
+Across 41 category queries on all 510 CUAD contracts, warm p50 was 3.84 ms versus
+182.36 ms uncached (47.5×); p95 was 4.42 versus 345.75 ms. First-use and admission
+p50 remained about 183–184 ms. Incremental maintenance after unrelated additions,
+new matches, or same-score anchor changes took about 5–6 ms; removing a winning
+match required a full query (about 107 ms in that maintenance workload).
+All 516 measured responses matched exactly. These are sequential in-process ASGI
+measurements with real PostgreSQL, excluding network latency and index-write time;
+maintenance scenarios have only three samples each. They measure the query-result
+cache separately from the earlier per-document postings-cache experiment.
+
+Schema initialization creates the current schema only. Existing schemas are not
+migrated or backfilled; initialize a fresh database/schema for incompatible changes.

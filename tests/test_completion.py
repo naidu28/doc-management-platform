@@ -6,7 +6,6 @@ import pytest
 from redlining.models import CreateEditReservationRequest, DocumentAnchor
 from redlining.runtime import DocumentService
 from redlining.services import ReplaceCommand, ServiceError
-from redlining.storage import Store
 
 
 class Hub:
@@ -24,8 +23,8 @@ class Hub:
 
 
 @pytest.fixture
-def storage(tmp_path):
-    s = Store(tmp_path/'completion.sqlite')
+def storage(pg_store):
+    s = pg_store
     s.create_document('X','30 days')
     r = s.reserve('a','X',CreateEditReservationRequest(target=DocumentAnchor(version=1,start=0,end=2)))
     return s,ReplaceCommand(r.reservation_id,'60')
@@ -102,7 +101,7 @@ def test_timeout_preserves_accepted_work_and_can_replay(storage):
         assert pending.status_url==f'/replacement-operations/{pending.operation_id}' 
         assert s.reservation(command.reservation_id).status=='submitted'
         oid=s.reservation(command.reservation_id).operation_id
-        assert s.operation(oid).status=='queued'
+        assert s.operation(oid)['status']=='queued'
         assert hub.detached
         s.process_next()
         result=await DocumentService(s,Hub()).change(command)
@@ -133,7 +132,7 @@ def test_failure_returns_stored_error_and_detaches(storage):
         task=asyncio.create_task(DocumentService(s,hub).change(command))
         await admitted.wait()
         with s.connection(True) as db:
-            db.execute('UPDATE reservations SET version=99 WHERE id=?',(command.reservation_id,))
+            db.execute('UPDATE reservations SET version=99 WHERE id=%s',(command.reservation_id,))
         s.process_next();hub.signal.set()
         with pytest.raises(ServiceError) as error: await task
         assert error.value.reason=='QUEUE_INVARIANT'
